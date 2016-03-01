@@ -1,0 +1,17 @@
+{
+  "firebase": "blockstack-stats",
+  "public": "build",
+  "ignore": [
+    "**/.*",
+    "./__tests__/**",
+    "./app/**",
+    "./gulp/**",
+    "**/node_modules/**",
+    "./unused/**",
+    "firebase.json"
+  ],
+  "rewrites": [{
+    "source": "**",
+    "destination": "/index.html"
+  }]
+}
