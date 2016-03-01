@@ -1,5 +1,9 @@
 import d3 from 'd3';
 
+const chartWidth = 800,
+      chartHeight = 400,
+      margin = {top: 20, right: 20, bottom: 30, left: 50}
+
 function parseDate(date) {
   return d3.time.format("%d-%b-%y").parse(String(date))
 }
@@ -7,30 +11,29 @@ function parseDate(date) {
 export function drawDailyRegistrationsChart(selector, chartData) {
   let data = chartData.items;
 
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+  let width = chartWidth - margin.left - margin.right,
+      height = chartHeight - margin.top - margin.bottom;
 
-  var x = d3.time.scale()
+  let x = d3.time.scale()
       .range([0, width]);
 
-  var y = d3.scale.linear()
+  let y = d3.scale.linear()
       .range([height, 0]);
 
-  var xAxis = d3.svg.axis()
+  let xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom");
 
-  var yAxis = d3.svg.axis()
+  let yAxis = d3.svg.axis()
       .scale(y)
       .orient("left");
 
-  var area = d3.svg.area()
+  let area = d3.svg.area()
       .x(function(d) { return x(d.date); })
       .y0(height)
       .y1(function(d) { return y(d.registrations); });
 
-  var svg = d3.select(selector).append("svg")
+  let svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -68,11 +71,8 @@ export function drawDailyRegistrationsChart(selector, chartData) {
 export function drawTotalRegistrationsChart(selector, chartData) {
   let data = chartData.items;
 
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
-
-  console.log(data)
+  let width = chartWidth - margin.left - margin.right,
+      height = chartHeight - margin.top - margin.bottom;
 
   let totalRegistrations = 0;
   data.forEach(function(d) {
@@ -82,26 +82,26 @@ export function drawTotalRegistrationsChart(selector, chartData) {
     d.totalRegistrations = totalRegistrations;
   });
 
-  var x = d3.time.scale()
+  let x = d3.time.scale()
       .range([0, width]);
 
-  var y = d3.scale.linear()
+  let y = d3.scale.linear()
       .range([height, 0]);
 
-  var xAxis = d3.svg.axis()
+  let xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom");
 
-  var yAxis = d3.svg.axis()
+  let yAxis = d3.svg.axis()
       .scale(y)
       .orient("left");
 
-  var area = d3.svg.area()
+  let area = d3.svg.area()
       .x(function(d) { return x(d.date); })
       .y0(height)
       .y1(function(d) { return y(d.totalRegistrations); });
 
-  var svg = d3.select(selector).append("svg")
+  let svg = d3.select(selector).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")

@@ -11,12 +11,17 @@ const config = {
   },
 
   images: {
-    src: './app/images/**/*.{jpeg,jpg,png,gif}',
+    src: './app/images/**/*.{jpeg,jpg,png,gif,svg}',
     dest: './build/images/'
   },
 
   styles: {
     src: './app/styles/**/*.scss',
+    dest: './build/css/'
+  },
+
+  css: {
+    src: './app/styles/**/*.css',
     dest: './build/css/'
   },
 
