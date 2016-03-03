@@ -19,8 +19,8 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    drawDailyRegistrationsChart(".daily-registrations-chart", chartData1);
-    drawTotalRegistrationsChart(".total-registrations-chart", chartData2);
+    //drawDailyRegistrationsChart(".daily-registrations-chart", chartData1);
+    //drawTotalRegistrationsChart(".total-registrations-chart", chartData2);
     drawDailyRegistrationsChart(".daily-registrations-chart-2", chartData3);
     drawTotalRegistrationsChart(".total-registrations-chart-2", chartData4);
   }
@@ -35,23 +35,15 @@ class HomePage extends React.Component {
           <div className="container-fluid">
             <section className="home-page chart-section">
               <div className="row">
-                <div className="col-md-6">
-                  <h3>Daily Registrations</h3>
-                  <h5>(starting before the migration to Bitcoin)</h5>
-                  <div className="chart daily-registrations-chart m-b-2">
-                  </div>
-                  <h3>Aggregate Registrations</h3>
-                  <h5>(starting before the migration to Bitcoin)</h5>
-                  <div className="chart total-registrations-chart m-b-2">
-                  </div>
+                <div className="col-md-3">
                 </div>
                 <div className="col-md-6">
                   <h3>Daily Registrations</h3>
-                  <h5>(starting after the migration to Bitcoin)</h5>
+                  <h5></h5>
                   <div className="chart daily-registrations-chart-2 m-b-2">
                   </div>
                   <h3>Aggregate Registrations</h3>
-                  <h5>(starting after the migration to Bitcoin)</h5>
+                  <h5></h5>
                   <div className="chart total-registrations-chart-2 m-b-2">
                   </div>
                 </div>
@@ -68,3 +60,16 @@ class HomePage extends React.Component {
 HomePage.propTypes = propTypes;
 
 export default HomePage;
+
+/*
+<div className="col-md-6">
+  <h3>Daily Registrations</h3>
+  <h5>(starting before the migration to Bitcoin)</h5>
+  <div className="chart daily-registrations-chart m-b-2">
+  </div>
+  <h3>Aggregate Registrations</h3>
+  <h5>(starting before the migration to Bitcoin)</h5>
+  <div className="chart total-registrations-chart m-b-2">
+  </div>
+</div>
+*/

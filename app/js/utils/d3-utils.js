@@ -76,7 +76,7 @@ export function drawTotalRegistrationsChart(selector, chartData) {
   let width = chartWidth - margin.left - margin.right,
       height = chartHeight - margin.top - margin.bottom;
 
-  let totalRegistrations = 0;
+  let totalRegistrations = chartData.initialValue;
   data.forEach(function(d) {
     d.date = parseDate(d.date);
     d.registrations = +d.registrations;
@@ -111,7 +111,7 @@ export function drawTotalRegistrationsChart(selector, chartData) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.totalRegistrations; })]);
+  y.domain([chartData.initialValue, d3.max(data, function(d) { return d.totalRegistrations; })]);
 
   svg.append("path")
       .datum(data)
