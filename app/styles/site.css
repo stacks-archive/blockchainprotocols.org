@@ -258,9 +258,12 @@ footer > li{list-style:none;}
 }
 
 /* Charts */
+.chart-section {
+  text-align: center;
+}
+
 .chart {
   font: 10px sans-serif;
-  text-align: center;
   margin: 40px;
 }
 

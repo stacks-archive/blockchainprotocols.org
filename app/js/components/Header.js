@@ -11,7 +11,7 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header className="container no-padding nav-header">
+      <header className="container-fluid no-padding nav-header">
         <nav className="navbar">
           <div>
             <Link className="navbar-brand" to="/">

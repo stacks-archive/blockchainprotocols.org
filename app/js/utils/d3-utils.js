@@ -1,8 +1,9 @@
 import d3 from 'd3';
 
-const chartWidth = 800,
-      chartHeight = 400,
-      margin = {top: 20, right: 20, bottom: 30, left: 50}
+const chartWidth = 600,
+      chartHeight = 400
+
+const margin = {top: 20, right: 20, bottom: 30, left: 50}
 
 function parseDate(date) {
   return d3.time.format("%d-%b-%y").parse(String(date))
@@ -34,10 +35,11 @@ export function drawDailyRegistrationsChart(selector, chartData) {
       .y1(function(d) { return y(d.registrations); });
 
   let svg = d3.select(selector).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .attr("viewBox", "0 0 600 400")
+    .classed("svg-content-responsive", true)
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   data.forEach(function(d) {
     d.date = parseDate(d.date);
@@ -102,10 +104,11 @@ export function drawTotalRegistrationsChart(selector, chartData) {
       .y1(function(d) { return y(d.totalRegistrations); });
 
   let svg = d3.select(selector).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .attr("viewBox", "0 0 600 400")
+    .classed("svg-content-responsive", true)
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain([0, d3.max(data, function(d) { return d.totalRegistrations; })]);
@@ -128,5 +131,5 @@ export function drawTotalRegistrationsChart(selector, chartData) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Total Registrations");
+      .text("Aggregate Registrations");
 }
