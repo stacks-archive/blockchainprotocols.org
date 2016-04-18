@@ -20,6 +20,11 @@ class Header extends React.Component {
               </span>
             </Link>
             <ul className="nav navbar-nav">
+              <li className="nav-item">
+                <Link to="https://blockstack.org" target="_blank" className="nav-link">
+                  More at blockstack.org
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>

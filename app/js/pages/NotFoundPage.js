@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
-import React         from 'react';
-import DocumentTitle from 'react-document-title';
+import React         from 'react'
+import DocumentTitle from 'react-document-title'
 
 const propTypes = {
   currentUser: React.PropTypes.object
-};
+}
 
 class NotFoundPage extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -22,11 +22,11 @@ class NotFoundPage extends React.Component {
 
         </section>
       </DocumentTitle>
-    );
+    )
   }
 
 }
 
-NotFoundPage.propTypes = propTypes;
+NotFoundPage.propTypes = propTypes
 
-export default NotFoundPage;
+export default NotFoundPage
