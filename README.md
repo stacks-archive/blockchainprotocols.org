@@ -1,10 +1,8 @@
-Blockstack Stats
-============
+# Blockstack Stats
 
 [![Slack](http://slack.blockstack.org/badge.svg)](http://slack.blockstack.org/)
 
 A live version of this site can be found online at https://blockstackstats.com.
-
 
 ### Installation
 
