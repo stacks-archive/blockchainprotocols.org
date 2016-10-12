@@ -1,17 +1,14 @@
 {
-  "firebase": "blockchain-protocols",
-  "public": "build",
-  "ignore": [
-    "**/.*",
-    "./__tests__/**",
-    "./app/**",
-    "./gulp/**",
-    "**/node_modules/**",
-    "./unused/**",
-    "firebase.json"
-  ],
-  "rewrites": [{
-    "source": "**",
-    "destination": "/index.html"
-  }]
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": "build",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
 }
