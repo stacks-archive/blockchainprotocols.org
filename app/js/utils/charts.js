@@ -21,7 +21,7 @@ export function drawChart() {
     },
     chartArea:{
       left:  75,
-      top:   75,
+      top:   50,
       right: 150,
       bottom:75
     }
@@ -39,7 +39,7 @@ export function drawChart() {
     },
     chartArea:{
       left:  75,
-      top:   75,
+      top:   50,
       right: 150,
       bottom:75
     }
@@ -59,7 +59,7 @@ export function drawChart() {
     },
     chartArea:{
       left:  75,
-      top:   75,
+      top:   50,
       right: 150,
       bottom:75
     }
@@ -75,7 +75,7 @@ export function drawChart() {
     colors: json.cumulativeColors,
     chartArea:{
       left:  75,
-      top:   75,
+      top:   50,
       right: 150,
       bottom:75
     }
@@ -91,7 +91,7 @@ export function drawChart() {
     colors: json.weekColors,
     chartArea:{
       left:  75,
-      top:   75,
+      top:   50,
       right: 150,
       bottom:75
     }
