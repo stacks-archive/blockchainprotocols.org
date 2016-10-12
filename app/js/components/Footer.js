@@ -13,7 +13,7 @@ class Footer extends React.Component {
       <footer>
         <div className="container-fluid base-foot">
             <p className="base-push-left">
-              Made by the Blockstack community
+              Charts by Ricardo Casatta, site by Ryan Shea.
             </p>
         </div>
       </footer>

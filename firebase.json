@@ -1,5 +1,5 @@
 {
-  "firebase": "blockstack-stats",
+  "firebase": "blockchain-protocols",
   "public": "build",
   "ignore": [
     "**/.*",

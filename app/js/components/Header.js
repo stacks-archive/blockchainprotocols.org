@@ -12,18 +12,15 @@ class Header extends React.Component {
   render() {
     return (
       <header className="container-fluid no-padding nav-header">
-        <nav className="navbar">
+        <nav className="navbar navbar-dark">
           <div>
             <Link className="navbar-brand" to="/">
               <span className="brand-title">
-                Blockstack Stats
+                Blockchain Protocols
               </span>
             </Link>
             <ul className="nav navbar-nav">
               <li className="nav-item">
-                <Link to="https://blockstack.org" target="_blank" className="nav-link">
-                  More at blockstack.org
-                </Link>
               </li>
             </ul>
           </div>

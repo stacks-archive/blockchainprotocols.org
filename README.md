@@ -1,13 +1,9 @@
-# Blockstack Stats
-
-[![Slack](http://slack.blockstack.org/badge.svg)](http://slack.blockstack.org/)
-
-A live version of this site can be found online at https://blockstackstats.com.
+# Blockchain Protocols
 
 ### Installation
 
 ```
-$ git clone git@github.com:blockstack/blockstack-stats.git
+$ git clone git@github.com:blockstack/blockchain-protocols.git
 $ npm install
 ```
 
