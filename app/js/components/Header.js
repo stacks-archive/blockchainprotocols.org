@@ -1,12 +1,12 @@
 'use strict';
 
-import React from 'react';
+import React from 'react'
 import {Link} from 'react-router'
 
 class Header extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -20,8 +20,11 @@ class Header extends React.Component {
                   Blockchain Protocols
                 </span>
               </Link>
-              <ul className="nav navbar-nav">
+              <ul className="nav navbar-nav pull-sm-right">
                 <li className="nav-item">
+                <Link to="/about" className="nav-link">
+                  About
+                </Link>
                 </li>
               </ul>
             </div>
@@ -33,4 +36,4 @@ class Header extends React.Component {
 
 }
 
-export default Header;
+export default Header

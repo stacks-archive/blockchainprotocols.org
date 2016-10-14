@@ -16,14 +16,14 @@ class NotFoundPage extends React.Component {
 
   render() {
     return (
-      <DocumentTitle title="Page Not Found">
+      <DocumentTitle title="Ethereum Charts Coming Soon">
         <div>
           <Header />
 
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-12 home-main">
-                <h2>Page Not Found</h2>
+              <div className="col-md-8 offset-md-2 home-main">
+                <h2>Ethereum Charts Coming Soon</h2>
               </div>
             </div>
           </div>
