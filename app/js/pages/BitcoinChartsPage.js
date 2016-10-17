@@ -71,7 +71,6 @@ class BitcoinChartsPage extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <DocumentTitle title="Bitcoin Protocol Charts">
         <div>
@@ -102,6 +101,14 @@ class BitcoinChartsPage extends React.Component {
                     <Link to="chart_5" smooth={true} spy={true}
                       className="btn btn-secondary">
                       Last Week's Breakdown
+                    </Link>
+                    <Link to="chart_6" smooth={true} spy={true}
+                      className="btn btn-secondary">
+                      Financial Protocols
+                    </Link>
+                    <Link to="chart_7" smooth={true} spy={true}
+                      className="btn btn-secondary">
+                      Non-financial Protocols
                     </Link>
                   </div>
                 </ul>
@@ -157,6 +164,22 @@ class BitcoinChartsPage extends React.Component {
                       columns={this.state.chartData.chart5.columns}
                       options={this.state.chartOptions.chart5}
                       width={"100%"} height={"800px"} graph_id="week_div" />
+                  </Element>
+                  <Element name="chart_6" className="element">
+                    <h3 className="chart-header">Financial Protocols</h3>
+                    <Chart chartType="PieChart"
+                      rows={this.state.chartData.chart6.rows}
+                      columns={this.state.chartData.chart6.columns}
+                      options={this.state.chartOptions.chart6}
+                      width={"100%"} height={"800px"} graph_id="financial_div" />
+                  </Element>
+                  <Element name="chart_7" className="element">
+                    <h3 className="chart-header">Non-financial Protocols</h3>
+                    <Chart chartType="PieChart"
+                      rows={this.state.chartData.chart7.rows}
+                      columns={this.state.chartData.chart7.columns}
+                      options={this.state.chartOptions.chart7}
+                      width={"100%"} height={"800px"} graph_id="non_financial_div" />
                   </Element>
                 </div>
                 : null }

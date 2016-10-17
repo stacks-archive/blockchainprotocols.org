@@ -4,7 +4,7 @@ export function getChartOptions(chartData, dimensions) {
     left:   75,
     top:    50,
     right:  150,
-    bottom: 75
+    bottom: 50
   }
   if (dimensions.width < 768) {
     legend = 'bottom'
@@ -18,9 +18,9 @@ export function getChartOptions(chartData, dimensions) {
 
   return {
     chart1: {
-      legend: legend,
+      legend: 'none',
       vAxis: {
-        title: 'Transactions per day',
+        title: '# of transactions',
         logScale: false,
         minValue: 0,
         viewWindow: {
@@ -31,8 +31,9 @@ export function getChartOptions(chartData, dimensions) {
       chartArea: chartAreaSettings
     },
     chart2: {
-      legend: legend,
+      legend: 'none',
       vAxis: {
+        title: '# of transactions',
         logScale: true,
         minValue: 0
       },
@@ -43,6 +44,7 @@ export function getChartOptions(chartData, dimensions) {
       isStacked: 'true',
       colors: chartData.chart3.colors,
       vAxis: {
+        title: '# of transactions',
         minValue: 0,
         ticks: [0, .25, .5, .75, 1]
       },
@@ -58,6 +60,18 @@ export function getChartOptions(chartData, dimensions) {
       legend: legend,
       vAxis: {minValue: 0},
       colors: chartData.chart5.colors,
+      chartArea: chartAreaSettings
+    },
+    chart6: {
+      legend: legend,
+      vAxis: {minValue: 0},
+      colors: chartData.chart6.colors,
+      chartArea: chartAreaSettings
+    },
+    chart7: {
+      legend: legend,
+      vAxis: {minValue: 0},
+      colors: chartData.chart7.colors,
       chartArea: chartAreaSettings
     }
   }
@@ -82,7 +96,9 @@ export function getChartData(body) {
       chart2Rows = [],
       chart3Rows = [],
       chart4Rows = [],
-      chart5Rows = []
+      chart5Rows = [],
+      chart6Rows = [],
+      chart7Rows = []
 
   /* Chart 1 */
   jsonResponse.total.rows.forEach((row) => {
@@ -124,6 +140,46 @@ export function getChartData(body) {
     chart5Rows.push(modifiedRow)
   })
 
+  let nonFinancialProtocols = [
+    'Eternity Wall',
+    'Monegraph',
+    'Factom',
+    'Blockstack',
+    'Stampery Old',
+    'Ascribe pool',
+  ]
+  let financialProtocols = [
+    'Colu',
+    'Omni Layer',
+    'Coinspark',
+    'Open Assets'
+  ]
+  let cumulativeColors = jsonResponse.cumulativeColors
+  let nonFinancialColors = [
+    cumulativeColors[6],
+    cumulativeColors[7],
+    cumulativeColors[8],
+    cumulativeColors[9],
+    cumulativeColors[10],
+    cumulativeColors[11],
+  ]
+  let financialColors = [
+    cumulativeColors[0],
+    cumulativeColors[2],
+    cumulativeColors[5],
+    cumulativeColors[12],
+  ]
+
+  chart4Rows.forEach((row) => {
+    let protocolName = row[0]
+    if (financialProtocols.indexOf(protocolName) >= 0) {
+      chart6Rows.push(row)
+    }
+    if (nonFinancialProtocols.indexOf(protocolName) >= 0) {
+      chart7Rows.push(row)
+    }
+  })
+
   return {
     chart1: {
       rows: chart1Rows,
@@ -147,6 +203,16 @@ export function getChartData(body) {
       rows: chart5Rows,
       columns: jsonResponse.week.cols,
       colors: jsonResponse.weekColors
-    }
+    },
+    chart6: {
+      rows: chart6Rows,
+      columns: jsonResponse.cumulative.cols,
+      colors: financialColors
+    },
+    chart7: {
+      rows: chart7Rows,
+      columns: jsonResponse.cumulative.cols,
+      colors: nonFinancialColors
+    },
   }
 }
