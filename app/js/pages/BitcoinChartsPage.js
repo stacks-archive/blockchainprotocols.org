@@ -5,9 +5,13 @@ import {
   Link, Element, Events, scrollSpy
 }                    from 'react-scroll'
 import DocumentTitle from 'react-document-title'
-import Header        from '../components/Header'
-import {Chart} from 'react-google-charts'
+import {Chart}       from 'react-google-charts'
 import request       from 'request'
+
+import Header        from '../components/Header'
+import {
+  getChartData, getChartOptions
+} from '../utils/charts'
 
 const propTypes = {
   currentUser: React.PropTypes.object
@@ -22,138 +26,29 @@ class BitcoinChartsPage extends React.Component {
       chartsLoaded: false
     }
 
-    this.setChartData = this.setChartData.bind(this)
+    this.updateDimensions = this.updateDimensions.bind(this)
   }
 
-  setChartData(body) {
-    const jsonResponse = JSON.parse(body)
-
-    let chart1Columns = [
-      {
-        "id": "x",
-        "label": "Date",
-        "type": "date"
-      },
-      {
-        "id": "A",
-        "label": "# of transactions",
-        "type": "number"
-      }
-    ]
-    let chart1Rows = [],
-        chart2Rows = [],
-        chart3Rows = [],
-        chart4Rows = [],
-        chart5Rows = []
-
-    /* Chart 1 */
-    jsonResponse.total.rows.forEach((row) => {
-      let dateString = row.c[0].v,
-          dateParts = dateString.split(/[(),]+/),
-          date = new Date(dateParts[1], dateParts[2], dateParts[3])
-      let modifiedRow = [date, row.c[1].v]
-      chart1Rows.push(modifiedRow)
-    })
-
-    /* Chart 2 */
-    chart2Rows = chart1Rows
-
-    /* Chart 3 */
-    jsonResponse.proto.rows.forEach((row) => {
-      let dateString = row.c[0].v,
-          dateParts = dateString.split(/[(),]+/),
-          date = new Date(dateParts[1], dateParts[2], dateParts[3])
-      let modifiedRow = [date]
-      row.c.slice(1).forEach((rowItem) => {
-        let protocolTransactionCount = 0
-        if (rowItem.hasOwnProperty('v')) {
-          protocolTransactionCount = rowItem.v
-        }
-        modifiedRow.push(protocolTransactionCount)
-      })
-      chart3Rows.push(modifiedRow)
-    })
-
-    /* Chart 4 */
-    jsonResponse.cumulative.rows.forEach((row) => {
-      let modifiedRow = [row.c[0].v, row.c[1].v]
-      chart4Rows.push(modifiedRow)
-    })
-
-    /* Chart 5 */
-    jsonResponse.week.rows.forEach((row) => {
-      let modifiedRow = [row.c[0].v, row.c[1].v]
-      chart5Rows.push(modifiedRow)
-    })
-
-    const chartAreaSettings = {
-      left:   75,
-      top:    50,
-      right:  150,
-      bottom: 75
+  updateDimensions() {
+    let dimensions = {
+      width: this.state.width,
+      height: this.state.height
     }
-
+    let chartOptions = getChartOptions(this.state.chartData, dimensions)
     this.setState({
+      width: $('#chart-panel').width(), 
+      height: $('#chart-panel').height(),
       chartsLoaded: true,
-      chart1Data: {
-        rows: chart1Rows,
-        columns: chart1Columns
-      },
-      chart1Options: {
-        vAxis: {
-          title: 'Transactions per day',
-          logScale: false,
-          minValue: 0,
-          viewWindow: {
-            max: 6000,
-            min: 0
-          }
-        },
-        chartArea: chartAreaSettings
-      },
-      chart2Data: {
-        rows: chart2Rows,
-        columns: chart1Columns
-      },
-      chart2Options: {
-        vAxis: {
-          logScale: true,
-          minValue: 0
-        },
-        chartArea: chartAreaSettings
-      },
-      chart3Data: {
-        rows: chart3Rows,
-        columns: jsonResponse.proto.cols
-      },
-      chart3Options: {
-        isStacked: 'true',
-        colors: jsonResponse.protoColors,
-        vAxis: {
-          minValue: 0,
-          ticks: [0, .25, .5, .75, 1]
-        },
-        chartArea: chartAreaSettings
-      },
-      chart4Data: {
-        rows: chart4Rows,
-        columns: jsonResponse.cumulative.cols
-      },
-      chart4Options: {
-        vAxis: {minValue: 0},
-        colors: jsonResponse.cumulativeColors,
-        chartArea: chartAreaSettings
-      },
-      chart5Data: {
-        rows: chart5Rows,
-        columns: jsonResponse.week.cols
-      },
-      chart5Options: {
-        vAxis: {minValue: 0},
-        colors: jsonResponse.weekColors,
-        chartArea: chartAreaSettings
-      }
+      chartOptions: chartOptions
     })
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions)
   }
 
   componentWillMount() {
@@ -162,7 +57,11 @@ class BitcoinChartsPage extends React.Component {
       withCredentials: false
     }, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        this.setChartData(body)
+        let chartData = getChartData(body)
+        this.setState({
+          chartData: chartData
+        })
+        this.updateDimensions()
       } else {
         console.log(error)
       }
@@ -172,6 +71,7 @@ class BitcoinChartsPage extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <DocumentTitle title="Bitcoin Protocol Charts">
         <div>
@@ -206,55 +106,56 @@ class BitcoinChartsPage extends React.Component {
                   </div>
                 </ul>
 
-                <div>
+                <p>
                   This page shows statistics on protocols embedding raw data in the Bitcoin blockchain.
                   Specifically, these protocols use a data field known as OP_RETURN.
                   Stats are compiled by analyzing the first 3 bytes inside each OP_RETURN field and comparing them against known byte prefixes used by each protocol.
-                </div>
+                </p>
 
               </div>
 
-              <div className="col-md-8 offset-md-4 col-lg-9 offset-lg-3 bitcoin-protocols-main">
+              <div className="col-md-8 offset-md-4 col-lg-9 offset-lg-3 bitcoin-protocols-main"
+                id="chart-panel">
                 { this.state.chartsLoaded ?
                 <div>
                   <Element name="chart_1" className="element">
                     <h3 className="chart-header">Transaction Growth</h3>
                     <Chart chartType="AreaChart"
-                      rows={this.state.chart1Data.rows}
-                      columns={this.state.chart1Data.columns}
-                      options={this.state.chart1Options}
+                      rows={this.state.chartData.chart1.rows}
+                      columns={this.state.chartData.chart1.columns}
+                      options={this.state.chartOptions.chart1}
                       width={"100%"} height={"800px"} graph_id="total_div" />
                   </Element>
                   <Element name="chart_2" className="element">
                     <h3 className="chart-header">Transaction Growth (log)</h3>
                     <Chart chartType="AreaChart"
-                      rows={this.state.chart2Data.rows}
-                      columns={this.state.chart2Data.columns}
-                      options={this.state.chart2Options}
+                      rows={this.state.chartData.chart2.rows}
+                      columns={this.state.chartData.chart2.columns}
+                      options={this.state.chartOptions.chart2}
                       width={"100%"} height={"800px"} graph_id="total_div_log" />
                   </Element>
                   <Element name="chart_3" className="element">
                     <h3 className="chart-header">Growth by Protocol</h3>
                     <Chart chartType="AreaChart"
-                      rows={this.state.chart3Data.rows}
-                      columns={this.state.chart3Data.columns}
-                      options={this.state.chart3Options}
+                      rows={this.state.chartData.chart3.rows}
+                      columns={this.state.chartData.chart3.columns}
+                      options={this.state.chartOptions.chart3}
                       width={"100%"} height={"800px"} graph_id="proto_div" />
                   </Element>
                   <Element name="chart_4" className="element">
                     <h3 className="chart-header">Breakdown by Protocol</h3>
                     <Chart chartType="PieChart"
-                      rows={this.state.chart4Data.rows}
-                      columns={this.state.chart4Data.columns}
-                      options={this.state.chart4Options}
+                      rows={this.state.chartData.chart4.rows}
+                      columns={this.state.chartData.chart4.columns}
+                      options={this.state.chartOptions.chart4}
                       width={"100%"} height={"800px"} graph_id="cumulative_div" />
                   </Element>
                   <Element name="chart_5" className="element">
                     <h3 className="chart-header">Last Week's Breakdown</h3>
                     <Chart chartType="PieChart"
-                      rows={this.state.chart5Data.rows}
-                      columns={this.state.chart5Data.columns}
-                      options={this.state.chart5Options}
+                      rows={this.state.chartData.chart5.rows}
+                      columns={this.state.chartData.chart5.columns}
+                      options={this.state.chartOptions.chart5}
                       width={"100%"} height={"800px"} graph_id="week_div" />
                   </Element>
                 </div>
