@@ -18,8 +18,6 @@ class NotFoundPage extends Component {
     return (
       <DocumentTitle title="Page Not Found">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12 home-main">

@@ -18,8 +18,6 @@ class NotFoundPage extends Component {
     return (
       <DocumentTitle title="Ethereum Charts Coming Soon">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 offset-md-2 home-main">

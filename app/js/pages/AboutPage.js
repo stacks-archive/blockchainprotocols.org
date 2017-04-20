@@ -18,13 +18,10 @@ class AboutPage extends Component {
     return (
       <DocumentTitle title="Page Not Found">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 offset-md-2 home-main">
                 <h2>About</h2>
-
                 <p>
                   The charts on this site were created by Ricardo Casatta (@rcasatta) using coinsecrets.org and blockr.io.
                 </p>
@@ -37,7 +34,6 @@ class AboutPage extends Component {
               </div>
             </div>
           </div>
-
         </div>
       </DocumentTitle>
     )

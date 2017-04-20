@@ -69,8 +69,6 @@ class BitcoinChartsPage extends Component {
     return (
       <DocumentTitle title="Bitcoin Protocol Charts">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
 
