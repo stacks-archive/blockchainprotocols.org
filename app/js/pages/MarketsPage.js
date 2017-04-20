@@ -72,7 +72,7 @@ class MarketsPage extends Component {
               <div className="col-md-12 home-main">
                 <h2>Markets</h2>
 
-                <form className="form m-b-3">
+                <form className="form m-t-30 m-b-50">
                   <YearSlider
                     years={this.state.years}
                     maxYears={100}

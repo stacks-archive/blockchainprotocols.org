@@ -11,22 +11,31 @@ class Header extends Component {
 
   render() {
     return (
-      <header className="container-fluid nav-header">
-        <nav className="navbar navbar-light">
-          <Link className="navbar-brand" to="/">
-            <span className="brand-title">
-              Blockchain Protocols
-            </span>
-          </Link>
-          <ul className="nav navbar-nav pull-right">
-            <li className="nav-item">
+      <nav className="navbar navbar-toggleable-md navbar-light
+                      fixed-top navbar-inverse bg-inverse">
+        <Link className="navbar-brand" to="/">
+          Blockchain Protocols
+        </Link>
+        <div className="collapse navbar-collapse">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to="/bitcoin" className="nav-link">
+              Bitcoin
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/ethereum" className="nav-link">
+              Ethereum
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link to="/about" className="nav-link">
               About
             </Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
+          </li>
+        </ul>
+        </div>
+      </nav>
     )
   }
 

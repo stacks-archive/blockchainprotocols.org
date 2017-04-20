@@ -3,7 +3,6 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
-import Header        from '../components/Header'
 
 class NotFoundPage extends Component {
   static propTypes() {

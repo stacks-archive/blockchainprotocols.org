@@ -4,7 +4,6 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 
-import {getChartOptions} from '../utils/charts'
 import {getSupply} from '../utils/markets'
 
 class SupplyChart extends Component {
@@ -56,22 +55,24 @@ class SupplyChart extends Component {
   }
 
   rebuildChartData() {
+    const years = this.props.years
     let data = [
       ['Years', 'Bitcoin %', 'Ethereum %'],
     ]
-    const endBitcoinSupply = getSupply('bitcoin', this.props.years)
-    const endEtherSupply = getSupply('ethereum', this.props.years)
-    const endZcashSupply = getSupply('zcash', this.props.years)
+    const endBitcoinSupply = getSupply('bitcoin', years)
+    const endEtherSupply = getSupply('ethereum', years)
+    //const endZcashSupply = getSupply('zcash', years)
 
-    for (let i = 0; i <= this.props.years; i++) {
+    for (let i = 0; i <= years; i++) {
       const bitcoinPercentage = getSupply('bitcoin', i) / endBitcoinSupply * 100
       const etherPercentage = getSupply('ethereum', i) / endEtherSupply * 100
-      const zcashPercentage = getSupply('zcash', i) / endZcashSupply * 100
+      //const zcashPercentage = getSupply('zcash', i) / endZcashSupply * 100
       const row = [i, bitcoinPercentage, etherPercentage]
       data.push(row)
     }
     let options = this.state.options
-    options.title = `Supply as a % of End Supply After ${this.props.years} Years`
+    options.title = `Supply as a % of End Supply After ${years} Years`
+    options.hAxis.maxValue = years
     this.setState({
       loaded: true,
       data: data,
