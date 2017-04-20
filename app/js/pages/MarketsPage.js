@@ -3,7 +3,8 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
-import InputRange from 'react-input-range'
+
+import YearSlider from '../components/YearSlider'
 import {getSupply, getPrice, currencyNames} from '../utils/markets'
 
 class MarketsPage extends Component {
@@ -16,10 +17,11 @@ class MarketsPage extends Component {
 
     this.state = {
       currencies: [],
-      years: 8
+      years: 8,
     }
 
     this.recalculate = this.recalculate.bind(this)
+    this.onSliderChange = this.onSliderChange.bind(this)
   }
 
   componentDidMount() {
@@ -55,6 +57,10 @@ class MarketsPage extends Component {
     })
   }
 
+  onSliderChange(years) {
+    this.setState({ years: years })
+  }
+
   render() {
     return (
       <DocumentTitle title="Blockchain Markets">
@@ -65,12 +71,10 @@ class MarketsPage extends Component {
                 <h2>Markets</h2>
 
                 <form className="form m-b-3">
-                  <InputRange
-                    minValue={0}
-                    maxValue={100}
-                    value={this.state.years}
-                    onChange={value => this.setState({ years: value })}
-                  />
+                  <YearSlider
+                    years={this.state.years}
+                    maxYears={100}
+                    onChange={this.onSliderChange} />
                 </form>
 
                 <table className="table">
