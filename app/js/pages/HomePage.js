@@ -4,7 +4,6 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 import DocumentTitle from 'react-document-title'
-import Header        from '../components/Header'
 import CardLink         from '../components/CardLink'
 
 class HomePage extends Component {
