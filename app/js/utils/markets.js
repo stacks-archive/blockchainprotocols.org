@@ -44,6 +44,32 @@ export function getSupply(currencyName, years) {
   }
 }
 
+export function fetchPrices() {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = 'https://blockstack-site-api.herokuapp.com/v1/prices'
+      fetch(url)
+      .then((response) => response.text())
+      .then((responseText) => JSON.parse(responseText))
+      .then((priceList) => {
+        let priceObject = {}
+
+        priceList.map((priceItem) => {
+          priceObject[priceItem.id] = priceItem
+        })
+
+        resolve(priceObject)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (err) {
+      console.warn(err.stack)
+      reject(err)
+    }
+  })
+}
+
 export function getPrice(currencyName) {
   switch (currencyName.toLowerCase()) {
     case 'bitcoin':
