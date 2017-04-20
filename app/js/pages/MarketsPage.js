@@ -38,14 +38,10 @@ class MarketsPage extends Component {
     let currencies = []
 
     fetchPrices().then(prices => {
-      console.log(prices)
       currencyNames.map((currencyName) => {
-        console.log(currencyName.toLowerCase())
         const price = parseFloat(prices[currencyName.toLowerCase()].price_usd)
-        console.log(price)
         const supply = getSupply(currencyName, this.state.years)
         const coinsInAHundredMillionth = supply / (100 * Math.pow(10, 6))
-
         const currency = {
           name: currencyName,
           price: price,
