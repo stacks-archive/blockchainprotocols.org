@@ -2,9 +2,7 @@
 
 import {Component} from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router'
 import DocumentTitle from 'react-document-title'
-import Header        from '../components/Header'
 import CardLink         from '../components/CardLink'
 
 class HomePage extends Component {
@@ -20,11 +18,9 @@ class HomePage extends Component {
     return (
       <DocumentTitle title="Blockchain Protocols">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
-              <div className="col-lg-6 col-sm-12 home-main">
+              <div className="col-sm-12 home-main">
                 <div className="card-deck-wrapper">
                   <div className="card-deck m-b-3">
                     <CardLink href="/bitcoin"
@@ -49,3 +45,10 @@ class HomePage extends Component {
 }
 
 export default HomePage
+
+/*
+                    <CardLink href="/markets"
+                      title="Markets"
+                      body="Data on the markets of various cryptocurrencies"
+                      imageSrc="../../images/price-chart.png" />
+*/

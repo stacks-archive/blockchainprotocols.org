@@ -82,14 +82,14 @@ export function getChartData(body) {
 
   let chart1Columns = [
     {
-      "id": "x",
-      "label": "Date",
-      "type": "date"
+      'id': 'x',
+      'label': 'Date',
+      'type': 'date'
     },
     {
-      "id": "A",
-      "label": "# of transactions",
-      "type": "number"
+      'id': 'A',
+      'label':'"# of transactions',
+      'type': 'number'
     }
   ]
   let chart1Rows = [],

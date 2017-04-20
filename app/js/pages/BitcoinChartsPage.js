@@ -2,11 +2,10 @@
 
 import {Component} from 'react'
 import PropTypes from 'prop-types'
-import {Link, Element, Events, scrollSpy} from 'react-scroll'
+import {Link, Element, scrollSpy} from 'react-scroll'
 import DocumentTitle from 'react-document-title'
 import {Chart}       from 'react-google-charts'
 import request       from 'request'
-import Header        from '../components/Header'
 import {getChartData, getChartOptions} from '../utils/charts'
 
 class BitcoinChartsPage extends Component {
@@ -39,16 +38,16 @@ class BitcoinChartsPage extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions)
+    window.addEventListener('resize', this.updateDimensions)
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions)
+    window.removeEventListener('resize', this.updateDimensions)
   }
 
   componentWillMount() {
     request({
-      url: "https://storage.googleapis.com/opreturn-976.appspot.com/op_return_stats.json",
+      url: 'https://storage.googleapis.com/opreturn-976.appspot.com/op_return_stats.json',
       withCredentials: false
     }, (error, response, body) => {
       if (!error && response.statusCode === 200) {
@@ -69,8 +68,6 @@ class BitcoinChartsPage extends Component {
     return (
       <DocumentTitle title="Bitcoin Protocol Charts">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
 
@@ -126,7 +123,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart1.rows}
                       columns={this.state.chartData.chart1.columns}
                       options={this.state.chartOptions.chart1}
-                      width={"100%"} height={"800px"} graph_id="total_div" />
+                      width={'100%'} height={'800px'} graph_id="total_div" />
                   </Element>
                   <Element name="chart_2" className="element">
                     <h3 className="chart-header">Transaction Growth (log)</h3>
@@ -134,7 +131,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart2.rows}
                       columns={this.state.chartData.chart2.columns}
                       options={this.state.chartOptions.chart2}
-                      width={"100%"} height={"800px"} graph_id="total_div_log" />
+                      width={'100%'} height={'800px'} graph_id="total_div_log" />
                   </Element>
                   <Element name="chart_3" className="element">
                     <h3 className="chart-header">Growth by Protocol</h3>
@@ -142,7 +139,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart3.rows}
                       columns={this.state.chartData.chart3.columns}
                       options={this.state.chartOptions.chart3}
-                      width={"100%"} height={"800px"} graph_id="proto_div" />
+                      width={'100%'} height={'800px'} graph_id="proto_div" />
                   </Element>
                   <Element name="chart_4" className="element">
                     <h3 className="chart-header">Breakdown by Protocol</h3>
@@ -150,7 +147,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart4.rows}
                       columns={this.state.chartData.chart4.columns}
                       options={this.state.chartOptions.chart4}
-                      width={"100%"} height={"800px"} graph_id="cumulative_div" />
+                      width={'100%'} height={'800px'} graph_id="cumulative_div" />
                   </Element>
                   <Element name="chart_5" className="element">
                     <h3 className="chart-header">Last Week's Breakdown</h3>
@@ -158,7 +155,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart5.rows}
                       columns={this.state.chartData.chart5.columns}
                       options={this.state.chartOptions.chart5}
-                      width={"100%"} height={"800px"} graph_id="week_div" />
+                      width={'100%'} height={'800px'} graph_id="week_div" />
                   </Element>
                   <Element name="chart_6" className="element">
                     <h3 className="chart-header">Financial Protocols</h3>
@@ -166,7 +163,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart6.rows}
                       columns={this.state.chartData.chart6.columns}
                       options={this.state.chartOptions.chart6}
-                      width={"100%"} height={"800px"} graph_id="financial_div" />
+                      width={'100%'} height={'800px'} graph_id="financial_div" />
                   </Element>
                   <Element name="chart_7" className="element">
                     <h3 className="chart-header">Non-financial Protocols</h3>
@@ -174,7 +171,7 @@ class BitcoinChartsPage extends Component {
                       rows={this.state.chartData.chart7.rows}
                       columns={this.state.chartData.chart7.columns}
                       options={this.state.chartOptions.chart7}
-                      width={"100%"} height={"800px"} graph_id="non_financial_div" />
+                      width={'100%'} height={'800px'} graph_id="non_financial_div" />
                   </Element>
                 </div>
                 : null }

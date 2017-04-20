@@ -3,7 +3,6 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
-import Header        from '../components/Header'
 
 class NotFoundPage extends Component {
   static propTypes() {
@@ -18,8 +17,6 @@ class NotFoundPage extends Component {
     return (
       <DocumentTitle title="Ethereum Charts Coming Soon">
         <div>
-          <Header />
-
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-8 offset-md-2 home-main">
