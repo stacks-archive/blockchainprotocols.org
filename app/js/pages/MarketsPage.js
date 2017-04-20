@@ -3,7 +3,8 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
-import Header        from '../components/Header'
+import InputRange from 'react-input-range'
+import {getSupply, getPrice, currencyNames} from '../utils/markets'
 
 class MarketsPage extends Component {
   static propTypes() {
@@ -14,37 +15,44 @@ class MarketsPage extends Component {
     super(props)
 
     this.state = {
-      currencies: []
+      currencies: [],
+      years: 8
+    }
+
+    this.recalculate = this.recalculate.bind(this)
+  }
+
+  componentDidMount() {
+    this.recalculate()
+  }
+
+  componentDidUpdate(nextProps, nextState) {
+    if (this.state.years !== nextState.years) {
+      this.recalculate()
     }
   }
 
-  componentWillMount() {
-    const aHundredMillion = 100000000
-    let currencies = [
-      {
-        "name": "Bitcoin",
-        "supplyAfter8Years": 15750000,
-        "supplyAfter20Years": 20343750,
-        "supplyAfter40Years": 20979492,
-        "price": 1211.13
-      },
-      {
-        "name": "Ethereum",
-        "supplyAfter8Years": 168000000,
-        "supplyAfter20Years": 312000000,
-        "supplyAfter40Years": 552000000,
-        price: 48.8343
-      },
-    ]
+  recalculate() {
+    let currencies = []
 
-    currencies.map((currency) => {
-      currency.coinsInAHundredMillionth = currency.supplyAfter8Years / aHundredMillion
-      currency.priceForAHundredMillionth = currency.coinsInAHundredMillionth * currency.price
+    currencyNames.map((currencyName) => {
+      const price = getPrice(currencyName)
+      const supply = getSupply(currencyName, this.state.years)
+      const coinsInAHundredMillionth = supply / (100 * Math.pow(10, 6))
+
+      const currency = {
+        name: currencyName,
+        price: price,
+        supply: supply,
+        coinsInAHundredMillionth: coinsInAHundredMillionth,
+        priceForAHundredMillionth: (coinsInAHundredMillionth * price)
+      }
+      currencies.push(currency)
     })
+
     this.setState({
       currencies: currencies
     })
-
   }
 
   render() {
@@ -56,11 +64,20 @@ class MarketsPage extends Component {
               <div className="col-md-12 home-main">
                 <h2>Markets</h2>
 
+                <form className="form m-b-3">
+                  <InputRange
+                    minValue={0}
+                    maxValue={100}
+                    value={this.state.years}
+                    onChange={value => this.setState({ years: value })}
+                  />
+                </form>
+
                 <table className="table">
                   <thead>
                     <tr>
                       <th>Currency</th>
-                      <th>Coins after 8 years</th>
+                      <th>Supply after {this.state.years} years</th>
                       <th>Coins in 1/100M</th>
                       <th>Price per coin</th>
                       <th>Price for 1/100M</th>
@@ -71,10 +88,10 @@ class MarketsPage extends Component {
                       return (
                         <tr key={index}>
                           <td>{currency.name}</td>
-                          <td>{currency.supplyAfter8Years}</td>
-                          <td>{currency.coinsInAHundredMillionth}</td>
-                          <td>${currency.price}</td>
-                          <td>${currency.priceForAHundredMillionth}</td>
+                          <td>{+currency.supply.toFixed(2)}</td>
+                          <td>{+currency.coinsInAHundredMillionth.toFixed(6)}</td>
+                          <td>${currency.price.toFixed(2)}</td>
+                          <td>${currency.priceForAHundredMillionth.toFixed(2)}</td>
                         </tr>
                       )
                     }) }
@@ -103,4 +120,11 @@ export default MarketsPage
     .then((responseJSON) => {
       console.log(responseJSON)
 
+        'supplyAfter8Years': 15750000,
+        'supplyAfter20Years': 20343750,
+        'supplyAfter40Years': 20979492,
+
+        'supplyAfter8Years': 168000000,
+        'supplyAfter20Years': 312000000,
+        'supplyAfter40Years': 552000000,
 */
