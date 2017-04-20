@@ -8,6 +8,8 @@ gulp.task('dev', ['clean'], function(cb) {
   cb = cb || function() {};
 
   global.isProd = false;
+  
+  process.env.NODE_ENV = 'test';
 
   // Run all tasks once
   return runSequence([
