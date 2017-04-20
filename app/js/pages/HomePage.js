@@ -1,16 +1,16 @@
 'use strict'
 
-import React         from 'react'
+import {Component} from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 import DocumentTitle from 'react-document-title'
 import Header        from '../components/Header'
 import CardLink         from '../components/CardLink'
 
-const propTypes = {
-  currentUser: React.PropTypes.object
-}
-
-class HomePage extends React.Component {
+class HomePage extends Component {
+  static propTypes() {
+    currentUser: PropTypes.object
+  }
 
   constructor(props) {
     super(props)
@@ -18,7 +18,7 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <DocumentTitle title="Home">
+      <DocumentTitle title="Blockchain Protocols">
         <div>
           <Header />
 
@@ -47,7 +47,5 @@ class HomePage extends React.Component {
   }
 
 }
-
-HomePage.propTypes = propTypes
 
 export default HomePage

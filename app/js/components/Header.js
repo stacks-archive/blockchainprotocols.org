@@ -1,9 +1,9 @@
 'use strict';
 
-import React from 'react'
+import {Component} from 'react'
 import {Link} from 'react-router'
 
-class Header extends React.Component {
+class Header extends Component {
 
   constructor(props) {
     super(props)
@@ -11,27 +11,23 @@ class Header extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid col-centered bg-inverse block navbar-fixed-top">
-        <header className="container-fluid no-padding nav-header">
-          <nav className="navbar navbar-dark">
-            <div>
-              <Link className="navbar-brand" to="/">
-                <span className="brand-title">
-                  Blockchain Protocols
-                </span>
-              </Link>
-              <ul className="nav navbar-nav pull-sm-right">
-                <li className="nav-item">
-                <Link to="/about" className="nav-link">
-                  About
-                </Link>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </header>
-      </div>
-    );
+      <header className="container-fluid nav-header">
+        <nav className="navbar navbar-light">
+          <Link className="navbar-brand" to="/">
+            <span className="brand-title">
+              Blockchain Protocols
+            </span>
+          </Link>
+          <ul className="nav navbar-nav pull-right">
+            <li className="nav-item">
+            <Link to="/about" className="nav-link">
+              About
+            </Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
+    )
   }
 
 }

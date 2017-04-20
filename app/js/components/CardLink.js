@@ -1,6 +1,7 @@
 'use strict'
 
-import {Component, PropTypes}  from 'react'
+import {Component}  from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router'
 
 const propTypes = {
@@ -71,5 +72,7 @@ class CardLink extends Component {
   }
 
 }
+
+CardLink.propTypes = propTypes
 
 export default CardLink

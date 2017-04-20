@@ -281,3 +281,18 @@ footer > li{list-style:none;}
 .brand-title {
   color: white;
 }
+
+/* Navbar */
+.navbar{font-family:'Source Code Pro',monospace;padding-top:0.4375rem;padding-bottom:0.5625rem;padding-right:0;padding-left:0;}
+.navbar-brand{margin-right:0px;}
+.navbar-brand img{width:164px;position:fixed;bottom:13%;z-index:2000;margin:0 auto;left:0;right:0;}
+.brand-bug{margin-right:1rem;}
+.brand-bug img{width:30px;position:relative;}
+.hamburger{display:none;}
+.hamburger:focus{outline:none;}
+div.app-common > div > div.navbar-fixed-top.bg-primary > header.container.nav-header > nav.navbar > a.navbar-brand{display:none;}
+div.app-common > div > div.navbar-fixed-top.bg-primary > header.container.nav-header > nav.navbar > a.navbar-brand.brand-bug{display:block;}
+a.nav-link{color:#fff;font-size:0.8125rem;font-weight:300;margin-top:0.0625rem;}
+a.nav-link:hover,a.nav-link:focus{color:#fff;}
+.nav-item:first-child{margin-left:.625rem;}
+.nav{font-family:'Source Code Pro',monospace;}

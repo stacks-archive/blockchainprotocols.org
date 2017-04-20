@@ -1,8 +1,7 @@
 'use strict'
 
 import React                       from 'react'
-import {Router, Route, IndexRoute} from 'react-router'
-import CreateBrowserHistory        from 'history/lib/createBrowserHistory'
+import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 
 import App                         from './App'
 import HomePage                    from './pages/HomePage'
@@ -12,10 +11,9 @@ import EthereumChartsPage          from './pages/EthereumChartsPage'
 import NotFoundPage                from './pages/NotFoundPage'
 
 export default (
-  <Router history={CreateBrowserHistory()}>
+  <Router history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
     <Route path="/" component={App}>
       <IndexRoute component={HomePage} />
-      <Route path="/" component={HomePage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/bitcoin" component={BitcoinChartsPage} />
       <Route path="/ethereum" component={EthereumChartsPage} />

@@ -1,8 +1,8 @@
 'use strict';
 
-import React from 'react'
+import {Component} from 'react'
 
-class Footer extends React.Component {
+class Footer extends Component {
 
   constructor(props) {
     super(props)

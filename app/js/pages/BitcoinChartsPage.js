@@ -1,23 +1,18 @@
 'use strict'
 
-import React         from 'react'
-import {
-  Link, Element, Events, scrollSpy
-}                    from 'react-scroll'
+import {Component} from 'react'
+import PropTypes from 'prop-types'
+import {Link, Element, Events, scrollSpy} from 'react-scroll'
 import DocumentTitle from 'react-document-title'
 import {Chart}       from 'react-google-charts'
 import request       from 'request'
-
 import Header        from '../components/Header'
-import {
-  getChartData, getChartOptions
-} from '../utils/charts'
+import {getChartData, getChartOptions} from '../utils/charts'
 
-const propTypes = {
-  currentUser: React.PropTypes.object
-}
-
-class BitcoinChartsPage extends React.Component {
+class BitcoinChartsPage extends Component {
+  static propTypes() {
+    currentUser: PropTypes.object
+  }
 
   constructor(props) {
     super(props)
@@ -194,7 +189,5 @@ class BitcoinChartsPage extends React.Component {
   }
 
 }
-
-BitcoinChartsPage.propTypes = propTypes
 
 export default BitcoinChartsPage

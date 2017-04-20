@@ -1,14 +1,14 @@
 'use strict'
 
-import React         from 'react'
+import {Component} from 'react'
+import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import Header        from '../components/Header'
 
-const propTypes = {
-  currentUser: React.PropTypes.object
-}
-
-class AboutPage extends React.Component {
+class AboutPage extends Component {
+  static propTypes() {
+    currentUser: PropTypes.object
+  }
 
   constructor(props) {
     super(props)
@@ -44,7 +44,5 @@ class AboutPage extends React.Component {
   }
 
 }
-
-AboutPage.propTypes = propTypes
 
 export default AboutPage
