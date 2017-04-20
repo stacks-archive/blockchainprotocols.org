@@ -1,9 +1,11 @@
-# Blockchain Protocols
+# blockchainprotocols.org
+
+A site for information and stats on various blockchain protocols.
 
 ### Installation
 
 ```
-$ git clone git@github.com:blockstack/blockchain-protocols.git
+$ git clone git@github.com:blockstack/blockchainprotocols.org.git
 $ npm install
 ```
 
