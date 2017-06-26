@@ -21,13 +21,13 @@ class SupplyPage extends Component {
 
     this.state = {
       years: 20,
-      saleSupply: 60,
-      founderSupply: 12,
-      miningSupplyPerYear: 12,
+      saleSupply: 80,
+      founderSupply: 20,
+      miningSupplyPerYear: 20,
       miningDecayCoefficient: 0.5,
       miningDecayInterval: 4,
       numberOfMiningDecays: 2,
-      salePrice: 2.0,
+      salePrice: 1.0,
       lastRoundValuation: 24,
     }
   }
@@ -45,7 +45,7 @@ class SupplyPage extends Component {
     const investorPrice = this.state.lastRoundValuation / this.state.founderSupply
 
     return (
-      <DocumentTitle title="Blockchain Markets">
+      <DocumentTitle title="Blockchain Supply">
         <div>
           <div className="container-fluid">
             <div className="row">
@@ -143,7 +143,7 @@ class SupplyPage extends Component {
                       </div>
                       <div className="m-b-40">
                         <p>
-                          <b>Amount Sold in Crowdsale:</b><br/>${ amountRaised.toLocaleString() }
+                          <b>Crowdsale Revenue:</b><br/>${ amountRaised.toLocaleString() }
                         </p>
                         <p>
                           <b>Shareholder Token Price:</b><br/>${ investorPrice }
