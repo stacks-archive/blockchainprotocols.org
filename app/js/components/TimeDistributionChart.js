@@ -4,9 +4,9 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 
-import {getSupply} from '../utils/supply'
+//import {getSupply} from '../utils/supply'
 
-class SupplyChart extends Component {
+class TimeDistributionChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
     supplyFunction: PropTypes.func.isRequired,
@@ -21,29 +21,23 @@ class SupplyChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: '',
+        title: 'Stakeholder Distribution Over Time',
         hAxis: {
           title: 'Years',
-          minValue: 0,
-          maxValue: this.props.years
-        },
-        vAxis: {
-          title: '% of end supply',
           minValue: 0,
           maxValue: 1,
           format: 'percent'
         },
-        seriesType: 'line',
-        legend: 'top',
-        chartArea: {
-          left: '15%',
-          top: '15%',
-          width:'80%',
-          height:'80%'
-        }
+        legend: { position: 'top', maxLines: 3 },
+        isStacked: true,
       },
       data: null,
-      supplyFunction: this.props.supplyFunction
+      chartArea: {
+        left: '15%',
+        top: '15%',
+        width:'80%',
+        height:'80%'
+      }
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -66,28 +60,28 @@ class SupplyChart extends Component {
   }
 
   rebuildChartData() {
-    const years = this.props.years
     const customSupplyFunction = this.props.supplyFunction
-
     let data = [
-      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Custom'],
+      ['Years', 'Miners', 'Crowdsale', 'Creators'],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'custom']
 
-    for (let i = 0; i <= years; i++) {
-      let row = [i]
-      currencies.forEach((currency) => {
-        const currentSupply = currency === 'custom' ? customSupplyFunction(i).total : getSupply(currency, i).total
-        const endSupply = currency === 'custom' ? customSupplyFunction(years).total : getSupply(currency, years).total
-        //console.log(`Current: ${currentSupply}; End: ${endSupply}`)
-        const percentage = currentSupply / endSupply
-        row.push(percentage)
-      })
+    const yearNumbers = [0, 2, 4, 6, 8, 10, 12]
+    yearNumbers.forEach((years) => {
+      const totalAmount = customSupplyFunction(years).total
+      const saleShare = customSupplyFunction(years).sale / totalAmount
+      const foundingShare = customSupplyFunction(years).founders / totalAmount
+      const minerShare = customSupplyFunction(years).miners / totalAmount
+      const row = [
+        `${years} years`,
+        minerShare,
+        saleShare,
+        foundingShare,
+      ]
       data.push(row)
-    }
+    })
+
+    //console.log(data)
     let options = this.state.options
-    options.title = `Current Supply vs. Supply After ${years} Years`
-    options.hAxis.maxValue = years
     this.setState({
       loaded: true,
       data: data,
@@ -97,20 +91,20 @@ class SupplyChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $('#supply-chart-panel').width(), 
-      height: $('#supply-chart-panel').height(),
+      width: $('#time-distribution-chart-panel').width(), 
+      height: $('#time-distribution-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id="supply-chart-panel">
+      <div id="time-distribution-chart-panel">
         {this.state.data ?
         <Chart
-          chartType="ComboChart"
+          chartType="BarChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id="supply-chart"
+          graph_id="time-distribution-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle
@@ -122,4 +116,4 @@ class SupplyChart extends Component {
 
 }
 
-export default SupplyChart
+export default TimeDistributionChart

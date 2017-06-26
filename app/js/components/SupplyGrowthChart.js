@@ -6,7 +6,7 @@ import {Chart} from 'react-google-charts'
 
 import {getSupply} from '../utils/supply'
 
-class SupplyChart extends Component {
+class SupplyGrowthChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
     supplyFunction: PropTypes.func.isRequired,
@@ -21,16 +21,16 @@ class SupplyChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: '',
+        title: 'Annual Supply Growth',
         hAxis: {
           title: 'Years',
           minValue: 0,
           maxValue: this.props.years
         },
         vAxis: {
-          title: '% of end supply',
+          title: '% growth',
           minValue: 0,
-          maxValue: 1,
+          maxValue: 1.0,
           format: 'percent'
         },
         seriesType: 'line',
@@ -43,7 +43,6 @@ class SupplyChart extends Component {
         }
       },
       data: null,
-      supplyFunction: this.props.supplyFunction
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -68,7 +67,6 @@ class SupplyChart extends Component {
   rebuildChartData() {
     const years = this.props.years
     const customSupplyFunction = this.props.supplyFunction
-
     let data = [
       ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Custom'],
     ]
@@ -77,16 +75,15 @@ class SupplyChart extends Component {
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
-        const currentSupply = currency === 'custom' ? customSupplyFunction(i).total : getSupply(currency, i).total
-        const endSupply = currency === 'custom' ? customSupplyFunction(years).total : getSupply(currency, years).total
-        //console.log(`Current: ${currentSupply}; End: ${endSupply}`)
-        const percentage = currentSupply / endSupply
-        row.push(percentage)
+        const thisYearsSupply = currency !== 'custom' ? getSupply(currency, i).total : customSupplyFunction(i).total
+        const nextYearsSupply = currency !== 'custom' ? getSupply(currency, i+1).total : customSupplyFunction(i+1).total
+        //console.log(`This year: ${thisYearsSupply}; Next year: ${nextYearsSupply}`)
+        const supplyGrowth = (nextYearsSupply - thisYearsSupply) / thisYearsSupply
+        row.push(supplyGrowth)
       })
       data.push(row)
     }
     let options = this.state.options
-    options.title = `Current Supply vs. Supply After ${years} Years`
     options.hAxis.maxValue = years
     this.setState({
       loaded: true,
@@ -97,20 +94,20 @@ class SupplyChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $('#supply-chart-panel').width(), 
-      height: $('#supply-chart-panel').height(),
+      width: $('#inflation-chart-panel').width(), 
+      height: $('#inflation-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id="supply-chart-panel">
+      <div id="inflation-chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id="supply-chart"
+          graph_id="inflation-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle
@@ -122,4 +119,4 @@ class SupplyChart extends Component {
 
 }
 
-export default SupplyChart
+export default SupplyGrowthChart

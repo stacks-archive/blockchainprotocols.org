@@ -5,7 +5,8 @@ import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 
 import YearSlider from '../components/YearSlider'
-import {getSupply, getPrice, fetchPrices, currencyNames} from '../utils/markets'
+import {fetchPrices, currencyNames} from '../utils/markets'
+import {getSupply} from '../utils/supply'
 
 class MarketsPage extends Component {
   static propTypes() {
@@ -40,7 +41,7 @@ class MarketsPage extends Component {
     fetchPrices().then(prices => {
       currencyNames.map((currencyName) => {
         const price = parseFloat(prices[currencyName.toLowerCase()].price_usd)
-        const supply = getSupply(currencyName, this.state.years)
+        const supply = getSupply(currencyName, this.state.years).total
         const coinsInAHundredMillionth = supply / (100 * Math.pow(10, 6))
         const currency = {
           name: currencyName,
