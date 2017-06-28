@@ -21,14 +21,14 @@ class SupplyPage extends Component {
 
     this.state = {
       years: 20,
-      saleSupply: 80,
-      founderSupply: 20,
-      miningSupplyPerYear: 20,
+      saleSupply: 60,
+      founderSupply: 12,
+      miningSupplyPerYear: 12,
       miningDecayCoefficient: 0.5,
       miningDecayInterval: 4,
       numberOfMiningDecays: 2,
-      salePrice: 1.0,
-      lastRoundValuation: 24,
+      salePrice: 0.5,
+      lastRoundValuation: 12,
     }
   }
 
@@ -98,11 +98,10 @@ class SupplyPage extends Component {
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Mining Decay Interval</label>
+                        <label className="m-b-15">Mining Decay Interval (years)</label>
                         <InputRange
                           minValue={0}
                           maxValue={10}
-                          formatLabel={value => `${value} years`}
                           value={this.state.miningDecayInterval}
                           onChange={value => this.setState({
                             miningDecayInterval: value
@@ -135,10 +134,11 @@ class SupplyPage extends Component {
                         <InputRange
                           minValue={0}
                           maxValue={50.0}
+                          step={0.5}
                           formatLabel={value => `$${value}M`}
                           value={this.state.lastRoundValuation}
                           onChange={value => this.setState({
-                            lastRoundValuation: value
+                            lastRoundValuation: Math.round(value * 10) / 10
                           })} />
                       </div>
                       <div className="m-b-40">
