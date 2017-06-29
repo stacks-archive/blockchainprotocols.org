@@ -44,7 +44,7 @@ export function getEthereumSupply(years) {
     minerSupply += 4
   }
   if (years > 3) {
-    minerSupply += 3 * (years - 3)
+    minerSupply += 2 * (years - 3)
   }
 
   minerSupply = minerSupply * Math.pow(10, 6)

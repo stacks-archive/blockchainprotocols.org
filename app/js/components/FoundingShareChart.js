@@ -31,15 +31,19 @@ class FoundingShareChart extends Component {
           title: '% owned by creators',
           minValue: 0,
           maxValue: 1.0,
-          format: 'percent'
+          format: 'percent',
+          viewWindow: {
+            min: 0,
+            max: 0.5
+          }
         },
         seriesType: 'line',
         legend: 'top',
         chartArea: {
           left: '15%',
           top: '15%',
-          width:'80%',
-          height:'80%'
+          width:'75%',
+          height:'75%'
         }
       },
       data: null,

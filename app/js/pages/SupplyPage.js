@@ -28,7 +28,7 @@ class SupplyPage extends Component {
       miningDecayInterval: 4,
       numberOfMiningDecays: 2,
       salePrice: 0.5,
-      lastRoundValuation: 12,
+      chartHeight: '400px'
     }
   }
 
@@ -42,7 +42,6 @@ class SupplyPage extends Component {
       this.state.numberOfMiningDecays
     )
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
-    const investorPrice = this.state.lastRoundValuation / this.state.founderSupply
 
     return (
       <DocumentTitle title="Blockchain Supply">
@@ -101,7 +100,7 @@ class SupplyPage extends Component {
                         <label className="m-b-15">Mining Decay Interval (years)</label>
                         <InputRange
                           minValue={0}
-                          maxValue={10}
+                          maxValue={20}
                           value={this.state.miningDecayInterval}
                           onChange={value => this.setState({
                             miningDecayInterval: value
@@ -111,7 +110,7 @@ class SupplyPage extends Component {
                         <label className="m-b-15"># of Mining Decay Events</label>
                         <InputRange
                           minValue={0}
-                          maxValue={10}
+                          maxValue={20}
                           value={this.state.numberOfMiningDecays}
                           onChange={value => this.setState({
                             numberOfMiningDecays: value
@@ -129,34 +128,31 @@ class SupplyPage extends Component {
                             salePrice: Math.round(value * 10) / 10
                           })} />
                       </div>
-                      <div className="form-group m-b-40">
-                        <label className="m-b-15">Last Round Valuation</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={50.0}
-                          step={0.5}
-                          formatLabel={value => `$${value}M`}
-                          value={this.state.lastRoundValuation}
-                          onChange={value => this.setState({
-                            lastRoundValuation: Math.round(value * 10) / 10
-                          })} />
-                      </div>
                       <div className="m-b-40">
                         <p>
                           <b>Crowdsale Revenue:</b><br/>${ amountRaised.toLocaleString() }
                         </p>
-                        <p>
-                          <b>Shareholder Token Price:</b><br/>${ investorPrice }
-                        </p>
                       </div>
                     </div>
                     <div className="col-md-5">
-                      <SupplyChart years={this.state.years} supplyFunction={supplyFunction} chartHeight={'500px'} />
-                      <FoundingShareChart years={this.state.years} supplyFunction={supplyFunction} chartHeight={'500px'} />
+                      <SupplyChart
+                        years={this.state.years}
+                        supplyFunction={supplyFunction}
+                        chartHeight={this.state.chartHeight} />
+                      <FoundingShareChart
+                        years={this.state.years}
+                        supplyFunction={supplyFunction}
+                        chartHeight={this.state.chartHeight} />
                     </div>
                     <div className="col-md-5">
-                      <SupplyGrowthChart years={this.state.years} supplyFunction={supplyFunction} chartHeight={'500px'} />
-                      <TimeDistributionChart years={this.state.years} supplyFunction={supplyFunction} chartHeight={'500px'} />
+                      <SupplyGrowthChart
+                        years={this.state.years}
+                        supplyFunction={supplyFunction}
+                        chartHeight={this.state.chartHeight} />
+                      <TimeDistributionChart
+                        years={this.state.years}
+                        supplyFunction={supplyFunction}
+                        chartHeight={this.state.chartHeight} />
                     </div>
                   </div>
                 </form>
@@ -175,6 +171,29 @@ class SupplyPage extends Component {
 export default SupplyPage
 
 /*
+
+      lastRoundValuation: 12,
+
+
+    const investorPrice = this.state.lastRoundValuation / this.state.founderSupply
+
+                      <div className="form-group m-b-40">
+                        <label className="m-b-15">Last Round Valuation</label>
+                        <InputRange
+                          minValue={0}
+                          maxValue={50.0}
+                          step={0.5}
+                          formatLabel={value => `$${value}M`}
+                          value={this.state.lastRoundValuation}
+                          onChange={value => this.setState({
+                            lastRoundValuation: Math.round(value * 10) / 10
+                          })} />
+                      </div>
+
+                        <p>
+                          <b>Shareholder Token Price:</b><br/>${ investorPrice }
+                        </p>
+
                 <div className="row">
                   <div className="col-md-4">
                     <FoundingShareChart years={this.state.years} supplyFunction={supplyFunction} />

@@ -35,8 +35,8 @@ class TimeDistributionChart extends Component {
       chartArea: {
         left: '15%',
         top: '15%',
-        width:'80%',
-        height:'80%'
+        width:'75%',
+        height:'75%'
       }
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
