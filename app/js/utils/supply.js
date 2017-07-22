@@ -156,48 +156,6 @@ export function getTokenSupplyFunction(saleSupplyI,
   }
 }
 
-export function getBlockstackSupply(years) {
-  const saleSupply = 60
-  const founderSupply = 12
-  const minerSupplyPerYear = 12
-
-  const miningDecayCoefficient = 0.5
-  const miningDecayInterval = 4
-  const numberOfMiningDecays = 2
-
-  const tokenSupplyFunction = getTokenSupplyFunction(
-    saleSupply, founderSupply, minerSupplyPerYear,
-    miningDecayCoefficient, miningDecayInterval, numberOfMiningDecays)
-  
-  return tokenSupplyFunction(years)
-}
-
-/*
-export function getBlockstackSupply(years) {
-  const saleSupply = 60 * Math.pow(10, 6)
-  const founderSupply = 12 * Math.pow(10, 6)
-
-  let minerSupply = 0
-  const initialSupplyPerYear = 12 * Math.pow(10, 6)
-  const yearsBetweenHalvings = 4
-
-  for (let i = 0; i < years; i++) {
-    const halvingCoefficientThisYear = Math.min(2, Math.floor(i / yearsBetweenHalvings))
-    const newSupplyThisYear = initialSupplyPerYear * Math.pow(0.5, halvingCoefficientThisYear)
-    minerSupply = minerSupply + newSupplyThisYear
-  }
-
-  const totalSupply = minerSupply + saleSupply + founderSupply
-
-  return {
-    total: totalSupply,
-    miners: minerSupply,
-    sale: saleSupply,
-    founders: founderSupply,
-    founderPercentage: founderSupply / totalSupply
-  }
-}*/
-
 export function getSupply(currencyName, years) {
   switch (currencyName.toLowerCase()) {
     case 'bitcoin':
@@ -206,8 +164,6 @@ export function getSupply(currencyName, years) {
       return getEthereumSupply(years)
     case 'zcash':
       return getZcashSupply(years)
-    case 'blockstack':
-      return getBlockstackSupply(years)
     case 'filecoin':
       return getFilecoinSupply(years)
     default:
