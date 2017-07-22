@@ -34,7 +34,7 @@ class SupplyGrowthChart extends Component {
           format: 'percent',
           viewWindow: {
             min: 0,
-            max: 0.5
+            max: 1.0
           }
         },
         seriesType: 'line',
@@ -72,16 +72,15 @@ class SupplyGrowthChart extends Component {
     const years = this.props.years
     const customSupplyFunction = this.props.supplyFunction
     let data = [
-      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Custom'],
+      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Custom'],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'custom']
+    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom']
 
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
         const thisYearsSupply = currency !== 'custom' ? getSupply(currency, i).total : customSupplyFunction(i).total
         const nextYearsSupply = currency !== 'custom' ? getSupply(currency, i+1).total : customSupplyFunction(i+1).total
-        //console.log(`This year: ${thisYearsSupply}; Next year: ${nextYearsSupply}`)
         const supplyGrowth = (nextYearsSupply - thisYearsSupply) / thisYearsSupply
         row.push(supplyGrowth)
       })

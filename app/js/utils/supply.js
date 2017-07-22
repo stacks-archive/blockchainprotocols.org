@@ -5,7 +5,7 @@ export function getBitcoinSupply(years) {
   const yearsBetweenHalvings = 4
   const initialSupplyPerYear = finalSupply / (2 * yearsBetweenHalvings)
 
-  for (let i = 0; i < years; i++) {
+  for (let i = 0; i < years; i += 1) {
     const halvingCoefficientThisYear = Math.floor(i / yearsBetweenHalvings)
     const newSupplyThisYear = initialSupplyPerYear * Math.pow(0.5, halvingCoefficientThisYear)
     totalSupply = totalSupply + newSupplyThisYear
@@ -58,6 +58,51 @@ export function getEthereumSupply(years) {
     founders: founderSupply,
     founderPercentage: founderSupply / totalSupply
   }
+}
+
+export function getFilecoinSupply(years) {
+  let data = {
+    total: 0,
+    miners: 0,
+    sale: 0,
+    founders: 0,
+    founderPercentage: 0.379
+  }
+
+  if (years !== 0) {
+    // Miner Supply
+    const finalMinerSupply = 1.4 * Math.pow(10, 9)
+    const minerDecayCoefficient = Math.log(0.7/1.4)/6
+    const minerSupply = finalMinerSupply * (1 - Math.exp(minerDecayCoefficient*years))
+
+    // Founder Supply
+    const finalFounderSupply = 0.4 * Math.pow(10, 9)
+    const founderDecayCoefficient = Math.log(0.2/0.4)/2
+    const founderSupply = finalFounderSupply * (1 - Math.exp(founderDecayCoefficient*years))
+
+    // Sale Supply
+    const totalSaleSupply = 0.2 * Math.pow(10, 9)
+    const saleSupply = Math.min(3, years) / 3. * totalSaleSupply
+
+    // Total Supply
+    const totalSupply = minerSupply + saleSupply + founderSupply
+
+    // Founder Percentage
+    const founderPercentage = founderSupply / totalSupply
+
+    data = {
+      total: totalSupply,
+      miners: minerSupply,
+      sale: saleSupply,
+      founders: founderSupply,
+      founderPercentage: founderPercentage
+    }
+  }
+  if (years !== 20) {
+    //console.log(`Years: ${years}`)
+    //console.log(data)
+  }
+  return data
 }
 
 export function getZcashSupply(years) {
@@ -163,6 +208,8 @@ export function getSupply(currencyName, years) {
       return getZcashSupply(years)
     case 'blockstack':
       return getBlockstackSupply(years)
+    case 'filecoin':
+      return getFilecoinSupply(years)
     default:
       return 0
   }
