@@ -9,6 +9,7 @@ export function fetchPrices() {
         let priceObject = {}
 
         priceObject['filecoin'] = {id: 'filecoin', name: 'Filecoin', price_usd: '0.75'}
+        priceObject['tezos'] = {id: 'tezos', name: 'Tezos', price_usd: '0.50'}
 
         priceList.map((priceItem) => {
           priceObject[priceItem.id] = priceItem
@@ -41,4 +42,4 @@ export function getPrice(currencyName) {
 }
 */
 
-export const currencyNames = ['Bitcoin', 'Ethereum', 'Zcash', 'Filecoin']
+export const currencyNames = ['Bitcoin', 'Ethereum', 'Zcash', 'Filecoin', 'Tezos']

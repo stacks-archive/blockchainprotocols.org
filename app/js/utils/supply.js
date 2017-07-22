@@ -105,6 +105,27 @@ export function getFilecoinSupply(years) {
   return data
 }
 
+export function getTezosSupply(years) {
+  const saleSupply = 65681 * 5000 + 361122 * 500
+  const founderSupply = saleSupply * 0.25
+  const initialSupply = saleSupply + founderSupply
+  let totalSupply = initialSupply
+  /*for (let i = 0; i < years; i += 1) {
+    totalSupply += initialSupply * 0.05
+  }*/
+  const minerSupply = totalSupply - initialSupply
+  const originalFounderPercentage = 0.2
+  const founderPercentage = (years === 0 ? originalFounderPercentage : (founderSupply / totalSupply))
+
+  return {
+    total: totalSupply,
+    miners: minerSupply,
+    sale: saleSupply,
+    founders: founderSupply,
+    founderPercentage: founderPercentage
+  }
+}
+
 export function getZcashSupply(years) {
   const totalSupply = getBitcoinSupply(years).total
   const saleSupply = 0
@@ -166,6 +187,8 @@ export function getSupply(currencyName, years) {
       return getZcashSupply(years)
     case 'filecoin':
       return getFilecoinSupply(years)
+    case 'tezos':
+      return getTezosSupply(years)
     default:
       return 0
   }
