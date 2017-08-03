@@ -34,7 +34,7 @@ class SupplyGrowthChart extends Component {
           format: 'percent',
           viewWindow: {
             min: 0,
-            max: 1.0
+            max: 0.35
           }
         },
         seriesType: 'line',

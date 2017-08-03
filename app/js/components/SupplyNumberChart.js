@@ -4,9 +4,9 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 
-//import {getSupply} from '../utils/supply'
+import {getSupply} from '../utils/supply'
 
-class TimeDistributionChart extends Component {
+class SupplyNumberChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
     supplyFunction: PropTypes.func.isRequired,
@@ -21,22 +21,28 @@ class TimeDistributionChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Stakeholder Distribution Over Time',
+        title: '',
         hAxis: {
           title: 'Years',
           minValue: 0,
-          maxValue: 100,
-          format: 'percent'
+          maxValue: this.props.years
         },
+        vAxis: {
+          title: '# of tokens',
+          format: '#,###M'
+        },
+        seriesType: 'area',
+        legend: 'top',
         isStacked: true,
+        chartArea: {
+          left: '15%',
+          top: '15%',
+          width:'75%',
+          height:'75%'
+        }
       },
       data: null,
-      chartArea: {
-        left: '15%',
-        top: '15%',
-        width:'75%',
-        height:'75%'
-      }
+      supplyFunction: this.props.supplyFunction
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -59,27 +65,26 @@ class TimeDistributionChart extends Component {
   }
 
   rebuildChartData() {
+    const years = this.props.years
     const customSupplyFunction = this.props.supplyFunction
+
     let data = [
-      ['Years', 'Miners', 'Crowdsale', 'Creators'],
+      ['Years', 'Miners', 'Sale', 'Founders'],
     ]
 
-    for (let i = 0; i < this.props.years; i++) {
-      const totalAmount = customSupplyFunction(i).total
-      const saleShare = customSupplyFunction(i).sale / totalAmount * 100
-      const foundingShare = customSupplyFunction(i).founders / totalAmount * 100
-      const minerShare = customSupplyFunction(i).miners / totalAmount * 100
+    for (let i = 0; i <= years; i++) {
+      const supplyObject = customSupplyFunction(i)
       const row = [
-        `${i} years`,
-        minerShare,
-        saleShare,
-        foundingShare,
+        i,
+        supplyObject.miners/Math.pow(10, 6),
+        supplyObject.sale/Math.pow(10, 6),
+        supplyObject.founders/Math.pow(10, 6),
       ]
       data.push(row)
     }
-
-    //console.log(data)
     let options = this.state.options
+    options.title = `Current Supply`
+    options.hAxis.maxValue = years
     this.setState({
       loaded: true,
       data: data,
@@ -89,20 +94,20 @@ class TimeDistributionChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $('#time-distribution-chart-panel').width(), 
-      height: $('#time-distribution-chart-panel').height(),
+      width: $('#supply-number-chart-panel').width(), 
+      height: $('#supply-number-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id="time-distribution-chart-panel">
+      <div id="supply-number-chart-panel">
         {this.state.data ?
         <Chart
-          chartType="AreaChart"
+          chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id="time-distribution-chart"
+          graph_id="supply-number-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle
@@ -114,4 +119,5 @@ class TimeDistributionChart extends Component {
 
 }
 
-export default TimeDistributionChart
+export default SupplyNumberChart
+

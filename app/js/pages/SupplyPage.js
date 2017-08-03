@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 
 import SupplyChart from '../components/SupplyChart'
+import SupplyNumberChart from '../components/SupplyNumberChart'
 import SupplyGrowthChart from '../components/SupplyGrowthChart'
 import FoundingShareChart from '../components/FoundingShareChart'
 import TimeDistributionChart from '../components/TimeDistributionChart'
@@ -21,26 +22,27 @@ class SupplyPage extends Component {
 
     this.state = {
       years: 20,
-      saleSupply: 60,
-      founderSupply: 12,
-      miningSupplyPerYear: 12,
+      saleSupply: 750,
+      founderSupply: 250,
+      miningSupplyPerYear: 330,
       miningDecayCoefficient: 0.5,
       miningDecayInterval: 4,
       numberOfMiningDecays: 2,
-      salePrice: 0.5,
+      salePrice: 0.1,
       chartHeight: '400px'
     }
   }
 
   render() {
-    const supplyFunction = getTokenSupplyFunction(
-      this.state.saleSupply * Math.pow(10, 6),
-      this.state.founderSupply * Math.pow(10, 6),
-      this.state.miningSupplyPerYear * Math.pow(10, 6),
-      this.state.miningDecayCoefficient,
-      this.state.miningDecayInterval,
-      this.state.numberOfMiningDecays
-    )
+    const parameters = {
+      saleSupply: this.state.saleSupply * Math.pow(10, 6),
+      founderSupply: this.state.founderSupply * Math.pow(10, 6),
+      miningSupplyPerYear: this.state.miningSupplyPerYear * Math.pow(10, 6),
+      miningDecayCoefficient: this.state.miningDecayCoefficient,
+      miningDecayInterval: this.state.miningDecayInterval,
+      numberOfMiningDecays: this.state.numberOfMiningDecays
+    }
+    const supplyFunction = getTokenSupplyFunction('halving', parameters)
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
 
     return (
@@ -53,81 +55,48 @@ class SupplyPage extends Component {
                   <div className="row">
                     <div className="col-md-2">
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Sale Supply</label>
+                        <label className="m-b-15">Years</label>
                         <InputRange
                           minValue={0}
                           maxValue={100}
-                          formatLabel={value => `${value}M`}
+                          value={this.state.years}
+                          onChange={value => this.setState({
+                            years: value
+                          })} />
+                      </div>
+                      <div className="form-group m-b-40">
+                        <label className="m-b-15">Sale Supply (millions)</label>
+                        <input
                           value={this.state.saleSupply}
-                          onChange={value => this.setState({
-                            saleSupply: value
+                          onChange={event => this.setState({
+                            saleSupply: event.target.value
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Creator Supply</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={100}
-                          formatLabel={value => `${value}M`}
+                        <label className="m-b-15">Creator Supply (millions)</label>
+                        <input
                           value={this.state.founderSupply}
-                          onChange={value => this.setState({
-                            founderSupply: value
+                          onChange={event => this.setState({
+                            founderSupply: event.target.value
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Mining Supply Per Year</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={100}
-                          formatLabel={value => `${value}M`}
+                        <label className="m-b-15">Mining Supply in Year 1 (millions)</label>
+                        <input
                           value={this.state.miningSupplyPerYear}
-                          onChange={value => this.setState({
-                            miningSupplyPerYear: value
+                          onChange={event => this.setState({
+                            miningSupplyPerYear: event.target.value
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Mining Decay Coefficient</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={1.0}
-                          step={0.01}
-                          value={this.state.miningDecayCoefficient}
-                          onChange={value => this.setState({
-                            miningDecayCoefficient: Math.round(value * 100) / 100
-                          })} />
-                      </div>
-                      <div className="form-group m-b-40">
-                        <label className="m-b-15">Mining Decay Interval (years)</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={20}
-                          value={this.state.miningDecayInterval}
-                          onChange={value => this.setState({
-                            miningDecayInterval: value
-                          })} />
-                      </div>
-                      <div className="form-group m-b-40">
-                        <label className="m-b-15"># of Mining Decay Events</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={20}
-                          value={this.state.numberOfMiningDecays}
-                          onChange={value => this.setState({
-                            numberOfMiningDecays: value
-                          })} />
-                      </div>
-                      <div className="form-group m-b-40">
-                        <label className="m-b-15">Initial Sale Price</label>
-                        <InputRange
-                          minValue={0}
-                          maxValue={10.0}
-                          step={0.1}
-                          formatLabel={value => `$${value}`}
+                        <label className="m-b-15">Initial Sale Price ($)</label>
+                        <input
                           value={this.state.salePrice}
-                          onChange={value => this.setState({
-                            salePrice: Math.round(value * 10) / 10
+                          onChange={event => this.setState({
+                            salePrice: event.target.value
                           })} />
                       </div>
+                      
                       <div className="m-b-40">
                         <p>
                           <b>Crowdsale Revenue:</b><br/>${ amountRaised.toLocaleString() }
@@ -139,13 +108,17 @@ class SupplyPage extends Component {
                         years={this.state.years}
                         supplyFunction={supplyFunction}
                         chartHeight={this.state.chartHeight} />
+                      <SupplyGrowthChart
+                        years={this.state.years}
+                        supplyFunction={supplyFunction}
+                        chartHeight={this.state.chartHeight} />
                       <FoundingShareChart
                         years={this.state.years}
                         supplyFunction={supplyFunction}
                         chartHeight={this.state.chartHeight} />
                     </div>
                     <div className="col-md-5">
-                      <SupplyGrowthChart
+                      <SupplyNumberChart
                         years={this.state.years}
                         supplyFunction={supplyFunction}
                         chartHeight={this.state.chartHeight} />

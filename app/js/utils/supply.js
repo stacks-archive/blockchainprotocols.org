@@ -124,22 +124,40 @@ export function getZcashSupply(years) {
   }
 }
 
-export function getTokenSupplyFunction(saleSupplyI,
-                                       founderSupplyI,
-                                       minerSupplyPerYearI,
-                                       miningDecayCoefficient,
-                                       miningDecayInterval,
-                                       numberOfMiningDecays) {
+export function getTokenSupplyFunction(type, parameters) {
+  const requiredKeys = [
+    'saleSupply', 'founderSupply', 'miningSupplyPerYear',
+    'miningDecayCoefficient', 'miningDecayInterval', 'numberOfMiningDecays'
+  ]
+  requiredKeys.forEach(requiredKey => {
+    if (!parameters.hasOwnProperty(requiredKey)) {
+      throw `Parameter missing: ${requiredKey}`
+    }
+  })
+
+  // Return the halving function
   return function(years) {
-    const saleSupply = saleSupplyI
-    const founderSupply = founderSupplyI
-    const minerSupplyPerYear = minerSupplyPerYearI
+    // Sale Supply
+    const totalSaleSupply = parameters.saleSupply
+    const saleSupply = totalSaleSupply//Math.min(3, years) / 3. * totalSaleSupply
+
+    const totalFounderSupply = parameters.founderSupply
+    const founderSupply = totalFounderSupply//Math.min(3, years) / 3. * totalFounderSupply
+
+    const miningSupplyPerYear = parameters.miningSupplyPerYear
 
     let minerSupply = 0
 
     for (let i = 0; i < years; i++) {
-      const decayCoefficientThisYear = Math.min(numberOfMiningDecays, Math.floor(i / miningDecayInterval))
-      const newSupplyThisYear = minerSupplyPerYear * Math.pow(miningDecayCoefficient, decayCoefficientThisYear)
+      /*const decayCoefficientThisYear = Math.min(
+        parameters.numberOfMiningDecays,
+        Math.floor(i / parameters.miningDecayInterval)
+      )
+      const newSupplyThisYear = miningSupplyPerYear * Math.pow(
+        parameters.miningDecayCoefficient, decayCoefficientThisYear)*/
+
+      const newSupplyThisYear = miningSupplyPerYear * (12 - Math.min(9, i) ) / 12
+      //console.log(newSupplyThisYear)
       minerSupply = minerSupply + newSupplyThisYear
     }
 
@@ -155,6 +173,16 @@ export function getTokenSupplyFunction(saleSupplyI,
     return supplyData
   }
 }
+
+/*
+export function getTokenSupplyFunction(saleSupplyI,
+                                       founderSupplyI,
+                                       minerSupplyPerYearI,
+                                       miningDecayCoefficient,
+                                       miningDecayInterval,
+                                       numberOfMiningDecays) {
+
+}*/
 
 export function getSupply(currencyName, years) {
   switch (currencyName.toLowerCase()) {
