@@ -28,8 +28,7 @@ class TimeDistributionChart extends Component {
           maxValue: this.props.years,
         },
         vAxis: {
-          title: '% of distribution',
-          format: 'percent'
+          title: '% of distribution'
         },
         seriesType: 'area',
         legend: 'top',
@@ -66,19 +65,23 @@ class TimeDistributionChart extends Component {
   rebuildChartData() {
     const customSupplyFunction = this.props.supplyFunction
     let data = [
-      ['Years', 'Miners', 'Crowdsale', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'Crowdsale', 'Users', 'Creators'],
     ]
 
     for (let i = 1; i <= this.props.years; i++) {
       const totalAmount = customSupplyFunction(i).total
+      const minerShare = customSupplyFunction(i).burners / totalAmount * 100
+      const appShare = customSupplyFunction(i).apps / totalAmount * 100
       const saleShare = customSupplyFunction(i).sale / totalAmount * 100
-      const foundingShare = customSupplyFunction(i).founders / totalAmount * 100
-      const minerShare = customSupplyFunction(i).miners / totalAmount * 100
+      const userShare = customSupplyFunction(i).users / totalAmount * 100
+      const creatorShare = customSupplyFunction(i).creators / totalAmount * 100
       const row = [
         i,
         minerShare,
+        appShare,
         saleShare,
-        foundingShare,
+        userShare,
+        creatorShare,
       ]
       data.push(row)
     }

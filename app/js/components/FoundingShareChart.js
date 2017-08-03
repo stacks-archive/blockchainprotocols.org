@@ -77,11 +77,11 @@ class FoundingShareChart extends Component {
     ]
     const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom', 'zcash']
 
-    for (let i = 0; i <= years; i += 1) {
+    for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
-        const founderPercentage = currency !== 'custom' ? getSupply(currency, i).founderPercentage : customSupplyFunction(i).founderPercentage
-        row.push(founderPercentage)
+        const creatorPercentage = currency !== 'custom' ? getSupply(currency, i).founderPercentage : customSupplyFunction(i).creatorPercentage
+        row.push(creatorPercentage)
       })
       data.push(row)
     }

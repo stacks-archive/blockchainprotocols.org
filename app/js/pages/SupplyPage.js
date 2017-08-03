@@ -22,13 +22,11 @@ class SupplyPage extends Component {
 
     this.state = {
       years: 20,
-      saleSupply: 750,
-      founderSupply: 250,
-      miningSupplyPerYear: 330,
-      miningDecayCoefficient: 0.5,
-      miningDecayInterval: 4,
-      numberOfMiningDecays: 2,
-      salePrice: 0.1,
+      saleSupply: 500,
+      userSupply: 250,
+      creatorSupply: 250,
+      initialMiningSupply: 330,
+      salePrice: 0.2,
       chartHeight: '400px'
     }
   }
@@ -36,11 +34,9 @@ class SupplyPage extends Component {
   render() {
     const parameters = {
       saleSupply: this.state.saleSupply * Math.pow(10, 6),
-      founderSupply: this.state.founderSupply * Math.pow(10, 6),
-      miningSupplyPerYear: this.state.miningSupplyPerYear * Math.pow(10, 6),
-      miningDecayCoefficient: this.state.miningDecayCoefficient,
-      miningDecayInterval: this.state.miningDecayInterval,
-      numberOfMiningDecays: this.state.numberOfMiningDecays
+      creatorSupply: this.state.creatorSupply * Math.pow(10, 6),
+      userSupply: this.state.userSupply * Math.pow(10, 6),
+      initialMiningSupply: this.state.initialMiningSupply * Math.pow(10, 6),
     }
     const supplyFunction = getTokenSupplyFunction('halving', parameters)
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
@@ -65,7 +61,7 @@ class SupplyPage extends Component {
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Sale Supply (millions)</label>
+                        <label className="m-b-15">Sale Supply (MM)</label>
                         <input
                           value={this.state.saleSupply}
                           onChange={event => this.setState({
@@ -73,19 +69,27 @@ class SupplyPage extends Component {
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Creator Supply (millions)</label>
+                        <label className="m-b-15">User Supply (MM)</label>
                         <input
-                          value={this.state.founderSupply}
+                          value={this.state.userSupply}
                           onChange={event => this.setState({
-                            founderSupply: event.target.value
+                            userSupply: event.target.value
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Mining Supply in Year 1 (millions)</label>
+                        <label className="m-b-15">Creator Supply (MM)</label>
                         <input
-                          value={this.state.miningSupplyPerYear}
+                          value={this.state.creatorSupply}
                           onChange={event => this.setState({
-                            miningSupplyPerYear: event.target.value
+                            creatorSupply: event.target.value
+                          })} />
+                      </div>
+                      <div className="form-group m-b-40">
+                        <label className="m-b-15">Initial Mining Supply (MM)</label>
+                        <input
+                          value={this.state.initialMiningSupply}
+                          onChange={event => this.setState({
+                            initialMiningSupply: event.target.value
                           })} />
                       </div>
                       <div className="form-group m-b-40">
