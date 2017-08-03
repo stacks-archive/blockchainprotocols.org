@@ -24,19 +24,24 @@ class TimeDistributionChart extends Component {
         title: 'Stakeholder Distribution Over Time',
         hAxis: {
           title: 'Years',
-          minValue: 0,
-          maxValue: 100,
+          minValue: 1,
+          maxValue: this.props.years,
+        },
+        vAxis: {
+          title: '% of distribution',
           format: 'percent'
         },
+        seriesType: 'area',
+        legend: 'top',
         isStacked: true,
+        chartArea: {
+          left: '15%',
+          top: '15%',
+          width:'75%',
+          height:'75%'
+        }
       },
-      data: null,
-      chartArea: {
-        left: '15%',
-        top: '15%',
-        width:'75%',
-        height:'75%'
-      }
+      data: null
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -64,13 +69,13 @@ class TimeDistributionChart extends Component {
       ['Years', 'Miners', 'Crowdsale', 'Creators'],
     ]
 
-    for (let i = 0; i < this.props.years; i++) {
+    for (let i = 1; i <= this.props.years; i++) {
       const totalAmount = customSupplyFunction(i).total
       const saleShare = customSupplyFunction(i).sale / totalAmount * 100
       const foundingShare = customSupplyFunction(i).founders / totalAmount * 100
       const minerShare = customSupplyFunction(i).miners / totalAmount * 100
       const row = [
-        `${i} years`,
+        i,
         minerShare,
         saleShare,
         foundingShare,
@@ -80,6 +85,7 @@ class TimeDistributionChart extends Component {
 
     //console.log(data)
     let options = this.state.options
+    options.hAxis.maxValue = this.props.years
     this.setState({
       loaded: true,
       data: data,
@@ -99,7 +105,7 @@ class TimeDistributionChart extends Component {
       <div id="time-distribution-chart-panel">
         {this.state.data ?
         <Chart
-          chartType="AreaChart"
+          chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
           graph_id="time-distribution-chart"

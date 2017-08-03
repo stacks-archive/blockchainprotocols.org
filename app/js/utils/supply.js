@@ -160,10 +160,12 @@ export function getTokenSupplyFunction(type, parameters) {
   return function(years) {
     // Sale Supply
     const totalSaleSupply = parameters.saleSupply
-    const saleSupply = totalSaleSupply//Math.min(3, years) / 3. * totalSaleSupply
+    const saleVest = 3
+    const saleSupply =  Math.min(saleVest, years) / saleVest * totalSaleSupply
 
     const totalFounderSupply = parameters.founderSupply
-    const founderSupply = totalFounderSupply//Math.min(3, years) / 3. * totalFounderSupply
+    const founderVest = 3
+    const founderSupply = Math.min(founderVest, years) / founderVest * totalFounderSupply
 
     const miningSupplyPerYear = parameters.miningSupplyPerYear
 
@@ -177,8 +179,11 @@ export function getTokenSupplyFunction(type, parameters) {
       const newSupplyThisYear = miningSupplyPerYear * Math.pow(
         parameters.miningDecayCoefficient, decayCoefficientThisYear)*/
 
-      const newSupplyThisYear = miningSupplyPerYear * (12 - Math.min(9, i) ) / 12
+      //const newSupplyThisYear = miningSupplyPerYear * (12 - Math.min(9, i / 2) ) / 12
       //console.log(newSupplyThisYear)
+
+      const newSupplyThisYear = (1 / (i+2)) * Math.pow(10, 9)
+
       minerSupply = minerSupply + newSupplyThisYear
     }
 

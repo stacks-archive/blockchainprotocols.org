@@ -8,9 +8,11 @@ import {getSupply} from '../utils/supply'
 
 class SupplyNumberChart extends Component {
   static propTypes: {
+    id: PropTypes.string.isRequired,
     years: PropTypes.number.isRequired,
     supplyFunction: PropTypes.func.isRequired,
-    chartHeight: PropTypes.number.isRequired
+    chartHeight: PropTypes.number.isRequired,
+    isStacked: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -21,7 +23,7 @@ class SupplyNumberChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: '',
+        title: 'Current Supply',
         hAxis: {
           title: 'Years',
           minValue: 0,
@@ -33,7 +35,7 @@ class SupplyNumberChart extends Component {
         },
         seriesType: 'area',
         legend: 'top',
-        isStacked: true,
+        isStacked: this.props.isStacked,
         chartArea: {
           left: '15%',
           top: '15%',
@@ -83,7 +85,6 @@ class SupplyNumberChart extends Component {
       data.push(row)
     }
     let options = this.state.options
-    options.title = `Current Supply`
     options.hAxis.maxValue = years
     this.setState({
       loaded: true,
@@ -94,20 +95,20 @@ class SupplyNumberChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $('#supply-number-chart-panel').width(), 
-      height: $('#supply-number-chart-panel').height(),
+      width: $(`#${this.props.id}`).width(), 
+      height: $(`#${this.props.id}`).height(),
     })
   }
 
   render() {
     return (
-      <div id="supply-number-chart-panel">
+      <div id={this.props.id}>
         {this.state.data ?
         <Chart
           chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id="supply-number-chart"
+          graph_id={this.props.id}
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle

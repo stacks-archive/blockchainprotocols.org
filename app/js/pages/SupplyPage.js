@@ -119,9 +119,17 @@ class SupplyPage extends Component {
                     </div>
                     <div className="col-md-5">
                       <SupplyNumberChart
+                        id="supply-number-chart-1"
                         years={this.state.years}
                         supplyFunction={supplyFunction}
-                        chartHeight={this.state.chartHeight} />
+                        chartHeight={this.state.chartHeight}
+                        isStacked={true} />
+                      <SupplyNumberChart
+                        id="supply-number-chart-2"
+                        years={this.state.years}
+                        supplyFunction={supplyFunction}
+                        chartHeight={this.state.chartHeight}
+                        isStacked={false} />
                       <TimeDistributionChart
                         years={this.state.years}
                         supplyFunction={supplyFunction}
