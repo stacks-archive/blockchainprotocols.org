@@ -146,7 +146,8 @@ export function getZcashSupply(years) {
 
 export function getTokenSupplyFunction(type, parameters) {
   const requiredKeys = [
-    'saleSupply', 'userSupply', 'creatorSupply', 'initialMiningSupply',
+    'saleSupply', 'userSupply', 'creatorSupply',
+    'initialBlockReward', 'finalBlockReward',
   ]
   requiredKeys.forEach(requiredKey => {
     if (!parameters.hasOwnProperty(requiredKey)) {
@@ -177,13 +178,15 @@ export function getTokenSupplyFunction(type, parameters) {
     const creatorSupply = Math.min(founderVest, years) / founderVest * parameters.creatorSupply
 
     // User Supply
-    const userVest = 12
-    const userSupply = Math.min(userVest, years) / userVest * parameters.userSupply
+    const yearsPerHalving = 1
+    const userDecayCoefficient = Math.log(0.5)/yearsPerHalving
+    const userSupply = parameters.userSupply * (1 - Math.exp(userDecayCoefficient*years))
 
     // Miner Supply
     let minerSupply = 0
     for (let i = 0; i < years; i++) {
-      const newSupplyThisYear = parameters.initialMiningSupply * (12 - Math.min(9, i) ) / 12
+      const rewardDecay = i * 500
+      const newSupplyThisYear = 55000 * Math.max(parameters.initialBlockReward - rewardDecay, parameters.finalBlockReward)
       //const newSupplyThisYear = Math.pow(10, 9) * 1 / Math.min(16, (i + parseInt(parameters.initialMiningFraction)))
       minerSupply = minerSupply + newSupplyThisYear
     }

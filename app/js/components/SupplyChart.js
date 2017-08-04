@@ -74,17 +74,22 @@ class SupplyChart extends Component {
     ]
     const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom']
 
+    let endSupplies = {}
+    currencies.forEach((currency) => {
+      const endSupply = currency === 'custom' ? customSupplyFunction(years).total : getSupply(currency, years).total
+      endSupplies[currency] = endSupply
+    })
+
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
         const currentSupply = currency === 'custom' ? customSupplyFunction(i).total : getSupply(currency, i).total
-        const endSupply = currency === 'custom' ? customSupplyFunction(years).total : getSupply(currency, years).total
-        //console.log(`Current: ${currentSupply}; End: ${endSupply}`)
-        const percentage = currentSupply / endSupply
+        const percentage = currentSupply / endSupplies[currency]
         row.push(percentage)
       })
       data.push(row)
     }
+    
     let options = this.state.options
     options.title = `Current Supply vs. Supply After ${years} Years`
     options.hAxis.maxValue = years

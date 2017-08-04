@@ -22,11 +22,12 @@ class SupplyPage extends Component {
 
     this.state = {
       years: 20,
-      saleSupply: 500,
-      userSupply: 250,
-      creatorSupply: 250,
-      initialMiningSupply: 330,
-      salePrice: 0.25,
+      saleSupply: 800,
+      userSupply: 400,
+      creatorSupply: 400,
+      initialBlockReward: 8000,
+      finalBlockReward: 2000,
+      salePrice: 0.15,
       chartHeight: '400px'
     }
   }
@@ -36,7 +37,8 @@ class SupplyPage extends Component {
       saleSupply: this.state.saleSupply * Math.pow(10, 6),
       creatorSupply: this.state.creatorSupply * Math.pow(10, 6),
       userSupply: this.state.userSupply * Math.pow(10, 6),
-      initialMiningSupply: this.state.initialMiningSupply * Math.pow(10, 6),
+      initialBlockReward: this.state.initialBlockReward,
+      finalBlockReward: this.state.finalBlockReward,
     }
     const supplyFunction = getTokenSupplyFunction('halving', parameters)
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
@@ -85,11 +87,19 @@ class SupplyPage extends Component {
                           })} />
                       </div>
                       <div className="form-group m-b-40">
-                        <label className="m-b-15">Initial Mining Supply (MM)</label>
+                        <label className="m-b-15">Initial Block Reward</label>
                         <input
-                          value={this.state.initialMiningSupply}
+                          value={this.state.initialBlockReward}
                           onChange={event => this.setState({
-                            initialMiningSupply: event.target.value
+                            initialBlockReward: event.target.value
+                          })} />
+                      </div>
+                      <div className="form-group m-b-40">
+                        <label className="m-b-15">Final Block Reward</label>
+                        <input
+                          value={this.state.finalBlockReward}
+                          onChange={event => this.setState({
+                            finalBlockReward: event.target.value
                           })} />
                       </div>
                       <div className="form-group m-b-40">
