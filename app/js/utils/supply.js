@@ -66,7 +66,6 @@ export function getFilecoinSupply(years) {
     miners: 0,
     sale: 0,
     founders: 0,
-    founderPercentage: 0.379
   }
 
   if (years !== 0) {
@@ -157,6 +156,18 @@ export function getTokenSupplyFunction(type, parameters) {
 
   // Return the halving function
   return function(years) {
+    if (years === 0) {
+      return {
+        total: 0,
+        miners: 0,
+        users: 0,
+        sale: 0,
+        creators: 0,
+        burners: 0,
+        apps: 0,
+      }
+    }
+
     // Sale Supply
     const saleVest = 2
     const saleSupply =  Math.min(saleVest, years) / saleVest * parameters.saleSupply

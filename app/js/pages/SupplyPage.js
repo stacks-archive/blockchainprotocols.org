@@ -26,7 +26,7 @@ class SupplyPage extends Component {
       userSupply: 250,
       creatorSupply: 250,
       initialMiningSupply: 330,
-      salePrice: 0.2,
+      salePrice: 0.25,
       chartHeight: '400px'
     }
   }
