@@ -70,9 +70,9 @@ class SupplyChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Custom'],
+      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin'],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom']
+    const currencies = ['bitcoin', 'ethereum', 'filecoin']
 
     let endSupplies = {}
     currencies.forEach((currency) => {

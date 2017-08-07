@@ -96,8 +96,8 @@ class MarketsPage extends Component {
                         <tr key={index}>
                           <td>{currency.name}</td>
                           <td>${currency.price.toFixed(2)}</td>
-                          <td>{+currency.supply.toFixed(2)}</td>
-                          <td>{+currency.coinsInAHundredMillionth.toFixed(6)}</td>
+                          <td>{+currency.supply.toFixed(0)}</td>
+                          <td>{+currency.coinsInAHundredMillionth.toFixed(4)}</td>
                           <td>${currency.priceForAHundredMillionth.toFixed(2)}</td>
                         </tr>
                       )

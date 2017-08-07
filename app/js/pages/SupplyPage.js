@@ -9,7 +9,7 @@ import SupplyNumberChart from '../components/SupplyNumberChart'
 import SupplyGrowthChart from '../components/SupplyGrowthChart'
 import FoundingShareChart from '../components/FoundingShareChart'
 import TimeDistributionChart from '../components/TimeDistributionChart'
-import {getTokenSupplyFunction} from '../utils/supply'
+import {getTokenSupplyFunction, getFilecoinSupply} from '../utils/supply'
 import InputRange from 'react-input-range'
 
 class SupplyPage extends Component {
@@ -28,7 +28,7 @@ class SupplyPage extends Component {
       initialBlockReward: 8000,
       finalBlockReward: 2000,
       salePrice: 0.15,
-      chartHeight: '400px'
+      chartHeight: '600px'
     }
   }
 
@@ -117,7 +117,7 @@ class SupplyPage extends Component {
                         </p>
                       </div>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-8">
                       <SupplyChart
                         years={this.state.years}
                         supplyFunction={supplyFunction}
@@ -130,25 +130,24 @@ class SupplyPage extends Component {
                         years={this.state.years}
                         supplyFunction={supplyFunction}
                         chartHeight={this.state.chartHeight} />
-                    </div>
-                    <div className="col-md-5">
                       <SupplyNumberChart
                         id="supply-number-chart-1"
                         years={this.state.years}
-                        supplyFunction={supplyFunction}
+                        supplyFunction={getFilecoinSupply}
                         chartHeight={this.state.chartHeight}
                         isStacked={true} />
                       <SupplyNumberChart
                         id="supply-number-chart-2"
                         years={this.state.years}
-                        supplyFunction={supplyFunction}
+                        supplyFunction={getFilecoinSupply}
                         chartHeight={this.state.chartHeight}
                         isStacked={false} />
                       <TimeDistributionChart
                         years={this.state.years}
-                        supplyFunction={supplyFunction}
+                        supplyFunction={getFilecoinSupply}
                         chartHeight={this.state.chartHeight} />
                     </div>
+                    
                   </div>
                 </form>
 
@@ -166,6 +165,12 @@ class SupplyPage extends Component {
 export default SupplyPage
 
 /*
+
+<div className="col-md-5">
+                      
+                    </div>
+
+
 
       lastRoundValuation: 12,
 
