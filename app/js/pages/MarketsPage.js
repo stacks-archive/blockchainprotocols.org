@@ -7,6 +7,7 @@ import DocumentTitle from 'react-document-title'
 import YearSlider from '../components/YearSlider'
 import {fetchPrices, currencyNames} from '../utils/markets'
 import {getSupply} from '../utils/supply'
+import MarketPriceChart from '../components/MarketPriceChart'
 
 class MarketsPage extends Component {
   static propTypes() {
@@ -18,7 +19,8 @@ class MarketsPage extends Component {
 
     this.state = {
       currencies: [],
-      years: 8,
+      years: 20,
+      chartHeight: '800px'
     }
 
     this.recalculate = this.recalculate.bind(this)
@@ -36,25 +38,30 @@ class MarketsPage extends Component {
   }
 
   recalculate() {
-    let currencies = []
+    let currencyRecords = []
 
     fetchPrices().then(prices => {
-      currencyNames.map((currencyName) => {
-        const price = parseFloat(prices[currencyName.toLowerCase()].price_usd)
-        const supply = getSupply(currencyName, this.state.years).total
+      currencyNames.map((currencySlug) => {
+        const priceRecord = prices[currencySlug]
+
+        const price = parseFloat(priceRecord.price_usd)
+        const name = priceRecord.name
+        const supply = getSupply(currencySlug.split('-')[0], this.state.years).total
         const coinsInAHundredMillionth = supply / (100 * Math.pow(10, 6))
-        const currency = {
-          name: currencyName,
+        const currencyRecord = {
+          name: name,
           price: price,
           supply: supply,
           coinsInAHundredMillionth: coinsInAHundredMillionth,
           priceForAHundredMillionth: (coinsInAHundredMillionth * price)
         }
-        currencies.push(currency)
+        currencyRecords.push(currencyRecord)
       })
 
+      console.log(currencyRecords)
+
       this.setState({
-        currencies: currencies
+        currencies: currencyRecords
       })
 
     })
@@ -80,30 +87,42 @@ class MarketsPage extends Component {
                     onChange={this.onSliderChange} />
                 </form>
 
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Asset</th>
-                      <th>Price per coin</th>
-                      <th>Supply after {this.state.years} years</th>
-                      <th>Coins in 1/100M</th>
-                      <th>Price for 1/100M</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    { this.state.currencies.map((currency, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{currency.name}</td>
-                          <td>${currency.price.toFixed(2)}</td>
-                          <td>{+currency.supply.toFixed(0)}</td>
-                          <td>{+currency.coinsInAHundredMillionth.toFixed(4)}</td>
-                          <td>${currency.priceForAHundredMillionth.toFixed(2)}</td>
+                
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Asset</th>
+                          <th>Price per coin</th>
+                          <th>Supply after {this.state.years} years</th>
+                          <th>Coins in 1/100M</th>
+                          <th>Price for 1/100M</th>
                         </tr>
-                      )
-                    }) }
-                  </tbody>
-                </table>
+                      </thead>
+                      <tbody>
+                        { this.state.currencies.map((currency, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>{currency.name}</td>
+                              <td>${currency.price.toFixed(2)}</td>
+                              <td>{+currency.supply.toFixed(0)}</td>
+                              <td>{+currency.coinsInAHundredMillionth.toFixed(4)}</td>
+                              <td>${currency.priceForAHundredMillionth.toFixed(2)}</td>
+                            </tr>
+                          )
+                        }) }
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="col-md-6" style={{ border: '1px solid black' }}>
+                    <MarketPriceChart
+                      years={this.state.years}
+                      currencies={this.state.currencies}
+                      chartHeight={this.state.chartHeight} />
+                  </div>
+                </div>
 
               </div>
             </div>

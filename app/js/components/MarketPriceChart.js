@@ -4,15 +4,12 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 
-import {getSupply} from '../utils/supply'
-
-class SupplyNumberChart extends Component {
+class MarketPriceChart extends Component {
   static propTypes: {
     id: PropTypes.string.isRequired,
     years: PropTypes.number.isRequired,
-    supplyFunction: PropTypes.func.isRequired,
     chartHeight: PropTypes.number.isRequired,
-    isStacked: PropTypes.bool.isRequired
+    currencies: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -23,19 +20,12 @@ class SupplyNumberChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Current Supply',
-        hAxis: {
-          title: 'Years',
-          minValue: 0,
-          maxValue: this.props.years
-        },
+        title: 'Price for 1/100M',
         vAxis: {
-          title: '# of tokens',
-          format: '#,###M'
+          title: 'Price in USD',
         },
-        seriesType: 'area',
-        legend: 'top',
-        isStacked: this.props.isStacked,
+        seriesType: 'bars',
+        legend: 'none',
         chartArea: {
           left: '15%',
           top: '15%',
@@ -44,7 +34,6 @@ class SupplyNumberChart extends Component {
         }
       },
       data: null,
-      supplyFunction: this.props.supplyFunction
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -56,8 +45,7 @@ class SupplyNumberChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years ||
-        prevProps.supplyFunction !== this.props.supplyFunction) {
+    if (prevProps.currencies !== this.props.currencies) {
       this.rebuildChartData()
     }
   }
@@ -67,26 +55,16 @@ class SupplyNumberChart extends Component {
   }
 
   rebuildChartData() {
-    const years = this.props.years
-    const customSupplyFunction = this.props.supplyFunction
-
     let data = [
-      ['Years', 'Miners', 'Creators', 'Sale',],
+      ['Currency', 'Price']
     ]
-
-    for (let i = 0; i <= years; i++) {
-      const supplyObject = customSupplyFunction(i)
-      const row = [
-        i,
-        supplyObject.miners/Math.pow(10, 6),
-        supplyObject.creators/Math.pow(10, 6),
-        supplyObject.sale/Math.pow(10, 6),
-      ]
-      //supplyObject.users/Math.pow(10, 6),
+    this.props.currencies.map((currency) => {
+      const priceForAHundredMillionth = Math.round(currency.priceForAHundredMillionth * 100) / 100
+      const row = [currency.name, priceForAHundredMillionth]
       data.push(row)
-    }
+    })
     let options = this.state.options
-    options.hAxis.maxValue = years
+    options.title = `Price for 1/100M of All Coins In Existence (After ${this.props.years} Years)`
     this.setState({
       loaded: true,
       data: data,
@@ -121,5 +99,5 @@ class SupplyNumberChart extends Component {
 
 }
 
-export default SupplyNumberChart
+export default MarketPriceChart
 

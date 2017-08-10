@@ -66,6 +66,8 @@ export function getFilecoinSupply(years) {
     miners: 0,
     sale: 0,
     creators: 0,
+    protocolLabs: 0,
+    filecoinFoundation: 0
   }
 
   if (years !== 0) {
@@ -94,12 +96,17 @@ export function getFilecoinSupply(years) {
     // Creator Percentage
     const creatorPercentage = creatorSupply / totalSupply
 
+    const protocolLabsSupply = creatorSupply * 3/4.
+    const filecoinFoundationSupply = creatorSupply * 1/4.
+
     data = {
       total: totalSupply,
       miners: minerSupply,
       sale: saleSupply,
       creators: creatorSupply,
-      creatorPercentage: creatorPercentage
+      creatorPercentage: creatorPercentage,
+      protocolLabs: protocolLabsSupply,
+      filecoinFoundation: filecoinFoundationSupply,
     }
   }
   if (years !== 20) {
@@ -194,8 +201,8 @@ export function getTokenSupplyFunction(type, parameters) {
       minerSupply = minerSupply + newSupplyThisYear
     }
 
-    const burnerSupply = minerSupply * 0.9
-    const appSupply = minerSupply * 0.1
+    const burnerSupply = minerSupply * 0.8
+    const appSupply = minerSupply * 0.2
 
     const totalSupply = minerSupply + saleSupply + creatorSupply + userSupply
 
