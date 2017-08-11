@@ -26,11 +26,11 @@ class SupplyPage extends Component {
     this.state = {
       modalIsOpen: false,
       years: 20,
-      saleSupply: 800,
+      saleSupply: 600,
       userSupply: 400,
       creatorSupply: 400,
       initialBlockReward: 8000,
-      finalBlockReward: 2000,
+      finalBlockReward: 1000,
       salePrice: 0.15,
       chartHeight: '400px'
     }
@@ -45,7 +45,7 @@ class SupplyPage extends Component {
       finalBlockReward: this.state.finalBlockReward,
     }
     const supplyFunction = getTokenSupplyFunction('halving', parameters)
-    const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
+    //const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
 
     return (
       <DocumentTitle title="Blockchain Supply">

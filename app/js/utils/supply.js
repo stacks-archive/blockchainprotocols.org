@@ -44,7 +44,7 @@ export function getEthereumSupply(years) {
     minerSupply += 4
   }
   if (years > 3) {
-    minerSupply += 2 * (years - 3)
+    minerSupply += 1.5 * (years - 3)
   }
 
   minerSupply = minerSupply * Math.pow(10, 6)
@@ -61,59 +61,43 @@ export function getEthereumSupply(years) {
 }
 
 export function getFilecoinSupply(years) {
-  let data = {
-    total: 0,
-    miners: 0,
-    sale: 0,
-    creators: 0,
-    protocolLabs: 0,
-    filecoinFoundation: 0
+  // Miner Supply
+  const finalMinerSupply = 1.4 * Math.pow(10, 9)
+  const miningHalfLife = 6
+  const minerDecayCoefficient = Math.log(0.5)/miningHalfLife
+  const minerSupply = finalMinerSupply * (1 - Math.exp(minerDecayCoefficient*years))
+
+  // Creator Supply
+  const finalCreatorSupply = 0.4 * Math.pow(10, 9)
+  const creatorVest = 6
+  const creatorSupply = Math.min(creatorVest, years) / creatorVest * finalCreatorSupply
+
+  //const creatorDecayCoefficient = Math.log(0.2/0.4)/2
+  //const creatorSupply = finalCreatorSupply * (1 - Math.exp(creatorDecayCoefficient*years))
+
+  // Sale Supply
+  const totalSaleSupply = 0.2 * Math.pow(10, 9)
+  const saleVest = 1
+  const saleSupply = Math.min(saleVest, years) / saleVest * totalSaleSupply
+
+  // Total Supply
+  const totalSupply = minerSupply + saleSupply + creatorSupply
+
+  // Creator Percentage
+  const creatorPercentage = creatorSupply / totalSupply
+
+  const protocolLabsSupply = creatorSupply * 3/4.
+  const filecoinFoundationSupply = creatorSupply * 1/4.
+
+  return {
+    total: totalSupply,
+    miners: minerSupply,
+    sale: saleSupply,
+    creators: creatorSupply,
+    creatorPercentage: creatorPercentage,
+    protocolLabs: protocolLabsSupply,
+    filecoinFoundation: filecoinFoundationSupply,
   }
-
-  if (years !== 0) {
-    // Miner Supply
-    const finalMinerSupply = 1.4 * Math.pow(10, 9)
-    const miningHalfLife = 6
-    const minerDecayCoefficient = Math.log(0.5)/miningHalfLife
-    const minerSupply = finalMinerSupply * (1 - Math.exp(minerDecayCoefficient*years))
-
-    // Creator Supply
-    const finalCreatorSupply = 0.4 * Math.pow(10, 9)
-    const creatorVest = 6
-    const creatorSupply = Math.min(creatorVest, years) / creatorVest * finalCreatorSupply
-
-    //const creatorDecayCoefficient = Math.log(0.2/0.4)/2
-    //const creatorSupply = finalCreatorSupply * (1 - Math.exp(creatorDecayCoefficient*years))
-
-    // Sale Supply
-    const totalSaleSupply = 0.2 * Math.pow(10, 9)
-    const saleVest = 1
-    const saleSupply = Math.min(saleVest, years) / saleVest * totalSaleSupply
-
-    // Total Supply
-    const totalSupply = minerSupply + saleSupply + creatorSupply
-
-    // Creator Percentage
-    const creatorPercentage = creatorSupply / totalSupply
-
-    const protocolLabsSupply = creatorSupply * 3/4.
-    const filecoinFoundationSupply = creatorSupply * 1/4.
-
-    data = {
-      total: totalSupply,
-      miners: minerSupply,
-      sale: saleSupply,
-      creators: creatorSupply,
-      creatorPercentage: creatorPercentage,
-      protocolLabs: protocolLabsSupply,
-      filecoinFoundation: filecoinFoundationSupply,
-    }
-  }
-  if (years !== 20) {
-    //console.log(`Years: ${years}`)
-    //console.log(data)
-  }
-  return data
 }
 
 export function getTezosSupply(years) {
@@ -167,20 +151,8 @@ export function getTokenSupplyFunction(type, parameters) {
 
   // Return the halving function
   return function(years) {
-    if (years === 0) {
-      return {
-        total: 0,
-        miners: 0,
-        users: 0,
-        sale: 0,
-        creators: 0,
-        burners: 0,
-        apps: 0,
-      }
-    }
-
     // Sale Supply
-    const saleVest = 2
+    const saleVest = 1
     const saleSupply =  Math.min(saleVest, years) / saleVest * parameters.saleSupply
 
     // Creator Supply
@@ -220,6 +192,23 @@ export function getTokenSupplyFunction(type, parameters) {
   }
 }
 
+export function getSupply(currencyName, years) {
+  switch (currencyName.toLowerCase()) {
+    case 'bitcoin':
+      return getBitcoinSupply(years)
+    case 'ethereum':
+      return getEthereumSupply(years)
+    case 'zcash':
+      return getZcashSupply(years)
+    case 'filecoin':
+      return getFilecoinSupply(years)
+    case 'tezos':
+      return getTezosSupply(years)
+    default:
+      return 0
+  }
+}
+
 /*
     //const initialMiningSupply = 330 * Math.pow(10, 6)
 
@@ -243,23 +232,6 @@ export function getTokenSupplyFunction(saleSupplyI,
                                        numberOfMiningDecays) {
 
 }*/
-
-export function getSupply(currencyName, years) {
-  switch (currencyName.toLowerCase()) {
-    case 'bitcoin':
-      return getBitcoinSupply(years)
-    case 'ethereum':
-      return getEthereumSupply(years)
-    case 'zcash':
-      return getZcashSupply(years)
-    case 'filecoin':
-      return getFilecoinSupply(years)
-    case 'tezos':
-      return getTezosSupply(years)
-    default:
-      return 0
-  }
-}
 
 /*
 export function getSupplyGrowth(currencyName, years) {

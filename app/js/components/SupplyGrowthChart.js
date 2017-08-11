@@ -72,9 +72,9 @@ class SupplyGrowthChart extends Component {
     const years = this.props.years
     const customSupplyFunction = this.props.supplyFunction
     let data = [
-      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin'],
+      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Custom'],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'filecoin']
+    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom']
 
     for (let i = 0; i <= years; i++) {
       let row = [i]

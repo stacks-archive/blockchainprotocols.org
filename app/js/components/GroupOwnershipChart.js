@@ -78,9 +78,11 @@ class FoundingShareChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Bitcoin', 'Ethereum', 'Filecoin', 'Tezos', 'Zcash',],
+      ['Years', 'Bitcoin', 'Ethereum', 'Filecoin', 'Custom', 'Tezos', 'Zcash',],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'tezos', 'zcash',]
+    const currencies = [
+      'bitcoin', 'ethereum', 'filecoin', 'custom', 'tezos', 'zcash',
+    ]
 
     for (let i = 0; i <= years; i++) {
       let row = [i]
