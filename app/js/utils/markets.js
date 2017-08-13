@@ -5,6 +5,7 @@ function processCurrencyRecord(currencyRecord, years) {
   const price = parseFloat(currencyRecord.price_usd).toFixed(2)
   const name = currencyRecord.name
   const supply = getSupply(id, years).total
+  const formattedSupply = supply.toLocaleString(undefined, {maximumFractionDigits:0})
   const coinsInABillionth = (supply / Math.pow(10, 9)).toFixed(4)
   const priceForABillionth = (coinsInABillionth * price).toFixed(2)
   const volume24HoursUSD = parseFloat(currencyRecord['24h_volume_usd']).toLocaleString()
@@ -23,6 +24,7 @@ function processCurrencyRecord(currencyRecord, years) {
     name: name,
     price: price,
     supply: supply,
+    formattedSupply: formattedSupply,
     coinsInABillionth: coinsInABillionth,
     priceForABillionth: priceForABillionth,
     marketCapUSD: marketCap,
@@ -59,8 +61,6 @@ export function fetchCurrencies(years) {
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((priceList) => {
-        console.log(priceList)
-
         // Convert the price list into a price map
         let priceMap = {}
         priceList.map((currencyRecord) => {

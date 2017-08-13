@@ -75,15 +75,13 @@ class MarketsPage extends Component {
                       </thead>
                       <tbody>
                         { this.state.currencies.map((currency, index) => {
-                          const formattedSupply = currency.supply.toLocaleString(undefined, {maximumFractionDigits:0})
-                          console.log(formattedSupply)
                           return (
                             <tr key={index}>
                               <td>{index+1}</td>
                               <td>{currency.name}</td>
                               <td className="text-right">${currency.marketCap}</td>
                               <td className="text-right">${currency.price}</td>
-                              <td className="text-right">{formattedSupply}</td>
+                              <td className="text-right">{currency.formattedSupply}</td>
                               <td className="text-right">{+currency.coinsInABillionth}</td>
                               <td className="text-right">${currency.priceForABillionth}</td>
                               <td className="text-right">${currency.volume24HoursUSD}</td>
