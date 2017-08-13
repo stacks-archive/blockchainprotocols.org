@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 
 import YearSlider from '../components/YearSlider'
-import {fetchPrices, currencyNames} from '../utils/markets'
+import {fetchCurrencies, currencyNames} from '../utils/markets'
 import {getSupply} from '../utils/supply'
 import MarketPriceChart from '../components/MarketPriceChart'
 
@@ -38,32 +38,10 @@ class MarketsPage extends Component {
   }
 
   recalculate() {
-    let currencyRecords = []
-
-    fetchPrices().then(prices => {
-      currencyNames.map((currencySlug) => {
-        const priceRecord = prices[currencySlug]
-
-        const price = parseFloat(priceRecord.price_usd)
-        const name = priceRecord.name
-        const supply = getSupply(currencySlug.split('-')[0], this.state.years).total
-        const coinsInAHundredMillionth = supply / (100 * Math.pow(10, 6))
-        const currencyRecord = {
-          name: name,
-          price: price,
-          supply: supply,
-          coinsInAHundredMillionth: coinsInAHundredMillionth,
-          priceForAHundredMillionth: (coinsInAHundredMillionth * price)
-        }
-        currencyRecords.push(currencyRecord)
-      })
-
-      console.log(currencyRecords)
-
+    fetchCurrencies(this.state.years).then(currencies => {
       this.setState({
-        currencies: currencyRecords
+        currencies: currencies
       })
-
     })
   }
 
@@ -78,49 +56,43 @@ class MarketsPage extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12 home-main">
-                <h2>Markets</h2>
-
-                <form className="form m-t-30 m-b-50">
-                  <YearSlider
-                    years={this.state.years}
-                    maxYears={100}
-                    onChange={this.onSliderChange} />
-                </form>
-
                 
-
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                     <table className="table">
                       <thead>
                         <tr>
+                          <th>#</th>
                           <th>Asset</th>
-                          <th>Price per coin</th>
-                          <th>Supply after {this.state.years} years</th>
-                          <th>Coins in 1/100M</th>
-                          <th>Price for 1/100M</th>
+                          <th className="text-right">Market Cap</th>
+                          <th className="text-right">Price per token</th>
+                          <th className="text-right">Supply after {this.state.years} years</th>
+                          <th className="text-right">Coins in 1/1B</th>
+                          <th className="text-right">Price for 1/1B</th>
+                          <th className="text-right">Volume (24h)</th>
+                          <th className="text-right">% Change (24h)</th>
                         </tr>
                       </thead>
                       <tbody>
                         { this.state.currencies.map((currency, index) => {
+                          const formattedSupply = currency.supply.toLocaleString(undefined, {maximumFractionDigits:0})
+                          console.log(formattedSupply)
                           return (
                             <tr key={index}>
+                              <td>{index+1}</td>
                               <td>{currency.name}</td>
-                              <td>${currency.price.toFixed(2)}</td>
-                              <td>{+currency.supply.toFixed(0)}</td>
-                              <td>{+currency.coinsInAHundredMillionth.toFixed(4)}</td>
-                              <td>${currency.priceForAHundredMillionth.toFixed(2)}</td>
+                              <td className="text-right">${currency.marketCap}</td>
+                              <td className="text-right">${currency.price}</td>
+                              <td className="text-right">{formattedSupply}</td>
+                              <td className="text-right">{+currency.coinsInABillionth}</td>
+                              <td className="text-right">${currency.priceForABillionth}</td>
+                              <td className="text-right">${currency.volume24HoursUSD}</td>
+                              <td className="text-right">{currency.percentChange24H}</td>
                             </tr>
                           )
                         }) }
                       </tbody>
                     </table>
-                  </div>
-                  <div className="col-md-6" style={{ border: '1px solid black' }}>
-                    <MarketPriceChart
-                      years={this.state.years}
-                      currencies={this.state.currencies}
-                      chartHeight={this.state.chartHeight} />
                   </div>
                 </div>
 
@@ -136,3 +108,14 @@ class MarketsPage extends Component {
 }
 
 export default MarketsPage
+
+/*
+<h2>Markets</h2>
+
+                <form className="form m-t-30 m-b-50">
+                  <YearSlider
+                    years={this.state.years}
+                    maxYears={100}
+                    onChange={this.onSliderChange} />
+                </form>
+*/

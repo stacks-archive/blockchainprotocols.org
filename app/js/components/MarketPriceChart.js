@@ -20,7 +20,7 @@ class MarketPriceChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Price for 1/100M',
+        title: 'Price for 1/1B',
         vAxis: {
           title: 'Price in USD',
         },
@@ -59,12 +59,12 @@ class MarketPriceChart extends Component {
       ['Currency', 'Price']
     ]
     this.props.currencies.map((currency) => {
-      const priceForAHundredMillionth = Math.round(currency.priceForAHundredMillionth * 100) / 100
-      const row = [currency.name, priceForAHundredMillionth]
+      const priceForABillionth = Math.round(currency.priceForABillionth * 100) / 100
+      const row = [currency.name, priceForABillionth]
       data.push(row)
     })
     let options = this.state.options
-    options.title = `Price for 1/100M of All Coins In Existence (After ${this.props.years} Years)`
+    options.title = `Price for 1/1B of All Coins In Existence (After ${this.props.years} Years)`
     this.setState({
       loaded: true,
       data: data,

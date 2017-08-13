@@ -15,7 +15,7 @@ import SupplyPage                  from './pages/SupplyPage'
 export default (
   <Router history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
     <Route path="/" component={App}>
-      <IndexRoute component={HomePage} />
+      <IndexRoute component={MarketsPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/bitcoin" component={BitcoinChartsPage} />
       <Route path="/ethereum" component={EthereumChartsPage} />
