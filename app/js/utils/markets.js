@@ -11,12 +11,12 @@ function processCurrencyRecord(currencyRecord, years) {
   const volume24HoursUSD = parseFloat(currencyRecord['24h_volume_usd']).toLocaleString()
   const percentChange24H = currencyRecord.percent_change_24h
 
-  let marketCap = null
+  let marketCapUSD = null
   if (currencyRecord.hasOwnProperty('market_cap_usd')) {
-    marketCap = parseFloat(currencyRecord.market_cap_usd).toLocaleString()
+    marketCapUSD = parseFloat(currencyRecord.market_cap_usd).toLocaleString()
   } else {
     const supplyAfter0Years = getSupply(id, 0).total.toFixed(0)
-    marketCap = (supplyAfter0Years * price).toLocaleString()
+    marketCapUSD = (supplyAfter0Years * price).toLocaleString()
   }
 
   return {
@@ -27,7 +27,7 @@ function processCurrencyRecord(currencyRecord, years) {
     formattedSupply: formattedSupply,
     coinsInABillionth: coinsInABillionth,
     priceForABillionth: priceForABillionth,
-    marketCapUSD: marketCap,
+    marketCapUSD: marketCapUSD,
     volume24HoursUSD: volume24HoursUSD,
     percentChange24H: percentChange24H
   }

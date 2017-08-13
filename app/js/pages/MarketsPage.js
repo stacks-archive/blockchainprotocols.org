@@ -79,10 +79,10 @@ class MarketsPage extends Component {
                             <tr key={index}>
                               <td>{index+1}</td>
                               <td>{currency.name}</td>
-                              <td className="text-right">${currency.marketCap}</td>
+                              <td className="text-right">${currency.marketCapUSD}</td>
                               <td className="text-right">${currency.price}</td>
                               <td className="text-right">{currency.formattedSupply}</td>
-                              <td className="text-right">{+currency.coinsInABillionth}</td>
+                              <td className="text-right">{currency.coinsInABillionth}</td>
                               <td className="text-right">${currency.priceForABillionth}</td>
                               <td className="text-right">${currency.volume24HoursUSD}</td>
                               <td className="text-right">{currency.percentChange24H}</td>
