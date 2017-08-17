@@ -51,48 +51,43 @@ class MarketsPage extends Component {
 
   render() {
     return (
-      <DocumentTitle title="Blockchain Markets">
+      <DocumentTitle title="The Blockchain Internet">
         <div>
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12 home-main">
-                
-                <div className="row">
-                  <div className="col-md-12">
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Asset</th>
-                          <th className="text-right">Market Cap</th>
-                          <th className="text-right">Price per token</th>
-                          <th className="text-right">Supply after {this.state.years} years</th>
-                          <th className="text-right">Coins in 1/1B</th>
-                          <th className="text-right">Price for 1/1B</th>
-                          <th className="text-right">Volume (24h)</th>
-                          <th className="text-right">% Change (24h)</th>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Asset</th>
+                      <th className="text-right">Market Cap</th>
+                      <th className="text-right">Price per token</th>
+                      <th className="text-right">Supply after {this.state.years} years</th>
+                      <th className="text-right">Coins in 1/1B @ {this.state.years}Y</th>
+                      <th className="text-right">Price for 1/1B @ {this.state.years}Y</th>
+                      <th className="text-right">Volume (24h)</th>
+                      <th className="text-right">% Change (24h)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    { this.state.currencies.map((currency, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index+1}</td>
+                          <td>{currency.name}</td>
+                          <td className="text-right">${currency.marketCapUSD}</td>
+                          <td className="text-right">${currency.price}</td>
+                          <td className="text-right">{currency.formattedSupply}</td>
+                          <td className="text-right">{currency.coinsInABillionth}</td>
+                          <td className="text-right">${currency.priceForABillionth}</td>
+                          <td className="text-right">${currency.volume24HoursUSD}</td>
+                          <td className="text-right">{currency.percentChange24H}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        { this.state.currencies.map((currency, index) => {
-                          return (
-                            <tr key={index}>
-                              <td>{index+1}</td>
-                              <td>{currency.name}</td>
-                              <td className="text-right">${currency.marketCapUSD}</td>
-                              <td className="text-right">${currency.price}</td>
-                              <td className="text-right">{currency.formattedSupply}</td>
-                              <td className="text-right">{currency.coinsInABillionth}</td>
-                              <td className="text-right">${currency.priceForABillionth}</td>
-                              <td className="text-right">${currency.volume24HoursUSD}</td>
-                              <td className="text-right">{currency.percentChange24H}</td>
-                            </tr>
-                          )
-                        }) }
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                      )
+                    }) }
+                  </tbody>
+                </table>
 
               </div>
             </div>
@@ -108,12 +103,15 @@ class MarketsPage extends Component {
 export default MarketsPage
 
 /*
-<h2>Markets</h2>
-
+            <div className="row">
+              <div className="col-md-4">
                 <form className="form m-t-30 m-b-50">
                   <YearSlider
                     years={this.state.years}
                     maxYears={100}
                     onChange={this.onSliderChange} />
                 </form>
+              </div>
+            </div>
+
 */
