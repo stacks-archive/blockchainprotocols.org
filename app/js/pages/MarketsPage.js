@@ -82,7 +82,7 @@ class MarketsPage extends Component {
                           <td className="text-right">{currency.coinsInABillionth}</td>
                           <td className="text-right">${currency.priceForABillionth}</td>
                           <td className="text-right">${currency.volume24HoursUSD}</td>
-                          <td className="text-right">{currency.percentChange24H}</td>
+                          <td className="text-right">{currency.percentChange24H}%</td>
                         </tr>
                       )
                     }) }

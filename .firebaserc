@@ -1,5 +1,6 @@
 {
   "projects": {
-    "production": "blockchain-protocols"
+    "production": "blockchaininternet",
+    "protocols": "blockchain-protocols"
   }
 }

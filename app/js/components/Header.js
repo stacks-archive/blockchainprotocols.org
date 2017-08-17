@@ -11,8 +11,8 @@ class Header extends Component {
 
   render() {
     return (
-      <div>
-        <h2 style={{ textAlign: 'center', paddingTop: '30px', paddingBottom: '30px' }}>
+      <div style={{ paddingTop: '40px' }}>
+        <h2 style={{ textAlign: 'center' }}>
           The Blockchain Internet
         </h2>
       </div>
