@@ -5,15 +5,15 @@ import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import Modal from 'react-modal'
 import {Button} from 'react-bootstrap'
+import InputRange from 'react-input-range'
 
 import CirculatingSupplyChart from '../components/CirculatingSupplyChart'
 import SupplyGrowthChart from '../components/SupplyGrowthChart'
 import GroupOwnershipChart from '../components/GroupOwnershipChart'
 import CustomDistributionChart from '../components/CustomDistributionChart'
 import CustomSupplyChart from '../components/CustomSupplyChart'
-
 import {getTokenSupplyFunction} from '../utils/supply'
-import InputRange from 'react-input-range'
+import {modalStyle} from '../styles'
 
 class SupplyPage extends Component {
   static propTypes() {
@@ -27,12 +27,14 @@ class SupplyPage extends Component {
       modalIsOpen: false,
       years: 20,
       saleSupply: 600,
-      userSupply: 400,
-      creatorSupply: 400,
+      userSupply: 50,
+      creatorSupply: 350,
       initialBlockReward: 8000,
       finalBlockReward: 1000,
-      salePrice: 0.15,
-      chartHeight: '400px'
+      salePrice: 0.2,
+      numUsers: 25000,
+      treasuryPercentage: 0.5,
+      chartHeight: '400px',
     }
   }
 
@@ -45,7 +47,18 @@ class SupplyPage extends Component {
       finalBlockReward: this.state.finalBlockReward,
     }
     const supplyFunction = getTokenSupplyFunction('halving', parameters)
-    //const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
+    
+    const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
+    const amountGivenOut = this.state.userSupply * this.state.salePrice * Math.pow(10, 6)
+    const amountToCreators = this.state.creatorSupply * this.state.salePrice * Math.pow(10, 6)
+    const amountToTreasury = amountToCreators * this.state.treasuryPercentage
+    const amountToShareholders = amountToCreators - amountToTreasury
+    const rewardPerUser = amountGivenOut / this.state.numUsers
+
+    const coinsInABillionth = supplyFunction(20).total / Math.pow(10, 9)
+    console.log(coinsInABillionth)
+    const pricePerBillionth = this.state.salePrice * coinsInABillionth
+    console.log(pricePerBillionth)
 
     return (
       <DocumentTitle title="Blockchain Supply">
@@ -63,31 +76,42 @@ class SupplyPage extends Component {
                   </Button>
                 </p>
 
+                <p>
+                  Amount raised: ${amountRaised.toLocaleString()}
+                </p>
+                <p>
+                  Amount given out: ${amountGivenOut.toLocaleString()}
+                </p>
+                <p>
+                  Amount to Blockstack Inc.: ${amountToCreators.toLocaleString()}
+                </p>
+                <p>
+                  Amount to shareholders: ${amountToShareholders.toLocaleString()}
+                </p>
+                <p>
+                  Amount to treasury: ${amountToTreasury.toLocaleString()}
+                </p>
+                <p>
+                  Reward per user: ${rewardPerUser.toLocaleString()}
+                </p>
+                <p>
+                  # of users rewarded: {this.state.numUsers.toLocaleString()}
+                </p>
+                <p>
+                  Price per billionth: ${pricePerBillionth}
+                </p>
+
                 <Modal isOpen={this.state.modalIsOpen}
                   onRequestClose={() => {
                     this.setState({ modalIsOpen: false })
                   }}
                   contentLabel="Token Economics Parameters"
                   shouldCloseOnOverlayClick={true}
-                  style={{
-                    overlay: {
-                      position: 'fixed',
-                      top: '70px',
-                      left: '0',
-                      right: '0',
-                      zIndex: 10
-                    },
-                    content: {
-                      width: '50%',
-                      top: '50%',
-                      left: '50%',
-                      right: 'auto',
-                      bottom: 'auto',
-                      marginRight: '-50%',
-                      transform: 'translate(-50%, -50%)',
-                    }
-                  }}>
+                  style={modalStyle}>
                   <form>
+                    <h2>
+                      Customize Token
+                    </h2>
                     <div className="form-group m-b-40">
                       <label className="m-b-15">Years</label>
                       <InputRange
@@ -98,45 +122,65 @@ class SupplyPage extends Component {
                           years: value
                         })} />
                     </div>
-                    <div className="form-group m-b-40">
-                      <label className="m-b-15">Sale Supply (MM)</label>
-                      <input className="form-control"
-                        value={this.state.saleSupply}
-                        onChange={event => this.setState({
-                          saleSupply: event.target.value
-                        })} />
+                    <div className="form-group row">
+                      <label className="col-4">Sale Supply (MM)</label>
+                      <div className="col-8">
+                        <input className="form-control"
+                          value={this.state.saleSupply}
+                          onChange={event => this.setState({
+                            saleSupply: event.target.value
+                          })} />
+                      </div>
                     </div>
-                    <div className="form-group m-b-40">
-                      <label className="m-b-15">User Supply (MM)</label>
-                      <input className="form-control"
-                        value={this.state.userSupply}
-                        onChange={event => this.setState({
-                          userSupply: event.target.value
-                        })} />
+                    <div className="form-group row">
+                      <label className="col-4">User Supply (MM)</label>
+                      <div className="col-8">
+                        <input className="form-control"
+                          value={this.state.userSupply}
+                          onChange={event => this.setState({
+                            userSupply: event.target.value
+                          })} />
+                      </div>
                     </div>
-                    <div className="form-group m-b-40">
-                      <label className="m-b-15">Creator Supply (MM)</label>
-                      <input className="form-control"
-                        value={this.state.creatorSupply}
-                        onChange={event => this.setState({
-                          creatorSupply: event.target.value
-                        })} />
+                    <div className="form-group row">
+                      <label className="col-4">Creator Supply (MM)</label>
+                      <div className="col-8">
+                        <input className="form-control"
+                          value={this.state.creatorSupply}
+                          onChange={event => this.setState({
+                            creatorSupply: event.target.value
+                          })} />
+                      </div>
                     </div>
-                    <div className="form-group m-b-40">
-                      <label className="m-b-15">Initial Block Reward</label>
-                      <input className="form-control"
-                        value={this.state.initialBlockReward}
-                        onChange={event => this.setState({
-                          initialBlockReward: event.target.value
-                        })} />
+                    <div className="form-group row">
+                      <label className="col-4">Initial Block Reward</label>
+                      <div className="col-8">
+                        <input className="form-control"
+                          value={this.state.initialBlockReward}
+                          onChange={event => this.setState({
+                            initialBlockReward: event.target.value
+                          })} />
+                      </div>
                     </div>
-                    <div className="form-group m-b-40">
-                      <label className="m-b-15">Final Block Reward</label>
-                      <input className="form-control"
-                        value={this.state.finalBlockReward}
-                        onChange={event => this.setState({
-                          finalBlockReward: event.target.value
-                        })} />
+                    <div className="form-group row">
+                      <label className="col-4">Final Block Reward</label>
+                      <div className="col-8">
+                        <input className="form-control"
+                          value={this.state.finalBlockReward}
+                          onChange={event => this.setState({
+                            finalBlockReward: event.target.value
+                          })} />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label className="col-4">Token Price ($)</label>
+                      <div className="col-8">
+                        <input className="form-control"
+                          value={this.state.salePrice}
+                          onChange={event => this.setState({
+                            salePrice: event.target.value
+                          })} />
+                      </div>
                     </div>
                   </form>
                 </Modal>
