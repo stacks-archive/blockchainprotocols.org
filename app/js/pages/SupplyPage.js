@@ -26,13 +26,14 @@ class SupplyPage extends Component {
     this.state = {
       modalIsOpen: false,
       years: 20,
-      saleSupply: 600,
-      userSupply: 50,
-      creatorSupply: 350,
-      initialBlockReward: 8000,
-      finalBlockReward: 1000,
-      salePrice: 0.2,
-      numUsers: 25000,
+      saleSupply: 1200,
+      giveawaySupply: 300,
+      creatorSupply: 600,
+      initialBlockReward: 10000,
+      finalBlockReward: 2000,
+      rewardDecay: 500,
+      salePrice: 0.10,
+      numUsers: 30000,
       treasuryPercentage: 0.5,
       chartHeight: '400px',
     }
@@ -41,24 +42,23 @@ class SupplyPage extends Component {
   render() {
     const parameters = {
       saleSupply: this.state.saleSupply * Math.pow(10, 6),
+      giveawaySupply: this.state.giveawaySupply * Math.pow(10, 6),
       creatorSupply: this.state.creatorSupply * Math.pow(10, 6),
-      userSupply: this.state.userSupply * Math.pow(10, 6),
       initialBlockReward: this.state.initialBlockReward,
       finalBlockReward: this.state.finalBlockReward,
+      rewardDecay: this.state.rewardDecay,
     }
     const supplyFunction = getTokenSupplyFunction('halving', parameters)
     
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
-    const amountGivenOut = this.state.userSupply * this.state.salePrice * Math.pow(10, 6)
+    const amountGivenOut = this.state.giveawaySupply * this.state.salePrice * Math.pow(10, 6)
     const amountToCreators = this.state.creatorSupply * this.state.salePrice * Math.pow(10, 6)
     const amountToTreasury = amountToCreators * this.state.treasuryPercentage
     const amountToShareholders = amountToCreators - amountToTreasury
     const rewardPerUser = amountGivenOut / this.state.numUsers
 
     const coinsInABillionth = supplyFunction(20).total / Math.pow(10, 9)
-    console.log(coinsInABillionth)
     const pricePerBillionth = this.state.salePrice * coinsInABillionth
-    console.log(pricePerBillionth)
 
     return (
       <DocumentTitle title="Blockchain Supply">

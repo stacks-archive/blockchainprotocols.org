@@ -65,22 +65,24 @@ class TimeDistributionChart extends Component {
   rebuildChartData() {
     const customSupplyFunction = this.props.supplyFunction
     let data = [
-      ['Years', 'Miners', 'Apps', 'Crowdsale', 'Users', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'Users', 'Crowdsale', 'Giveaway', 'Creators'],
     ]
 
     for (let i = 1; i <= this.props.years; i++) {
       const totalAmount = customSupplyFunction(i).total
       const minerShare = customSupplyFunction(i).burners / totalAmount * 100
       const appShare = customSupplyFunction(i).apps / totalAmount * 100
-      const saleShare = customSupplyFunction(i).sale / totalAmount * 100
       const userShare = customSupplyFunction(i).users / totalAmount * 100
+      const saleShare = customSupplyFunction(i).sale / totalAmount * 100
+      const giveawayShare = customSupplyFunction(i).giveaway / totalAmount * 100
       const creatorShare = customSupplyFunction(i).creators / totalAmount * 100
       const row = [
         i,
         minerShare,
         appShare,
-        saleShare,
         userShare,
+        saleShare,
+        giveawayShare,
         creatorShare,
       ]
       data.push(row)

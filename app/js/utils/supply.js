@@ -140,8 +140,8 @@ export function getZcashSupply(years) {
 
 export function getTokenSupplyFunction(type, parameters) {
   const requiredKeys = [
-    'saleSupply', 'userSupply', 'creatorSupply',
-    'initialBlockReward', 'finalBlockReward',
+    'saleSupply', 'creatorSupply', 'giveawaySupply',
+    'initialBlockReward', 'finalBlockReward', 'rewardDecay'
   ]
   requiredKeys.forEach(requiredKey => {
     if (!parameters.hasOwnProperty(requiredKey)) {
@@ -154,38 +154,42 @@ export function getTokenSupplyFunction(type, parameters) {
     // Sale Supply
     const saleVest = 1
     const saleSupply =  Math.min(saleVest, years) / saleVest * parameters.saleSupply
+    const giveawaySupply = Math.min(saleVest, years) / saleVest * parameters.giveawaySupply
 
     // Creator Supply
     const creatorVest = 4
     const creatorSupply = Math.min(creatorVest, years) / creatorVest * parameters.creatorSupply
 
     // User Supply
-    const yearsPerHalving = 1
+    /*const yearsPerHalving = 1
     const userDecayCoefficient = Math.log(0.5)/yearsPerHalving
     const userSupply = parameters.userSupply * (1 - Math.exp(userDecayCoefficient*years))
+    */
 
     // Miner Supply
     let minerSupply = 0
     for (let i = 0; i < years; i++) {
-      const rewardDecay = i * 500
+      const rewardDecay = i * parameters.rewardDecay
       const newSupplyThisYear = 55000 * Math.max(parameters.initialBlockReward - rewardDecay, parameters.finalBlockReward)
       //const newSupplyThisYear = Math.pow(10, 9) * 1 / Math.min(16, (i + parseInt(parameters.initialMiningFraction)))
       minerSupply = minerSupply + newSupplyThisYear
     }
 
-    const burnerSupply = minerSupply * 0.8
-    const appSupply = minerSupply * 0.2
+    const burnerSupply = minerSupply * 0.75
+    const appSupply = minerSupply * 0.125
+    const userSupply = minerSupply * 0.125
 
-    const totalSupply = minerSupply + saleSupply + creatorSupply + userSupply
+    const totalSupply = minerSupply + saleSupply + creatorSupply + giveawaySupply
 
     const supplyData = {
       total: totalSupply,
       miners: minerSupply,
-      users: userSupply,
       sale: saleSupply,
+      giveaway: giveawaySupply,
       creators: creatorSupply,
       burners: burnerSupply,
       apps: appSupply,
+      users: userSupply,
       creatorPercentage: creatorSupply / totalSupply
     }
     return supplyData
