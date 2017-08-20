@@ -33,7 +33,7 @@ class SupplyPage extends Component {
       finalBlockReward: 2000,
       rewardDecay: 500,
       salePrice: 0.10,
-      numUsers: 30000,
+      numUsers: 20000,
       treasuryPercentage: 0.5,
       chartHeight: '400px',
     }
