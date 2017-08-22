@@ -26,9 +26,9 @@ class SupplyPage extends Component {
     this.state = {
       modalIsOpen: false,
       years: 20,
-      saleSupply: 1600,
-      giveawaySupply: 400,
-      creatorSupply: 800,
+      saleSupply: 1200,
+      giveawaySupply: 300,
+      creatorSupply: 600,
       initialBlockReward: 10000,
       finalBlockReward: 2000,
       rewardDecay: 500,
