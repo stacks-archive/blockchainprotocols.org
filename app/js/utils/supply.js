@@ -152,7 +152,7 @@ export function getTokenSupplyFunction(type, parameters) {
   // Return the halving function
   return function(years) {
     // Sale Supply
-    const saleVest = 1
+    const saleVest = 2
     const saleSupply =  Math.min(saleVest, years) / saleVest * parameters.saleSupply
     const giveawaySupply = Math.min(saleVest, years) / saleVest * parameters.giveawaySupply
 

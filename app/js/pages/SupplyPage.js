@@ -26,15 +26,15 @@ class SupplyPage extends Component {
     this.state = {
       modalIsOpen: false,
       years: 20,
-      saleSupply: 1200,
-      giveawaySupply: 300,
-      creatorSupply: 600,
+      saleSupply: 1600,
+      giveawaySupply: 400,
+      creatorSupply: 800,
       initialBlockReward: 10000,
       finalBlockReward: 2000,
       rewardDecay: 500,
       salePrice: 0.10,
       numUsers: 20000,
-      treasuryPercentage: 0.5,
+      treasuryPercentage: 0.25,
       chartHeight: '400px',
     }
   }
