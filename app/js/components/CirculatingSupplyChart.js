@@ -109,7 +109,7 @@ class SupplyChart extends Component {
 
   render() {
     return (
-      <div id="supply-chart-panel">
+      <div id="supply-chart-panel" className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"

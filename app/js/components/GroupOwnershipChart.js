@@ -126,7 +126,7 @@ class FoundingShareChart extends Component {
 
   render() {
     return (
-      <div id={this.props.id}>
+      <div id={this.props.id} className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"

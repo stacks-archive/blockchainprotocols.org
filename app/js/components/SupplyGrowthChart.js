@@ -104,7 +104,7 @@ class SupplyGrowthChart extends Component {
 
   render() {
     return (
-      <div id="inflation-chart-panel">
+      <div id="inflation-chart-panel" className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"

@@ -3,9 +3,6 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
-import Modal from 'react-modal'
-import {Button} from 'react-bootstrap'
-import InputRange from 'react-input-range'
 
 import CirculatingSupplyChart from '../components/CirculatingSupplyChart'
 import SupplyGrowthChart from '../components/SupplyGrowthChart'
@@ -13,7 +10,6 @@ import GroupOwnershipChart from '../components/GroupOwnershipChart'
 import CustomDistributionChart from '../components/CustomDistributionChart'
 import CustomSupplyChart from '../components/CustomSupplyChart'
 import {getTokenSupplyFunction} from '../utils/supply'
-import {modalStyle} from '../styles'
 
 class SupplyPage extends Component {
   static propTypes() {
@@ -26,164 +22,100 @@ class SupplyPage extends Component {
     this.state = {
       modalIsOpen: false,
       years: 20,
-      saleSupply: 1200,
-      giveawaySupply: 300,
-      creatorSupply: 600,
-      initialBlockReward: 10000,
-      finalBlockReward: 2000,
-      rewardDecay: 500,
-      salePrice: 0.10,
-      numUsers: 20000,
-      treasuryPercentage: 0.25,
-      chartHeight: '400px',
+      chartHeight: '500px',
+
+      saleSupply: 800,
+      giveawaySupply: 800,
+      creatorSupply: 800,
+      finalBlockReward: 3000,
+
+      initialBlockReward: 50625,
+      rewardDecayBase: 0.6,
+      yearsBetweenDecays: 3,
+      numberOfMiningDecays: 5,
+
+      salePrice: 0.05,
+      numUsers: 70000,
+      treasuryPercentage: 0.2,
     }
   }
 
   render() {
     const parameters = {
+      initialBlockReward: this.state.initialBlockReward,
+      rewardDecayBase: this.state.rewardDecayBase,
+      yearsBetweenDecays: this.state.yearsBetweenDecays,
+      numberOfMiningDecays: this.state.numberOfMiningDecays,
+    }
+    /*
       saleSupply: this.state.saleSupply * Math.pow(10, 6),
       giveawaySupply: this.state.giveawaySupply * Math.pow(10, 6),
       creatorSupply: this.state.creatorSupply * Math.pow(10, 6),
-      initialBlockReward: this.state.initialBlockReward,
       finalBlockReward: this.state.finalBlockReward,
-      rewardDecay: this.state.rewardDecay,
-    }
+    */
     const supplyFunction = getTokenSupplyFunction('halving', parameters)
     
+    const saleSupply = supplyFunction(20).sale
+    const saleSupplyUSD = saleSupply * this.state.salePrice
+    const creatorSupply = supplyFunction(20).creators
+    const creatorSupplyUSD = creatorSupply * this.state.salePrice
+    /*const amountToTreasury = creatorSupply * this.state.treasuryPercentage
+    const amountToShareholders = amountToCreators - amountToTreasury
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
     const amountGivenOut = this.state.giveawaySupply * this.state.salePrice * Math.pow(10, 6)
     const amountToCreators = this.state.creatorSupply * this.state.salePrice * Math.pow(10, 6)
-    const amountToTreasury = amountToCreators * this.state.treasuryPercentage
-    const amountToShareholders = amountToCreators - amountToTreasury
     const rewardPerUser = amountGivenOut / this.state.numUsers
+    */
 
-    const coinsInABillionth = supplyFunction(20).total / Math.pow(10, 9)
-    const pricePerBillionth = this.state.salePrice * coinsInABillionth
+    const pricePerBillionth20Y = this.state.salePrice * supplyFunction(20).total / Math.pow(10, 9)
+    const pricePerBillionth4Y = this.state.salePrice * supplyFunction(4).total / Math.pow(10, 9)
+    //const pricePerBillionth1Y = this.state.salePrice * supplyFunction(1).total / Math.pow(10, 9)
 
     return (
       <DocumentTitle title="Blockchain Supply">
         <div>
           <div className="container-fluid">
             <div className="row">
+              <div className="col-md-6 home-main">
+                <p>
+                  Sale supply: {saleSupply.toLocaleString()}
+                </p>
+                <p>
+                  Creator supply: {creatorSupply.toLocaleString()}
+                </p>
+                <p>
+                  Initial block reward: {this.state.initialBlockReward.toLocaleString()}
+                </p>
+                <p>
+                  Reward decay base: {this.state.rewardDecayBase.toLocaleString()}
+                </p>
+                <p>
+                  Years between decays: {this.state.yearsBetweenDecays.toLocaleString()}
+                </p>
+                <p>
+                  # of mining decays: {this.state.numberOfMiningDecays.toLocaleString()}
+                </p>
+              </div>
+              <div className="col-md-6 home-main">
+                <p>
+                  Token price: ${this.state.salePrice.toLocaleString()}
+                </p>
+                <p>
+                  Amount raised: ${saleSupplyUSD.toLocaleString()}
+                </p>
+                <p>
+                  Amount to Blockstack Inc.: ${creatorSupplyUSD.toLocaleString()}
+                </p>
+                <p>
+                  Price per billionth (20Y): ${pricePerBillionth20Y.toLocaleString()}
+                </p>
+                <p>
+                  Price per billionth (4Y): ${pricePerBillionth4Y.toLocaleString()}
+                </p>
+              </div>
+            </div>
+            <div className="row">
               <div className="col-md-12 home-main">
-
-                <p>
-                  <Button
-                    className="btn btn-sm btn-default"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.setState({ modalIsOpen: true })}>
-                    Customize Token
-                  </Button>
-                </p>
-
-                <p>
-                  Amount raised: ${amountRaised.toLocaleString()}
-                </p>
-                <p>
-                  Amount given out: ${amountGivenOut.toLocaleString()}
-                </p>
-                <p>
-                  Amount to Blockstack Inc.: ${amountToCreators.toLocaleString()}
-                </p>
-                <p>
-                  Amount to shareholders: ${amountToShareholders.toLocaleString()}
-                </p>
-                <p>
-                  Amount to treasury: ${amountToTreasury.toLocaleString()}
-                </p>
-                <p>
-                  Reward per user: ${rewardPerUser.toLocaleString()}
-                </p>
-                <p>
-                  # of users rewarded: {this.state.numUsers.toLocaleString()}
-                </p>
-                <p>
-                  Price per billionth: ${pricePerBillionth}
-                </p>
-
-                <Modal isOpen={this.state.modalIsOpen}
-                  onRequestClose={() => {
-                    this.setState({ modalIsOpen: false })
-                  }}
-                  contentLabel="Token Economics Parameters"
-                  shouldCloseOnOverlayClick={true}
-                  style={modalStyle}>
-                  <form>
-                    <h2>
-                      Customize Token
-                    </h2>
-                    <div className="form-group m-b-40">
-                      <label className="m-b-15">Years</label>
-                      <InputRange
-                        minValue={0}
-                        maxValue={100}
-                        value={this.state.years}
-                        onChange={value => this.setState({
-                          years: value
-                        })} />
-                    </div>
-                    <div className="form-group row">
-                      <label className="col-4">Sale Supply (MM)</label>
-                      <div className="col-8">
-                        <input className="form-control"
-                          value={this.state.saleSupply}
-                          onChange={event => this.setState({
-                            saleSupply: event.target.value
-                          })} />
-                      </div>
-                    </div>
-                    <div className="form-group row">
-                      <label className="col-4">User Supply (MM)</label>
-                      <div className="col-8">
-                        <input className="form-control"
-                          value={this.state.userSupply}
-                          onChange={event => this.setState({
-                            userSupply: event.target.value
-                          })} />
-                      </div>
-                    </div>
-                    <div className="form-group row">
-                      <label className="col-4">Creator Supply (MM)</label>
-                      <div className="col-8">
-                        <input className="form-control"
-                          value={this.state.creatorSupply}
-                          onChange={event => this.setState({
-                            creatorSupply: event.target.value
-                          })} />
-                      </div>
-                    </div>
-                    <div className="form-group row">
-                      <label className="col-4">Initial Block Reward</label>
-                      <div className="col-8">
-                        <input className="form-control"
-                          value={this.state.initialBlockReward}
-                          onChange={event => this.setState({
-                            initialBlockReward: event.target.value
-                          })} />
-                      </div>
-                    </div>
-                    <div className="form-group row">
-                      <label className="col-4">Final Block Reward</label>
-                      <div className="col-8">
-                        <input className="form-control"
-                          value={this.state.finalBlockReward}
-                          onChange={event => this.setState({
-                            finalBlockReward: event.target.value
-                          })} />
-                      </div>
-                    </div>
-                    <div className="form-group row">
-                      <label className="col-4">Token Price ($)</label>
-                      <div className="col-8">
-                        <input className="form-control"
-                          value={this.state.salePrice}
-                          onChange={event => this.setState({
-                            salePrice: event.target.value
-                          })} />
-                      </div>
-                    </div>
-                  </form>
-                </Modal>
                 <div className="row">
                   <div className="col-md-4">
                     <CirculatingSupplyChart
@@ -236,6 +168,40 @@ class SupplyPage extends Component {
 export default SupplyPage
 
 /*
+                <p>
+                  Price per billionth (1Y): ${pricePerBillionth1Y.toLocaleString()}
+                </p>
+                <p>
+                  Amount to shareholders: ${amountToShareholders.toLocaleString()}
+                </p>
+                <p>
+                  Amount to treasury: ${amountToTreasury.toLocaleString()}
+                </p>
+                <p>
+                  # of users in giveaway: {this.state.numUsers.toLocaleString()}
+                </p>
+                <p>
+                  Reward per user: ${rewardPerUser.toLocaleString()}
+                </p>
+                <p>
+                  Giveaway supply: {this.state.giveawaySupply.toLocaleString()}
+                </p>
+                <p>
+                  Amount given out: ${amountGivenOut.toLocaleString()}
+                </p>
+                <p>
+                  Shareholder % after 4 years: {shareholderSupplyAfterFourYears.toLocaleString()}
+                </p>
+
+                <p>
+                  <Button
+                    className="btn btn-sm btn-default"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.setState({ modalIsOpen: true })}>
+                    Customize Token
+                  </Button>
+                </p>
+
 
                     <div className="form-group m-b-40">
                       <label className="m-b-15">Initial Sale Price ($)</label>

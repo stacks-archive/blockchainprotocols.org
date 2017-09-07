@@ -121,6 +121,20 @@ export function getTezosSupply(years) {
   }
 }
 
+export function getLitecoinSupply(years) {
+  const totalSupply = getBitcoinSupply(years).total * 4
+  const saleSupply = 0
+  const creatorSupply = 0
+  const minerSupply = totalSupply - creatorSupply
+
+  return {
+    total: totalSupply,
+    miners: minerSupply,
+    sale: saleSupply,
+    creators: creatorSupply
+  }
+}
+
 export function getZcashSupply(years) {
   const totalSupply = getBitcoinSupply(years).total
   const saleSupply = 0
@@ -139,6 +153,67 @@ export function getZcashSupply(years) {
 }
 
 export function getTokenSupplyFunction(type, parameters) {
+  const requiredKeys = [
+    'initialBlockReward',
+    'rewardDecayBase',
+    'yearsBetweenDecays',
+    'numberOfMiningDecays',
+  ]
+  requiredKeys.forEach(requiredKey => {
+    if (!parameters.hasOwnProperty(requiredKey)) {
+      throw `Parameter missing: ${requiredKey}`
+    }
+  })
+  const p = parameters
+
+  return function(years) {
+    let totalSupply = 0
+    let saleSupply = 0
+    let creatorSupply = 0
+    let burnerSupply = 0
+    let appSupply = 0
+    let userSupply = 0
+    //let minerSupply = 0
+    //let giveawaySupply = 0
+
+    for (let i = 0; i < years; i += 1) {
+      const rewardDecayExponent = Math.min(Math.floor(i / p.yearsBetweenDecays), p.numberOfMiningDecays)
+      const decayFactor = Math.pow(p.rewardDecayBase, rewardDecayExponent)
+      //console.log(`Year: ${i}; Exponent: ${rewardDecayExponent}; Decay factor: ${decayFactor}`)
+      const newSupplyThisYear = 55000 * p.initialBlockReward * decayFactor
+      if (i < 3) {
+        creatorSupply += newSupplyThisYear * 0.1
+        appSupply += newSupplyThisYear * 0.1
+        userSupply += newSupplyThisYear * 0.1
+        saleSupply += newSupplyThisYear * 0.2
+        burnerSupply += newSupplyThisYear * 0.5
+      } else if (i < 6) {
+        creatorSupply += newSupplyThisYear * 0.1
+        appSupply += newSupplyThisYear * 0.1
+        userSupply += newSupplyThisYear * 0.1
+        burnerSupply += newSupplyThisYear * 0.7
+      } else {
+        appSupply += newSupplyThisYear * 0.1
+        userSupply += newSupplyThisYear * 0.1
+        burnerSupply += newSupplyThisYear * 0.8
+      }
+      totalSupply = totalSupply + newSupplyThisYear
+    }
+
+    const supplyData = {
+      total: totalSupply,
+      sale: saleSupply,
+      creators: creatorSupply,
+      burners: burnerSupply,
+      apps: appSupply,
+      users: userSupply,
+    }
+    return supplyData
+  }
+}
+
+/*
+export function getTokenSupplyFunction2(type, parameters) {
   const requiredKeys = [
     'saleSupply', 'creatorSupply', 'giveawaySupply',
     'initialBlockReward', 'finalBlockReward', 'rewardDecay'
@@ -161,11 +236,10 @@ export function getTokenSupplyFunction(type, parameters) {
     const creatorSupply = Math.min(creatorVest, years) / creatorVest * parameters.creatorSupply
 
     // User Supply
-    /*const yearsPerHalving = 1
-    const userDecayCoefficient = Math.log(0.5)/yearsPerHalving
-    const userSupply = parameters.userSupply * (1 - Math.exp(userDecayCoefficient*years))
-    */
-
+    //const yearsPerHalving = 1
+    //const userDecayCoefficient = Math.log(0.5)/yearsPerHalving
+    //const userSupply = parameters.userSupply * (1 - Math.exp(userDecayCoefficient*years))
+    
     // Miner Supply
     let minerSupply = 0
     for (let i = 0; i < years; i++) {
@@ -194,12 +268,14 @@ export function getTokenSupplyFunction(type, parameters) {
     }
     return supplyData
   }
-}
+}*/
 
 export function getSupply(currencyName, years) {
   switch (currencyName.toLowerCase()) {
     case 'bitcoin':
       return getBitcoinSupply(years)
+    case 'litecoin':
+      return getLitecoinSupply(years)
     case 'ethereum':
       return getEthereumSupply(years)
     case 'zcash':

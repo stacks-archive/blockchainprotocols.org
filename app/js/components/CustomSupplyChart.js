@@ -71,14 +71,14 @@ class SupplyNumberChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Miners', 'Apps', 'Users', 'Sale', 'Giveaway', 'Creators'],
+      ['Years', 'Burners', 'Apps', 'Users', 'Sale', 'Giveaway', 'Creators'],
     ]
 
     for (let i = 0; i <= years; i++) {
       const supplyObject = customSupplyFunction(i)
       const row = [
         i,
-        supplyObject.miners/Math.pow(10, 6),
+        supplyObject.burners/Math.pow(10, 6),
         supplyObject.apps/Math.pow(10, 6),
         supplyObject.users/Math.pow(10, 6),
         supplyObject.sale/Math.pow(10, 6),
@@ -106,7 +106,7 @@ class SupplyNumberChart extends Component {
 
   render() {
     return (
-      <div id={this.props.id}>
+      <div id={this.props.id} className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"
