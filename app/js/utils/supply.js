@@ -100,6 +100,20 @@ export function getFilecoinSupply(years) {
   }
 }
 
+export function getRippleSupply(/*years*/) {
+  const totalSupply = 100 * Math.pow(10, 9)
+  const creatorSupply = totalSupply
+  const minerSupply = 0
+  const saleSupply = 0
+
+  return {
+    total: totalSupply,
+    miners: minerSupply,
+    sale: saleSupply,
+    creators: creatorSupply,
+  }
+}
+
 export function getTezosSupply(years) {
   const saleSupply = 65681 * 5000 + 361122 * 500
   const creatorSupply = saleSupply * 0.25
@@ -274,10 +288,16 @@ export function getSupply(currencyName, years) {
   switch (currencyName.toLowerCase()) {
     case 'bitcoin':
       return getBitcoinSupply(years)
+    case 'bitcoin-cash':
+      return getBitcoinSupply(years)
     case 'litecoin':
       return getLitecoinSupply(years)
     case 'ethereum':
       return getEthereumSupply(years)
+    case 'ethereum-classic':
+      return getEthereumSupply(years)
+    case 'ripple':
+      return getRippleSupply(years)
     case 'zcash':
       return getZcashSupply(years)
     case 'filecoin':

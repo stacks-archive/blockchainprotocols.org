@@ -4,10 +4,10 @@ import {Component} from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 
-import YearSlider from '../components/YearSlider'
-import {fetchCurrencies, currencyNames} from '../utils/markets'
-import {getSupply} from '../utils/supply'
-import MarketPriceChart from '../components/MarketPriceChart'
+//import YearSlider from '../components/YearSlider'
+import {fetchCurrencies} from '../utils/markets'
+//import {getSupply} from '../utils/supply'
+//import MarketPriceChart from '../components/MarketPriceChart'
 
 class MarketsPage extends Component {
   static propTypes() {
@@ -63,8 +63,6 @@ class MarketsPage extends Component {
                       <th>Asset</th>
                       <th className="text-right">Market Cap</th>
                       <th className="text-right">Price per token</th>
-                      <th className="text-right">Supply after 4Y</th>
-                      <th className="text-right">Price for 1/1B @ 4Y</th>
                       <th className="text-right">Supply after 20Y</th>
                       <th className="text-right">Price for 1/1B @ 20Y</th>
                       <th className="text-right">Volume (24h)</th>
@@ -81,8 +79,6 @@ class MarketsPage extends Component {
                           <td>{currency.name}</td>
                           <td className="text-right">${currency.marketCapUSD}</td>
                           <td className="text-right">${currency.price}</td>
-                          <td className="text-right">{snapshot4Years.supplyFormatted}</td>
-                          <td className="text-right">${snapshot4Years.priceForABillionth}</td>
                           <td className="text-right">{snapshot20Years.supplyFormatted}</td>
                           <td className="text-right">${snapshot20Years.priceForABillionth}</td>
                           <td className="text-right">${currency.volume24HoursUSD}</td>
@@ -107,6 +103,11 @@ class MarketsPage extends Component {
 export default MarketsPage
 
 /*
+                      <th className="text-right">Supply after 4Y</th>
+                      <th className="text-right">Price for 1/1B @ 4Y</th>
+                          <td className="text-right">{snapshot4Years.supplyFormatted}</td>
+                          <td className="text-right">${snapshot4Years.priceForABillionth}</td>
+                          
                           <td className="text-right">{snapshot20Years.coinsInABillionth}</td>
 
             <div className="row">

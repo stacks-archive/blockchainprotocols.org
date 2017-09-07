@@ -57,7 +57,7 @@ const tezosRecord = {
 }
 
 export const supportedCurrencies = [
-  'bitcoin', 'ethereum', 'litecoin', 'zcash', 'filecoin', 'tezos'
+  'bitcoin', 'ethereum', 'bitcoin-cash', 'ripple', 'litecoin', 'ethereum-classic', 'zcash', 'filecoin', 'tezos'
 ]
 
 export function fetchCurrencies() {

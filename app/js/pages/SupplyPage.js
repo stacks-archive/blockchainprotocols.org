@@ -34,7 +34,7 @@ class SupplyPage extends Component {
       yearsBetweenDecays: 3,
       numberOfMiningDecays: 5,
 
-      salePrice: 0.05,
+      salePrice: 0.07,
       numUsers: 70000,
       treasuryPercentage: 0.2,
     }
