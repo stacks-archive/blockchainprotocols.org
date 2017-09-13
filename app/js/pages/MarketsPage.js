@@ -73,7 +73,7 @@ class MarketsPage extends Component {
                   <tbody>
                     { this.state.currencies.map((currency, index) => {
                       const snapshot20Years = currency.snapshot20Years
-                      const creatorOwnership = currency.supply20Years.creators / currency.supply20Years.total * 100
+                      const creatorOwnership = currency.supply20Years.creators / Math.max(currency.supply20Years.total, 1) * 100
                       //const snapshot4Years = currency.snapshot4Years
                       return (
                         <tr key={index}>

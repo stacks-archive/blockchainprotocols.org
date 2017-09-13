@@ -70,21 +70,24 @@ export function fetchCurrencies() {
       .then((responseText) => JSON.parse(responseText))
       .then((priceList) => {
         // Convert the price list into a price map
-        let priceMap = {}
+        //let priceMap = {}
+        let currencyList = []
+
+        priceList.push(filecoinRecord)
+        priceList.push(tezosRecord)
         priceList.map((currencyRecord) => {
-          priceMap[currencyRecord.id] = currencyRecord
+          currencyList.push(processCurrencyRecord(currencyRecord))
         })
-        priceMap['filecoin'] = filecoinRecord
-        priceMap['tezos'] = tezosRecord
+        //priceMap['filecoin'] = filecoinRecord
+        //priceMap['tezos'] = tezosRecord
 
         // Convert the price map into a list of currencies
-        let currencyList = []
+        /*let currencyList = []
         supportedCurrencies.map((currencyID) => {
           if (currencyID in priceMap) {
-            const currencyRecord = processCurrencyRecord(priceMap[currencyID])
             currencyList.push(currencyRecord)
           }
-        })
+        })*/
         resolve(currencyList)
       })
       .catch((err) => {

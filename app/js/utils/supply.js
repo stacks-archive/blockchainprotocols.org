@@ -284,6 +284,13 @@ export function getTokenSupplyFunction2(type, parameters) {
   }
 }*/
 
+export function getUnknownTokenSupply() {
+  return {
+    total: 0,
+    creators: 0
+  }
+}
+
 export function getSupply(currencyName, years) {
   switch (currencyName.toLowerCase()) {
     case 'bitcoin':
@@ -305,11 +312,36 @@ export function getSupply(currencyName, years) {
     case 'tezos':
       return getTezosSupply(years)
     default:
-      return 0
+      return getUnknownTokenSupply()
   }
 }
 
 /*
+    case 'dash':
+      return {}
+    case 'nem':
+      return {}
+    case 'monero':
+      return {}
+    case 'iota':
+      return {}
+    case 'omisego':
+      return {}
+    case 'neo':
+      return {}
+    case 'bitconnect':
+      return {}
+    case 'lisk':
+      return {}
+    case 'qtum':
+      return {}
+    case 'stratis':
+      return {}
+    case 'waves':
+      return {}
+    case 'tether':
+      return {}
+
     //const initialMiningSupply = 330 * Math.pow(10, 6)
 
     //const initialMinerSupply = parameters.initialMinerSupply
