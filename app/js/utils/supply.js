@@ -195,21 +195,17 @@ export function getTokenSupplyFunction(type, parameters) {
       const decayFactor = Math.pow(p.rewardDecayBase, rewardDecayExponent)
       //console.log(`Year: ${i}; Exponent: ${rewardDecayExponent}; Decay factor: ${decayFactor}`)
       const newSupplyThisYear = 55000 * p.initialBlockReward * decayFactor
-      if (i < 3) {
+      if (i < 4) {
         creatorSupply += newSupplyThisYear * 0.1
         appSupply += newSupplyThisYear * 0.1
         userSupply += newSupplyThisYear * 0.1
         saleSupply += newSupplyThisYear * 0.2
         burnerSupply += newSupplyThisYear * 0.5
-      } else if (i < 6) {
+      } else {
         creatorSupply += newSupplyThisYear * 0.1
         appSupply += newSupplyThisYear * 0.1
         userSupply += newSupplyThisYear * 0.1
         burnerSupply += newSupplyThisYear * 0.7
-      } else {
-        appSupply += newSupplyThisYear * 0.1
-        userSupply += newSupplyThisYear * 0.1
-        burnerSupply += newSupplyThisYear * 0.8
       }
       totalSupply = totalSupply + newSupplyThisYear
     }

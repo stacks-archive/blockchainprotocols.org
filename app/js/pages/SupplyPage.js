@@ -24,17 +24,12 @@ class SupplyPage extends Component {
       years: 20,
       chartHeight: '500px',
 
-      saleSupply: 800,
-      giveawaySupply: 800,
-      creatorSupply: 800,
-      finalBlockReward: 3000,
+      initialBlockReward: 32768,
+      rewardDecayBase: 0.75,
+      yearsBetweenDecays: 2,
+      numberOfMiningDecays: 7,
 
-      initialBlockReward: 50625,
-      rewardDecayBase: 0.6,
-      yearsBetweenDecays: 3,
-      numberOfMiningDecays: 5,
-
-      salePrice: 0.07,
+      salePrice: 0.08,
       numUsers: 70000,
       treasuryPercentage: 0.2,
     }
@@ -48,6 +43,11 @@ class SupplyPage extends Component {
       numberOfMiningDecays: this.state.numberOfMiningDecays,
     }
     /*
+      saleSupply: 800,
+      giveawaySupply: 800,
+      creatorSupply: 800,
+      finalBlockReward: 3000,
+
       saleSupply: this.state.saleSupply * Math.pow(10, 6),
       giveawaySupply: this.state.giveawaySupply * Math.pow(10, 6),
       creatorSupply: this.state.creatorSupply * Math.pow(10, 6),
