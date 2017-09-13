@@ -32,6 +32,7 @@ function processCurrencyRecord(currencyRecord) {
     id: currencyID,
     name: name,
     price: price,
+    supply20Years: getSupply(currencyID, 20),
     marketCapUSD: marketCapUSD,
     volume24HoursUSD: volume24HoursUSD,
     percentChange24H: percentChange24H,
