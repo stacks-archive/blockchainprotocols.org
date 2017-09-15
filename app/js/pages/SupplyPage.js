@@ -23,30 +23,31 @@ class SupplyPage extends Component {
       modalIsOpen: false,
       years: 20,
       chartHeight: '500px',
+      blocksPerYear: 52500,
 
-      initialBlockReward: 32768,
-      rewardDecayBase: 0.75,
-      yearsBetweenDecays: 2,
-      numberOfMiningDecays: 7,
+      initialBlockReward: 50000,
+      rewardDecayBase: 0.5,
+      yearsBetweenDecays: 4,
+      numberOfMiningDecays: 2,
 
-      salePrice: 0.08,
-      numUsers: 70000,
-      treasuryPercentage: 0.2,
+      salePrice: 0.04,
     }
   }
 
   render() {
     const parameters = {
+      blocksPerYear: this.state.blocksPerYear,
       initialBlockReward: this.state.initialBlockReward,
       rewardDecayBase: this.state.rewardDecayBase,
       yearsBetweenDecays: this.state.yearsBetweenDecays,
       numberOfMiningDecays: this.state.numberOfMiningDecays,
+      saleSupply: this.state.initialBlockReward * this.state.blocksPerYear,
+      giveawaySupply: this.state.initialBlockReward * this.state.blocksPerYear * 2,
+      creatorSupply: this.state.initialBlockReward * this.state.blocksPerYear,
     }
     /*
-      saleSupply: 800,
-      giveawaySupply: 800,
-      creatorSupply: 800,
       finalBlockReward: 3000,
+      numUsers: 70000,
 
       saleSupply: this.state.saleSupply * Math.pow(10, 6),
       giveawaySupply: this.state.giveawaySupply * Math.pow(10, 6),
@@ -104,7 +105,7 @@ class SupplyPage extends Component {
                   Amount raised: ${saleSupplyUSD.toLocaleString()}
                 </p>
                 <p>
-                  Amount to Blockstack Inc.: ${creatorSupplyUSD.toLocaleString()}
+                  Amount to Blockstack PBC + maintainers: ${(creatorSupplyUSD).toLocaleString()}
                 </p>
                 <p>
                   Price per billionth (20Y): ${pricePerBillionth20Y.toLocaleString()}

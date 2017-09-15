@@ -172,6 +172,10 @@ export function getTokenSupplyFunction(type, parameters) {
     'rewardDecayBase',
     'yearsBetweenDecays',
     'numberOfMiningDecays',
+    'blocksPerYear',
+    'creatorSupply',
+    'saleSupply',
+    'giveawaySupply'
   ]
   requiredKeys.forEach(requiredKey => {
     if (!parameters.hasOwnProperty(requiredKey)) {
@@ -181,12 +185,17 @@ export function getTokenSupplyFunction(type, parameters) {
   const p = parameters
 
   return function(years) {
+    const saleVest = 4
+    const creatorVest = 4
+    const userVest = 4
+    //const appVest = 4
+
     let totalSupply = 0
-    let saleSupply = 0
-    let creatorSupply = 0
-    let burnerSupply = 0
-    let appSupply = 0
-    let userSupply = 0
+    let minerSupply = 0
+    let appSupply = 0 // p.appSupply * Math.min(appVest, years) / appVest
+    let saleSupply = p.saleSupply * Math.min(saleVest, years) / saleVest
+    let creatorSupply = p.creatorSupply * Math.min(creatorVest, years) / creatorVest
+    let userSupply = p.giveawaySupply * Math.min(userVest, years) / userVest
     //let minerSupply = 0
     //let giveawaySupply = 0
 
@@ -194,30 +203,35 @@ export function getTokenSupplyFunction(type, parameters) {
       const rewardDecayExponent = Math.min(Math.floor(i / p.yearsBetweenDecays), p.numberOfMiningDecays)
       const decayFactor = Math.pow(p.rewardDecayBase, rewardDecayExponent)
       //console.log(`Year: ${i}; Exponent: ${rewardDecayExponent}; Decay factor: ${decayFactor}`)
-      const newSupplyThisYear = 55000 * p.initialBlockReward * decayFactor
-      if (i < 4) {
+      const newSupplyThisYear = p.blocksPerYear * p.initialBlockReward * decayFactor
+      /*if (i < 4) {
         creatorSupply += newSupplyThisYear * 0.1
         appSupply += newSupplyThisYear * 0.1
         userSupply += newSupplyThisYear * 0.1
         saleSupply += newSupplyThisYear * 0.2
-        burnerSupply += newSupplyThisYear * 0.5
+        minerSupply += newSupplyThisYear * 0.5
       } else {
         creatorSupply += newSupplyThisYear * 0.1
         appSupply += newSupplyThisYear * 0.1
         userSupply += newSupplyThisYear * 0.1
-        burnerSupply += newSupplyThisYear * 0.7
-      }
-      totalSupply = totalSupply + newSupplyThisYear
+        minerSupply += newSupplyThisYear * 0.7
+      }*/
+      minerSupply += newSupplyThisYear * 0.75
+      appSupply += newSupplyThisYear * 0.25
     }
 
+    totalSupply = minerSupply + saleSupply + creatorSupply + appSupply + userSupply
+
     const supplyData = {
+      year: years,
       total: totalSupply,
       sale: saleSupply,
       creators: creatorSupply,
-      burners: burnerSupply,
+      miners: minerSupply,
       apps: appSupply,
       users: userSupply,
     }
+    //console.log(supplyData)
     return supplyData
   }
 }
@@ -259,7 +273,7 @@ export function getTokenSupplyFunction2(type, parameters) {
       minerSupply = minerSupply + newSupplyThisYear
     }
 
-    const burnerSupply = minerSupply * 0.75
+    const minerSupply = minerSupply * 0.75
     const appSupply = minerSupply * 0.125
     const userSupply = minerSupply * 0.125
 
@@ -271,7 +285,7 @@ export function getTokenSupplyFunction2(type, parameters) {
       sale: saleSupply,
       giveaway: giveawaySupply,
       creators: creatorSupply,
-      burners: burnerSupply,
+      burners: minerSupply,
       apps: appSupply,
       users: userSupply,
       creatorPercentage: creatorSupply / totalSupply

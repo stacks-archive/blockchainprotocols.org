@@ -71,18 +71,17 @@ class SupplyNumberChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Burners', 'Apps', 'Users', 'Sale', 'Giveaway', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'Users', 'Sale', 'Creators'],
     ]
 
     for (let i = 0; i <= years; i++) {
       const supplyObject = customSupplyFunction(i)
       const row = [
         i,
-        supplyObject.burners/Math.pow(10, 6),
+        supplyObject.miners/Math.pow(10, 6),
         supplyObject.apps/Math.pow(10, 6),
         supplyObject.users/Math.pow(10, 6),
         supplyObject.sale/Math.pow(10, 6),
-        supplyObject.giveaway/Math.pow(10, 6),
         supplyObject.creators/Math.pow(10, 6),
       ]
       //supplyObject.users/Math.pow(10, 6),

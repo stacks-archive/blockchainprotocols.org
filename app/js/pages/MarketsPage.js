@@ -65,6 +65,7 @@ class MarketsPage extends Component {
                       <th className="text-right">Price per token</th>
                       <th className="text-right">Supply after 20Y</th>
                       <th className="text-right">Price for 1/1B @ 20Y</th>
+                      <th className="text-right">Price for 1/1B @ 4Y</th>
                       <th className="text-right">Volume (24h)</th>
                       <th className="text-right">% Change (24h)</th>
                       <th className="text-right">Creator % @ 20Y</th>
@@ -73,6 +74,7 @@ class MarketsPage extends Component {
                   <tbody>
                     { this.state.currencies.map((currency, index) => {
                       const snapshot20Years = currency.snapshot20Years
+                      const snapshot4Years = currency.snapshot4Years
                       const creatorOwnership = currency.supply20Years.creators / Math.max(currency.supply20Years.total, 1) * 100
                       //const snapshot4Years = currency.snapshot4Years
                       return (
@@ -83,6 +85,7 @@ class MarketsPage extends Component {
                           <td className="text-right">${currency.price}</td>
                           <td className="text-right">{snapshot20Years.supplyFormatted}</td>
                           <td className="text-right">${snapshot20Years.priceForABillionth}</td>
+                          <td className="text-right">${snapshot4Years.priceForABillionth}</td>
                           <td className="text-right">${currency.volume24HoursUSD}</td>
                           <td className="text-right">{currency.percentChange24H}%</td>
                           <td className="text-right">{creatorOwnership.toFixed(2)}%</td>
