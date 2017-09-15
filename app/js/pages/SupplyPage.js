@@ -60,6 +60,9 @@ class SupplyPage extends Component {
     const saleSupplyUSD = saleSupply * this.state.salePrice
     const creatorSupply = supplyFunction(20).creators
     const creatorSupplyUSD = creatorSupply * this.state.salePrice
+    const userSupply = supplyFunction(20).users
+    //const appSupply = supplyFunction(20).apps
+    //const userSupplyUSD = userSupply * this.state.salePrice
     /*const amountToTreasury = creatorSupply * this.state.treasuryPercentage
     const amountToShareholders = amountToCreators - amountToTreasury
     const amountRaised = this.state.saleSupply * this.state.salePrice * Math.pow(10, 6)
@@ -85,6 +88,12 @@ class SupplyPage extends Component {
                   Creator supply: {creatorSupply.toLocaleString()}
                 </p>
                 <p>
+                  User wave 1 supply: {(userSupply/2).toLocaleString()}
+                </p>
+                <p>
+                  User wave 2 supply: {(userSupply/2).toLocaleString()}
+                </p>
+                <p>
                   Initial block reward: {this.state.initialBlockReward.toLocaleString()}
                 </p>
                 <p>
@@ -105,6 +114,9 @@ class SupplyPage extends Component {
                   Amount raised: ${saleSupplyUSD.toLocaleString()}
                 </p>
                 <p>
+                  Amount to Blockstack PBC: ${(creatorSupplyUSD*2/3.).toLocaleString()}
+                </p>
+                <p>
                   Amount to Blockstack PBC + maintainers: ${(creatorSupplyUSD).toLocaleString()}
                 </p>
                 <p>
@@ -112,6 +124,12 @@ class SupplyPage extends Component {
                 </p>
                 <p>
                   Price per billionth (4Y): ${pricePerBillionth4Y.toLocaleString()}
+                </p>
+                <p>
+                  Market cap after 1 year (at current price): ${(this.state.salePrice * supplyFunction(1).total).toLocaleString()}
+                </p>
+                <p>
+                  Market cap after 4 years (at current price): ${(this.state.salePrice * supplyFunction(4).total).toLocaleString()}
                 </p>
               </div>
             </div>
