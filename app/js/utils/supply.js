@@ -166,133 +166,72 @@ export function getZcashSupply(years) {
   }
 }
 
-export function getTokenSupplyFunction(type, parameters) {
-  const requiredKeys = [
-    'initialBlockReward',
-    'rewardDecayBase',
-    'yearsBetweenDecays',
-    'numberOfMiningDecays',
-    'blocksPerYear',
-    'creatorSupply',
-    'saleSupply',
-    'giveawaySupply'
-  ]
-  requiredKeys.forEach(requiredKey => {
-    if (!parameters.hasOwnProperty(requiredKey)) {
-      throw `Parameter missing: ${requiredKey}`
-    }
-  })
-  const p = parameters
+export function getTokenSupplyFunction() {
 
   return function(years) {
-    const saleVest = 4
-    const creatorVest = 4
-    const userVest = 4
-    //const appVest = 4
+    const blocksPerYear = 55000
+
+    const p = {
+      initialBlockReward: 8000,
+      finalBlockReward: 2000,
+      rewardDecayBase: 500,
+      saleVest: 2,
+      creatorVest: 8,
+      userVest: 2,
+      appMiningFraction: 0.25,
+      majorPartySupply: (8000 * blocksPerYear),
+    }
+
+    const saleSupplyTotal = p.majorPartySupply
+    const creatorSupplyTotal = p.majorPartySupply
+    const alphaUserTotal = p.majorPartySupply
+    const betaUserTotal = p.majorPartySupply * (0.5)
 
     let totalSupply = 0
     let minerSupply = 0
-    let appSupply = 0 // p.appSupply * Math.min(appVest, years) / appVest
-    let saleSupply = p.saleSupply * Math.min(saleVest, years) / saleVest
-    let creatorSupply = p.creatorSupply * Math.min(creatorVest, years) / creatorVest
-    let userSupply = p.giveawaySupply * Math.min(userVest, years) / userVest
-    //let minerSupply = 0
-    //let giveawaySupply = 0
+    let appSupply = 0
+    let creatorSupply = 0
 
-    for (let i = 0; i < years; i += 1) {
-      const rewardDecayExponent = Math.min(Math.floor(i / p.yearsBetweenDecays), p.numberOfMiningDecays)
-      const decayFactor = Math.pow(p.rewardDecayBase, rewardDecayExponent)
-      //console.log(`Year: ${i}; Exponent: ${rewardDecayExponent}; Decay factor: ${decayFactor}`)
-      const newSupplyThisYear = p.blocksPerYear * p.initialBlockReward * decayFactor
-      /*if (i < 4) {
-        creatorSupply += newSupplyThisYear * 0.1
-        appSupply += newSupplyThisYear * 0.1
-        userSupply += newSupplyThisYear * 0.1
-        saleSupply += newSupplyThisYear * 0.2
-        minerSupply += newSupplyThisYear * 0.5
-      } else {
-        creatorSupply += newSupplyThisYear * 0.1
-        appSupply += newSupplyThisYear * 0.1
-        userSupply += newSupplyThisYear * 0.1
-        minerSupply += newSupplyThisYear * 0.7
-      }*/
-      minerSupply += newSupplyThisYear * 0.75
-      appSupply += newSupplyThisYear * 0.25
+    for (let i = 0; i < years; i++) {
+      if (i >= 0 && i < 4) {
+        creatorSupply += creatorSupplyTotal * 0.2
+      }
+      if (i >= 4 && i < 8) {
+        creatorSupply += creatorSupplyTotal * 0.05
+      }
     }
 
-    totalSupply = minerSupply + saleSupply + creatorSupply + appSupply + userSupply
+    let saleSupply = saleSupplyTotal * Math.min(p.saleVest, years) / p.saleVest
+    //let creatorSupply = creatorSupplyTotal * Math.min(p.creatorVest, years) / p.creatorVest
+    let alphaUserSupply = alphaUserTotal * Math.min(p.userVest, years) / p.userVest
+    let betaUserSupply = betaUserTotal * Math.min(p.userVest, years) / p.userVest
+
+    for (let i = 0; i < years; i++) {
+      const newSupplyThisYear = blocksPerYear * Math.max(p.initialBlockReward - (i * p.rewardDecayBase), p.finalBlockReward)
+      minerSupply += newSupplyThisYear * (1 - p.appMiningFraction)
+      appSupply += newSupplyThisYear * p.appMiningFraction
+    }
+
+    totalSupply = minerSupply + saleSupply + creatorSupply + appSupply + alphaUserSupply + betaUserSupply
 
     const supplyData = {
-      year: years,
       total: totalSupply,
       sale: saleSupply,
       creators: creatorSupply,
       miners: minerSupply,
       apps: appSupply,
-      users: userSupply,
+      alphaUsers: alphaUserSupply,
+      betaUsers: betaUserSupply,
+      users: alphaUserSupply + betaUserSupply,
+
+      year: years,
+      initialBlockReward: p.initialBlockReward,
+      finalBlockReward: p.finalBlockReward,
+      rewardDecayBase: p.rewardDecayBase
     }
-    //console.log(supplyData)
     return supplyData
   }
 }
-
-/*
-export function getTokenSupplyFunction2(type, parameters) {
-  const requiredKeys = [
-    'saleSupply', 'creatorSupply', 'giveawaySupply',
-    'initialBlockReward', 'finalBlockReward', 'rewardDecay'
-  ]
-  requiredKeys.forEach(requiredKey => {
-    if (!parameters.hasOwnProperty(requiredKey)) {
-      throw `Parameter missing: ${requiredKey}`
-    }
-  })
-
-  // Return the halving function
-  return function(years) {
-    // Sale Supply
-    const saleVest = 2
-    const saleSupply =  Math.min(saleVest, years) / saleVest * parameters.saleSupply
-    const giveawaySupply = Math.min(saleVest, years) / saleVest * parameters.giveawaySupply
-
-    // Creator Supply
-    const creatorVest = 4
-    const creatorSupply = Math.min(creatorVest, years) / creatorVest * parameters.creatorSupply
-
-    // User Supply
-    //const yearsPerHalving = 1
-    //const userDecayCoefficient = Math.log(0.5)/yearsPerHalving
-    //const userSupply = parameters.userSupply * (1 - Math.exp(userDecayCoefficient*years))
-    
-    // Miner Supply
-    let minerSupply = 0
-    for (let i = 0; i < years; i++) {
-      const rewardDecay = i * parameters.rewardDecay
-      const newSupplyThisYear = 55000 * Math.max(parameters.initialBlockReward - rewardDecay, parameters.finalBlockReward)
-      //const newSupplyThisYear = Math.pow(10, 9) * 1 / Math.min(16, (i + parseInt(parameters.initialMiningFraction)))
-      minerSupply = minerSupply + newSupplyThisYear
-    }
-
-    const minerSupply = minerSupply * 0.75
-    const appSupply = minerSupply * 0.125
-    const userSupply = minerSupply * 0.125
-
-    const totalSupply = minerSupply + saleSupply + creatorSupply + giveawaySupply
-
-    const supplyData = {
-      total: totalSupply,
-      miners: minerSupply,
-      sale: saleSupply,
-      giveaway: giveawaySupply,
-      creators: creatorSupply,
-      burners: minerSupply,
-      apps: appSupply,
-      users: userSupply,
-      creatorPercentage: creatorSupply / totalSupply
-    }
-    return supplyData
-  }
-}*/
 
 export function getUnknownTokenSupply() {
   return {
@@ -326,59 +265,3 @@ export function getSupply(currencyName, years) {
   }
 }
 
-/*
-    case 'dash':
-      return {}
-    case 'nem':
-      return {}
-    case 'monero':
-      return {}
-    case 'iota':
-      return {}
-    case 'omisego':
-      return {}
-    case 'neo':
-      return {}
-    case 'bitconnect':
-      return {}
-    case 'lisk':
-      return {}
-    case 'qtum':
-      return {}
-    case 'stratis':
-      return {}
-    case 'waves':
-      return {}
-    case 'tether':
-      return {}
-
-    //const initialMiningSupply = 330 * Math.pow(10, 6)
-
-    //const initialMinerSupply = parameters.initialMinerSupply
-
-      const decayCoefficientThisYear = Math.min(
-        parameters.numberOfMiningDecays,
-        Math.floor(i / parameters.miningDecayInterval)
-      )
-      const newSupplyThisYear = miningSupplyPerYear * Math.pow(
-        parameters.miningDecayCoefficient, decayCoefficientThisYear)
-
-      //const newSupplyThisYear = miningSupplyPerYear * (12 - Math.min(9, i / 2) ) / 12
-      //console.log(newSupplyThisYear)
-
-export function getTokenSupplyFunction(saleSupplyI,
-                                       creatorSupplyI,
-                                       minerSupplyPerYearI,
-                                       miningDecayCoefficient,
-                                       miningDecayInterval,
-                                       numberOfMiningDecays) {
-
-}*/
-
-/*
-export function getSupplyGrowth(currencyName, years) {
-  const thisYearsSupply = getSupply(currencyName, years).total
-  const nextYearsSupply = getSupply(currencyName, years+1).total
-  const supplyGrowth = (nextYearsSupply - thisYearsSupply) / thisYearsSupply
-  return supplyGrowth
-}*/

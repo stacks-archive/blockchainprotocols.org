@@ -34,7 +34,10 @@ class SupplyNumberChart extends Component {
           format: '#,###M'
         },
         seriesType: 'area',
-        legend: 'top',
+        legend: {
+          position: 'top',
+          maxLines: 2,
+        },
         isStacked: this.props.isStacked,
         chartArea: {
           left: '15%',
@@ -71,7 +74,7 @@ class SupplyNumberChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Miners', 'Apps', 'Users', 'Sale', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Accredited Sale', 'Creators'],
     ]
 
     for (let i = 0; i <= years; i++) {
@@ -80,7 +83,8 @@ class SupplyNumberChart extends Component {
         i,
         supplyObject.miners/Math.pow(10, 6),
         supplyObject.apps/Math.pow(10, 6),
-        supplyObject.users/Math.pow(10, 6),
+        supplyObject.alphaUsers/Math.pow(10, 6),
+        supplyObject.betaUsers/Math.pow(10, 6),
         supplyObject.sale/Math.pow(10, 6),
         supplyObject.creators/Math.pow(10, 6),
       ]

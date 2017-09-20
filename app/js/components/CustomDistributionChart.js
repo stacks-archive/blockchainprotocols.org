@@ -31,7 +31,10 @@ class TimeDistributionChart extends Component {
           title: '% of distribution'
         },
         seriesType: 'area',
-        legend: 'top',
+        legend: {
+          position: 'top',
+          maxLines: 2,
+        },
         isStacked: true,
         chartArea: {
           left: '15%',
@@ -65,14 +68,15 @@ class TimeDistributionChart extends Component {
   rebuildChartData() {
     const customSupplyFunction = this.props.supplyFunction
     let data = [
-      ['Years', 'Miners', 'Apps', 'Users', 'Crowdsale', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Accredited Sale', 'Creators'],
     ]
 
     for (let i = 1; i <= this.props.years; i++) {
       const totalAmount = customSupplyFunction(i).total
       const minerShare = customSupplyFunction(i).miners / totalAmount * 100
       const appShare = customSupplyFunction(i).apps / totalAmount * 100
-      const userShare = customSupplyFunction(i).users / totalAmount * 100
+      const alphaUserShare = customSupplyFunction(i).alphaUsers / totalAmount * 100
+      const betaUserShare = customSupplyFunction(i).betaUsers / totalAmount * 100
       const saleShare = customSupplyFunction(i).sale / totalAmount * 100
       //const giveawayShare = customSupplyFunction(i).giveaway / totalAmount * 100
       const creatorShare = customSupplyFunction(i).creators / totalAmount * 100
@@ -80,7 +84,8 @@ class TimeDistributionChart extends Component {
         i,
         minerShare,
         appShare,
-        userShare,
+        alphaUserShare,
+        betaUserShare,
         saleShare,
         //giveawayShare,
         creatorShare,

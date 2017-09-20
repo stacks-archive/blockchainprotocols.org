@@ -34,7 +34,10 @@ class SupplyChart extends Component {
           format: 'percent'
         },
         seriesType: 'line',
-        legend: 'top',
+        legend: {
+          position: 'top',
+          maxLines: 2,
+        },
         chartArea: {
           left: '15%',
           top: '15%',

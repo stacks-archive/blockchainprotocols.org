@@ -23,29 +23,22 @@ class SupplyPage extends Component {
       modalIsOpen: false,
       years: 20,
       chartHeight: '500px',
-      blocksPerYear: 52500,
 
-      initialBlockReward: 50000,
-      rewardDecayBase: 0.5,
-      yearsBetweenDecays: 4,
-      numberOfMiningDecays: 2,
-
-      salePrice: 0.04,
+      salePrice: 0.20,
     }
   }
 
   render() {
+    /*
     const parameters = {
       blocksPerYear: this.state.blocksPerYear,
       initialBlockReward: this.state.initialBlockReward,
       rewardDecayBase: this.state.rewardDecayBase,
+      finalBlockReward: this.state.finalBlockReward,
       yearsBetweenDecays: this.state.yearsBetweenDecays,
       numberOfMiningDecays: this.state.numberOfMiningDecays,
-      saleSupply: this.state.initialBlockReward * this.state.blocksPerYear,
-      giveawaySupply: this.state.initialBlockReward * this.state.blocksPerYear * 2,
-      creatorSupply: this.state.initialBlockReward * this.state.blocksPerYear,
+
     }
-    /*
       finalBlockReward: 3000,
       numUsers: 70000,
 
@@ -54,13 +47,15 @@ class SupplyPage extends Component {
       creatorSupply: this.state.creatorSupply * Math.pow(10, 6),
       finalBlockReward: this.state.finalBlockReward,
     */
-    const supplyFunction = getTokenSupplyFunction('halving', parameters)
+    const supplyFunction = getTokenSupplyFunction()
     
-    const saleSupply = supplyFunction(20).sale
+    const supply = supplyFunction(20)
+
+    const saleSupply =  supply.sale
     const saleSupplyUSD = saleSupply * this.state.salePrice
-    const creatorSupply = supplyFunction(20).creators
+    const creatorSupply = supply.creators
     const creatorSupplyUSD = creatorSupply * this.state.salePrice
-    const userSupply = supplyFunction(20).users
+    const userSupply = supply.users
     //const appSupply = supplyFunction(20).apps
     //const userSupplyUSD = userSupply * this.state.salePrice
     /*const amountToTreasury = creatorSupply * this.state.treasuryPercentage
@@ -75,6 +70,11 @@ class SupplyPage extends Component {
     const pricePerBillionth4Y = this.state.salePrice * supplyFunction(4).total / Math.pow(10, 9)
     //const pricePerBillionth1Y = this.state.salePrice * supplyFunction(1).total / Math.pow(10, 9)
 
+    const blockstackPBCValuation = 23.5 * Math.pow(10, 6)
+    const blockstackPBCSupply = creatorSupply*0.75
+    const blockstackPBCSupplyUSD = creatorSupplyUSD*0.8
+    const treasurySupplyUSD = creatorSupplyUSD*0.2
+
     return (
       <DocumentTitle title="Blockchain Supply">
         <div>
@@ -88,22 +88,19 @@ class SupplyPage extends Component {
                   Creator supply: {creatorSupply.toLocaleString()}
                 </p>
                 <p>
-                  User wave 1 supply: {(userSupply/2).toLocaleString()}
+                  User wave 1 supply: {(supply.alphaUsers).toLocaleString()}
                 </p>
                 <p>
-                  User wave 2 supply: {(userSupply/2).toLocaleString()}
+                  User wave 2 supply: {(supply.betaUsers).toLocaleString()}
                 </p>
                 <p>
-                  Initial block reward: {this.state.initialBlockReward.toLocaleString()}
+                  Initial block reward: {supply.initialBlockReward.toLocaleString()}
                 </p>
                 <p>
-                  Reward decay base: {this.state.rewardDecayBase.toLocaleString()}
+                  Final block reward: {supply.finalBlockReward.toLocaleString()}
                 </p>
                 <p>
-                  Years between decays: {this.state.yearsBetweenDecays.toLocaleString()}
-                </p>
-                <p>
-                  # of mining decays: {this.state.numberOfMiningDecays.toLocaleString()}
+                  Annual reward reduction: {supply.rewardDecayBase.toLocaleString()}
                 </p>
               </div>
               <div className="col-md-6 home-main">
@@ -111,13 +108,16 @@ class SupplyPage extends Component {
                   Token price: ${this.state.salePrice.toLocaleString()}
                 </p>
                 <p>
+                  Shareholder price: ${(blockstackPBCValuation/blockstackPBCSupply).toLocaleString()}
+                </p>
+                <p>
                   Amount raised: ${saleSupplyUSD.toLocaleString()}
                 </p>
                 <p>
-                  Amount to Blockstack PBC: ${(creatorSupplyUSD*2/3.).toLocaleString()}
+                  Amount to PBC shareholders: ${(blockstackPBCSupplyUSD).toLocaleString()}
                 </p>
                 <p>
-                  Amount to Blockstack PBC + maintainers: ${(creatorSupplyUSD).toLocaleString()}
+                  Amount to treasury: ${(treasurySupplyUSD).toLocaleString()}
                 </p>
                 <p>
                   Price per billionth (20Y): ${pricePerBillionth20Y.toLocaleString()}
