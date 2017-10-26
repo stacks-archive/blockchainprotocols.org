@@ -176,16 +176,16 @@ export function getTokenSupplyFunction() {
       finalBlockReward: 2000,
       rewardDecayBase: 500,
       saleVest: 2,
-      creatorVest: 8,
       userVest: 2,
       appMiningFraction: 0.25,
       majorPartySupply: (8000 * blocksPerYear),
     }
+    // creatorVest: 7,
 
     const saleSupplyTotal = p.majorPartySupply
     const creatorSupplyTotal = p.majorPartySupply
     const alphaUserTotal = p.majorPartySupply
-    const betaUserTotal = p.majorPartySupply * (0.5)
+    const betaUserTotal = p.majorPartySupply * 0.5
 
     let totalSupply = 0
     let minerSupply = 0
@@ -193,10 +193,10 @@ export function getTokenSupplyFunction() {
     let creatorSupply = 0
 
     for (let i = 0; i < years; i++) {
-      if (i >= 0 && i < 4) {
-        creatorSupply += creatorSupplyTotal * 0.2
+      if (i >= 0 && i < 3) {
+        creatorSupply += creatorSupplyTotal * 0.25
       }
-      if (i >= 4 && i < 8) {
+      if (i >= 3 && i < 7) {
         creatorSupply += creatorSupplyTotal * 0.05
       }
     }
@@ -208,8 +208,13 @@ export function getTokenSupplyFunction() {
 
     for (let i = 0; i < years; i++) {
       const newSupplyThisYear = blocksPerYear * Math.max(p.initialBlockReward - (i * p.rewardDecayBase), p.finalBlockReward)
-      minerSupply += newSupplyThisYear * (1 - p.appMiningFraction)
-      appSupply += newSupplyThisYear * p.appMiningFraction
+
+      if (i >= 0 && i < 4) {
+        minerSupply += newSupplyThisYear * (1 - p.appMiningFraction)
+        appSupply += newSupplyThisYear * p.appMiningFraction
+      } else {
+        minerSupply += newSupplyThisYear
+      }
     }
 
     totalSupply = minerSupply + saleSupply + creatorSupply + appSupply + alphaUserSupply + betaUserSupply

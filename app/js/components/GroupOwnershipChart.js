@@ -81,29 +81,29 @@ class FoundingShareChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Bitcoin', 'Ethereum', 'Filecoin', 'Custom', 'Tezos', 'Zcash',],
+      ['Years', 'Bitcoin', 'Ethereum', 'Filecoin', 'Tezos', 'Blockstack', 'Zcash',],
     ]
     const currencies = [
-      'bitcoin', 'ethereum', 'filecoin', 'custom', 'tezos', 'zcash',
+      'bitcoin', 'ethereum', 'filecoin', 'tezos', 'blockstack', 'zcash',
     ]
 
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
-        const totalAmount = currency !== 'custom' ? getSupply(currency, i).total : customSupplyFunction(i).total
+        const totalAmount = currency !== 'blockstack' ? getSupply(currency, i).total : customSupplyFunction(i).total
 
         switch (this.props.group) {
           case 'creators':
             options.title = 'Creator Ownership Over Time'
             options.vAxis.title = '% owned by creators + foundation'
-            const creatorAmount = currency !== 'custom' ? getSupply(currency, i).creators : customSupplyFunction(i).creators
+            const creatorAmount = currency !== 'blockstack' ? getSupply(currency, i).creators : customSupplyFunction(i).creators
             const creatorPercentage = creatorAmount / totalAmount
             row.push(creatorPercentage)
             break
           case 'sale':
             options.title = 'Buyer Ownership Over Time'
             options.vAxis.title = '% owned by sale participants'
-            const saleAmount = currency !== 'custom' ? getSupply(currency, i).sale : customSupplyFunction(i).sale
+            const saleAmount = currency !== 'blockstack' ? getSupply(currency, i).sale : customSupplyFunction(i).sale
             const salePercentage = saleAmount / totalAmount
             row.push(salePercentage)
             break

@@ -24,7 +24,7 @@ class SupplyPage extends Component {
       years: 20,
       chartHeight: '500px',
 
-      salePrice: 0.20,
+      salePrice: 0.10,
     }
   }
 
@@ -50,6 +50,8 @@ class SupplyPage extends Component {
     const supplyFunction = getTokenSupplyFunction()
     
     const supply = supplyFunction(20)
+
+    console.log(supplyFunction(10).total)
 
     const saleSupply =  supply.sale
     const saleSupplyUSD = saleSupply * this.state.salePrice

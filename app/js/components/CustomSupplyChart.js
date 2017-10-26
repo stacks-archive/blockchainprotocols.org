@@ -23,7 +23,7 @@ class SupplyNumberChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Current Supply',
+        title: 'Total Supply Over Time',
         hAxis: {
           title: 'Years',
           minValue: 0,
@@ -74,7 +74,7 @@ class SupplyNumberChart extends Component {
     const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Accredited Sale', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Creators', 'Accredited Sale'],
     ]
 
     for (let i = 0; i <= years; i++) {
@@ -85,8 +85,8 @@ class SupplyNumberChart extends Component {
         supplyObject.apps/Math.pow(10, 6),
         supplyObject.alphaUsers/Math.pow(10, 6),
         supplyObject.betaUsers/Math.pow(10, 6),
-        supplyObject.sale/Math.pow(10, 6),
         supplyObject.creators/Math.pow(10, 6),
+        supplyObject.sale/Math.pow(10, 6),
       ]
       //supplyObject.users/Math.pow(10, 6),
       data.push(row)
