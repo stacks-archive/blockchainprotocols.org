@@ -197,7 +197,7 @@ export function getTokenSupplyFunction() {
         creatorSupply += creatorSupplyTotal * 0.25
       }
       if (i >= 3 && i < 7) {
-        creatorSupply += creatorSupplyTotal * 0.05
+        creatorSupply += creatorSupplyTotal * 0.25/4.
       }
     }
 
