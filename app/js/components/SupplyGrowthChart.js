@@ -9,7 +9,6 @@ import {getSupply} from '../utils/supply'
 class SupplyGrowthChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
-    supplyFunction: PropTypes.func.isRequired,
     chartHeight: PropTypes.number.isRequired
   }
 
@@ -58,8 +57,7 @@ class SupplyGrowthChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years ||
-        prevProps.supplyFunction !== this.props.supplyFunction) {
+    if (prevProps.years !== this.props.years) {
       this.rebuildChartData()
     }
   }
@@ -70,17 +68,16 @@ class SupplyGrowthChart extends Component {
 
   rebuildChartData() {
     const years = this.props.years
-    const customSupplyFunction = this.props.supplyFunction
     let data = [
-      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Custom'],
+      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Blockstack'],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom']
+    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'blockstack']
 
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
-        const thisYearsSupply = currency !== 'custom' ? getSupply(currency, i).total : customSupplyFunction(i).total
-        const nextYearsSupply = currency !== 'custom' ? getSupply(currency, i+1).total : customSupplyFunction(i+1).total
+        const thisYearsSupply = getSupply(currency, i).total
+        const nextYearsSupply = getSupply(currency, i+1).total
         const supplyGrowth = (nextYearsSupply - thisYearsSupply) / thisYearsSupply
         row.push(supplyGrowth)
       })

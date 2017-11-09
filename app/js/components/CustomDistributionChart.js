@@ -3,13 +3,11 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
-
-//import {getSupply} from '../utils/supply'
+import {getSupply} from '../utils/supply'
 
 class TimeDistributionChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
-    supplyFunction: PropTypes.func.isRequired,
     chartHeight: PropTypes.number.isRequired
   }
 
@@ -55,8 +53,7 @@ class TimeDistributionChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years ||
-        prevProps.supplyFunction !== this.props.supplyFunction) {
+    if (prevProps.years !== this.props.years) {
       this.rebuildChartData()
     }
   }
@@ -66,34 +63,32 @@ class TimeDistributionChart extends Component {
   }
 
   rebuildChartData() {
-    const customSupplyFunction = this.props.supplyFunction
     let data = [
       ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Accredited Sale', 'Creators'],
     ]
 
     for (let i = 1; i <= this.props.years; i++) {
-      const totalAmount = customSupplyFunction(i).total
-      const minerShare = customSupplyFunction(i).miners / totalAmount * 100
-      const appShare = customSupplyFunction(i).apps / totalAmount * 100
-      const alphaUserShare = customSupplyFunction(i).alphaUsers / totalAmount * 100
-      const betaUserShare = customSupplyFunction(i).betaUsers / totalAmount * 100
-      const saleShare = customSupplyFunction(i).sale / totalAmount * 100
-      //const giveawayShare = customSupplyFunction(i).giveaway / totalAmount * 100
-      const creatorShare = customSupplyFunction(i).creators / totalAmount * 100
+      const supplyObject = getSupply('blockstack', i)
+
+      const totalAmount = supplyObject.total
+      const minerShare = supplyObject.miners / totalAmount * 100
+      const appShare = supplyObject.apps / totalAmount * 100
+      const userSaleShare = supplyObject.userSale / totalAmount * 100
+      const userMiningShare = supplyObject.userMining / totalAmount * 100
+      const saleShare = supplyObject.sale / totalAmount * 100
+      const creatorShare = supplyObject.creators / totalAmount * 100
       const row = [
         i,
         minerShare,
         appShare,
-        alphaUserShare,
-        betaUserShare,
+        userSaleShare,
+        userMiningShare,
         saleShare,
-        //giveawayShare,
         creatorShare,
       ]
       data.push(row)
     }
 
-    //console.log(data)
     let options = this.state.options
     options.hAxis.maxValue = this.props.years
     this.setState({

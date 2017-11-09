@@ -5,12 +5,10 @@ import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 import {getSupply} from '../utils/supply'
 
-class SupplyNumberChart extends Component {
+class MarketCapChart extends Component {
   static propTypes: {
-    id: PropTypes.string.isRequired,
     years: PropTypes.number.isRequired,
-    chartHeight: PropTypes.number.isRequired,
-    isStacked: PropTypes.bool.isRequired
+    chartHeight: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -21,22 +19,22 @@ class SupplyNumberChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Total Supply Over Time',
+        title: '',
         hAxis: {
           title: 'Years',
           minValue: 0,
           maxValue: this.props.years
         },
         vAxis: {
-          title: '# of tokens',
-          format: '#,###M'
+          title: 'market cap',
+          minValue: 0,
+          format: '$#,###M'
         },
-        seriesType: 'area',
+        seriesType: 'line',
         legend: {
           position: 'top',
           maxLines: 2,
         },
-        isStacked: this.props.isStacked,
         chartArea: {
           left: '15%',
           top: '15%',
@@ -69,23 +67,39 @@ class SupplyNumberChart extends Component {
     const years = this.props.years
 
     let data = [
-      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Creators', 'Accredited Sale'],
+      ['Years', 'Zcash', 'Filecoin Advisor', 'Filecoin Main', 'Tezos', 'Blockstack'],
     ]
+    const currencies = ['zcash', 'filecoin-advisor', 'filecoin-main', 'tezos', 'blockstack']
+
+    let endSupplies = {}
+    currencies.forEach((currency) => {
+      const currencyName = currency.split('-')[0]
+      const endSupply = getSupply(currencyName, years).total
+      endSupplies[currencyName] = endSupply
+    })
+
+    const prices = {
+      zcash: 250,
+      'filecoin-advisor': 0.6375,
+      'filecoin-main': 2.2525,
+      blockstack: 0.10,
+      tezos: 0.50
+    }
 
     for (let i = 0; i <= years; i++) {
-      const supplyObject = getSupply('blockstack', i)
-      const row = [
-        i,
-        supplyObject.miners/Math.pow(10, 6),
-        supplyObject.apps/Math.pow(10, 6),
-        supplyObject.userSale/Math.pow(10, 6),
-        supplyObject.userMining/Math.pow(10, 6),
-        supplyObject.creators/Math.pow(10, 6),
-        supplyObject.sale/Math.pow(10, 6),
-      ]
+      let row = [i]
+      currencies.forEach((currency) => {
+        const currencyName = currency.split('-')[0]
+        const currentSupply = getSupply(currencyName, i).total
+        const price = prices[currency]
+        const marketCap = currentSupply * price / Math.pow(10, 6)
+        row.push(marketCap)
+      })
       data.push(row)
     }
+    
     let options = this.state.options
+    options.title = `Market Cap Over Time`
     options.hAxis.maxValue = years
     this.setState({
       loaded: true,
@@ -96,20 +110,20 @@ class SupplyNumberChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $(`#${this.props.id}`).width(), 
-      height: $(`#${this.props.id}`).height(),
+      width: $('#market-cap-chart-panel').width(), 
+      height: $('#market-cap-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id={this.props.id} className="chart-panel">
+      <div id="market-cap-chart-panel" className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id={this.props.id}
+          graph_id="market-cap-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle
@@ -121,5 +135,4 @@ class SupplyNumberChart extends Component {
 
 }
 
-export default SupplyNumberChart
-
+export default MarketCapChart

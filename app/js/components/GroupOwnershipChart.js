@@ -10,7 +10,6 @@ class FoundingShareChart extends Component {
   static propTypes: {
     id: PropTypes.string.isRequired,
     years: PropTypes.number.isRequired,
-    supplyFunction: PropTypes.func.isRequired,
     chartHeight: PropTypes.number.isRequired,
     group: PropTypes.string.isRequired
   }
@@ -63,8 +62,7 @@ class FoundingShareChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years ||
-        prevProps.supplyFunction !== this.props.supplyFunction) {
+    if (prevProps.years !== this.props.years) {
       this.rebuildChartData()
     }
   }
@@ -78,7 +76,6 @@ class FoundingShareChart extends Component {
     options.hAxis.maxValue = years
 
     const years = this.props.years
-    const customSupplyFunction = this.props.supplyFunction
 
     let data = [
       ['Years', 'Bitcoin', 'Ethereum', 'Filecoin', 'Tezos', 'Blockstack', 'Zcash',],
@@ -90,20 +87,20 @@ class FoundingShareChart extends Component {
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
-        const totalAmount = currency !== 'blockstack' ? getSupply(currency, i).total : customSupplyFunction(i).total
+        const totalAmount = getSupply(currency, i).total
 
         switch (this.props.group) {
           case 'creators':
             options.title = 'Creator Ownership Over Time'
             options.vAxis.title = '% owned by creators + foundation'
-            const creatorAmount = currency !== 'blockstack' ? getSupply(currency, i).creators : customSupplyFunction(i).creators
+            const creatorAmount = getSupply(currency, i).creators
             const creatorPercentage = creatorAmount / totalAmount
             row.push(creatorPercentage)
             break
           case 'sale':
             options.title = 'Buyer Ownership Over Time'
             options.vAxis.title = '% owned by sale participants'
-            const saleAmount = currency !== 'blockstack' ? getSupply(currency, i).sale : customSupplyFunction(i).sale
+            const saleAmount = getSupply(currency, i).sale
             const salePercentage = saleAmount / totalAmount
             row.push(salePercentage)
             break

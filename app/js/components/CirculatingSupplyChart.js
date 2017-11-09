@@ -3,13 +3,11 @@
 import {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
-
 import {getSupply} from '../utils/supply'
 
 class SupplyChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
-    supplyFunction: PropTypes.func.isRequired,
     chartHeight: PropTypes.number.isRequired
   }
 
@@ -46,7 +44,6 @@ class SupplyChart extends Component {
         }
       },
       data: null,
-      supplyFunction: this.props.supplyFunction
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -58,8 +55,7 @@ class SupplyChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years ||
-        prevProps.supplyFunction !== this.props.supplyFunction) {
+    if (prevProps.years !== this.props.years) {
       this.rebuildChartData()
     }
   }
@@ -70,23 +66,22 @@ class SupplyChart extends Component {
 
   rebuildChartData() {
     const years = this.props.years
-    const customSupplyFunction = this.props.supplyFunction
 
     let data = [
-      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Custom'],
+      ['Years', 'Bitcoin & Zcash', 'Ethereum', 'Filecoin', 'Blockstack'],
     ]
-    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'custom']
+    const currencies = ['bitcoin', 'ethereum', 'filecoin', 'blockstack']
 
     let endSupplies = {}
     currencies.forEach((currency) => {
-      const endSupply = currency === 'custom' ? customSupplyFunction(years).total : getSupply(currency, years).total
+      const endSupply = getSupply(currency, years).total
       endSupplies[currency] = endSupply
     })
 
     for (let i = 0; i <= years; i++) {
       let row = [i]
       currencies.forEach((currency) => {
-        const currentSupply = currency === 'custom' ? customSupplyFunction(i).total : getSupply(currency, i).total
+        const currentSupply = getSupply(currency, i).total
         const percentage = currentSupply / endSupplies[currency]
         row.push(percentage)
       })

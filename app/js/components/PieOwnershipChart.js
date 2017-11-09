@@ -5,12 +5,10 @@ import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 import {getSupply} from '../utils/supply'
 
-class SupplyNumberChart extends Component {
+class PieOwnershipChart extends Component {
   static propTypes: {
-    id: PropTypes.string.isRequired,
     years: PropTypes.number.isRequired,
-    chartHeight: PropTypes.number.isRequired,
-    isStacked: PropTypes.bool.isRequired
+    chartHeight: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -21,22 +19,21 @@ class SupplyNumberChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Total Supply Over Time',
+        title: 'Stakeholder Ownership',
         hAxis: {
           title: 'Years',
-          minValue: 0,
-          maxValue: this.props.years
+          minValue: 1,
+          maxValue: this.props.years,
         },
         vAxis: {
-          title: '# of tokens',
-          format: '#,###M'
+          title: '% of distribution'
         },
         seriesType: 'area',
         legend: {
           position: 'top',
           maxLines: 2,
         },
-        isStacked: this.props.isStacked,
+        isStacked: true,
         chartArea: {
           left: '15%',
           top: '15%',
@@ -44,7 +41,7 @@ class SupplyNumberChart extends Component {
           height:'75%'
         }
       },
-      data: null,
+      data: null
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -66,27 +63,21 @@ class SupplyNumberChart extends Component {
   }
 
   rebuildChartData() {
-    const years = this.props.years
+    const supplyObject = getSupply('blockstack', 2)
+    const totalAmount = supplyObject.total
 
     let data = [
-      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Creators', 'Accredited Sale'],
+      ['Group', 'Amount'],
+      ['Miners', supplyObject.miners],
+      ['Apps', supplyObject.apps],
+      ['User Sale', supplyObject.userSale],
+      ['User Rewards', supplyObject.userMining],
+      ['Accredited Sale', supplyObject.sale],
+      ['Creators', supplyObject.creators],
     ]
 
-    for (let i = 0; i <= years; i++) {
-      const supplyObject = getSupply('blockstack', i)
-      const row = [
-        i,
-        supplyObject.miners/Math.pow(10, 6),
-        supplyObject.apps/Math.pow(10, 6),
-        supplyObject.userSale/Math.pow(10, 6),
-        supplyObject.userMining/Math.pow(10, 6),
-        supplyObject.creators/Math.pow(10, 6),
-        supplyObject.sale/Math.pow(10, 6),
-      ]
-      data.push(row)
-    }
     let options = this.state.options
-    options.hAxis.maxValue = years
+    options.hAxis.maxValue = this.props.years
     this.setState({
       loaded: true,
       data: data,
@@ -96,20 +87,20 @@ class SupplyNumberChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $(`#${this.props.id}`).width(), 
-      height: $(`#${this.props.id}`).height(),
+      width: $('#pie-ownership-chart-panel').width(), 
+      height: $('#pie-ownership-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id={this.props.id} className="chart-panel">
+      <div id="pie-ownership-chart-panel" className="chart-panel">
         {this.state.data ?
         <Chart
-          chartType="ComboChart"
+          chartType="PieChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id={this.props.id}
+          graph_id="pie-ownership-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle
@@ -121,5 +112,4 @@ class SupplyNumberChart extends Component {
 
 }
 
-export default SupplyNumberChart
-
+export default PieOwnershipChart
