@@ -9,7 +9,7 @@ import SupplyGrowthChart from '../components/SupplyGrowthChart'
 import GroupOwnershipChart from '../components/GroupOwnershipChart'
 import CustomDistributionChart from '../components/CustomDistributionChart'
 import CustomSupplyChart from '../components/CustomSupplyChart'
-import MarketCapChart from '../components/MarketCapChart'
+import MarketCapBarChart from '../components/MarketCapBarChart'
 import PieOwnershipChart from '../components/PieOwnershipChart'
 import {getSupply} from '../utils/supply'
 
@@ -38,8 +38,8 @@ class SupplyPage extends Component {
             <div className="row">
               <div className="col-md-12 home-main">
                 <div className="row">
-                  <div className="col-md-6">
-                    <MarketCapChart
+                  <div className="col-md-8">
+                    <MarketCapBarChart
                       years={this.state.years}
                       chartHeight={this.state.chartHeight} />
                     <CustomSupplyChart
@@ -53,7 +53,7 @@ class SupplyPage extends Component {
                       group={'creators'}
                       chartHeight={this.state.chartHeight} />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-8">
                     <PieOwnershipChart
                       years={this.state.years}
                       chartHeight={this.state.chartHeight} />
