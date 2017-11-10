@@ -52,7 +52,7 @@ const filecoinRecord = {
 const tezosRecord = {
   id: 'tezos',
   name: 'Tezos',
-  price_usd: '0.50',
+  price_usd: '0.425',
   '24h_volume_usd': '0.0',
   percent_change_24h: '0'
 }

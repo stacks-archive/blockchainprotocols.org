@@ -112,21 +112,24 @@ export function getRippleSupply(/*years*/) {
 }
 
 export function getTezosSupply(years) {
-  const saleSupply = 65681 * 5000 + 361122 * 500
-  const creatorSupply = saleSupply * 0.25
-  const initialSupply = saleSupply + creatorSupply
-  let totalSupply = initialSupply
-
-  const minerSupply = totalSupply - initialSupply
-  const originalCreatorPercentage = 0.2
-  const creatorPercentage = (years === 0 ? originalCreatorPercentage : (creatorSupply / totalSupply))
+  let saleSupply = 607256285
+  let creatorSupply = saleSupply * 0.25
+  let initialSupply = saleSupply + creatorSupply
+  let runningSupply = initialSupply
+  for (let i = 0; i < years; i++) {
+    runningSupply = runningSupply * 1.05
+  }
+  let minerSupply = runningSupply - initialSupply
+  let totalSupply = initialSupply + minerSupply
+  let originalCreatorPercentage = 0.2
 
   return {
     total: totalSupply,
+    initial: initialSupply,
     miners: minerSupply,
     sale: saleSupply,
     creators: creatorSupply,
-    creatorPercentage: creatorPercentage
+    creatorPercentage: originalCreatorPercentage
   }
 }
 

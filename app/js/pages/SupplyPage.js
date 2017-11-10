@@ -38,28 +38,36 @@ class SupplyPage extends Component {
             <div className="row">
               <div className="col-md-12 home-main">
                 <div className="row">
-                  <div className="col-md-8">
+                  <div className="col-md-12">
                     <MarketCapBarChart
                       years={this.state.years}
                       chartHeight={this.state.chartHeight} />
+                  </div>
+                  <div className="col-md-6">
+                    <PieOwnershipChart
+                      years={this.state.years}
+                      chartHeight={this.state.chartHeight} />
+                  </div>
+                  <div className="col-md-6">
                     <CustomSupplyChart
                       id="supply-number-chart-1"
                       years={this.state.years}
                       chartHeight={this.state.chartHeight}
                       isStacked={true} />
+                  </div>
+                  <div className="col-md-6">
+                    <SupplyGrowthChart
+                      years={this.state.years}
+                      chartHeight={this.state.chartHeight} />
+                  </div>
+                  <div className="col-md-6">
                     <GroupOwnershipChart
                       id="share-chart-1"
                       years={this.state.years}
                       group={'creators'}
                       chartHeight={this.state.chartHeight} />
                   </div>
-                  <div className="col-md-8">
-                    <PieOwnershipChart
-                      years={this.state.years}
-                      chartHeight={this.state.chartHeight} />
-                    <SupplyGrowthChart
-                      years={this.state.years}
-                      chartHeight={this.state.chartHeight} />
+                  <div className="col-md-6">
                     <CustomDistributionChart
                       years={this.state.years}
                       chartHeight={this.state.chartHeight} />

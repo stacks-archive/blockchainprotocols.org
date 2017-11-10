@@ -62,39 +62,49 @@ class MarketCapChart extends Component {
     const years = this.props.years
 
     const prices = {
-      zcash: 250,
+      'zcash': 250,
       'filecoin-advisor': 0.6375,
       'filecoin-main': 2.2525,
       'blockstack-10': 0.10,
       'blockstack-20': 0.20,
-      tezos: 0.50
+      'tezos-staking': 0.4116,
+      'tezos-nostaking': 0.4116,
     }
 
-    const currencyLabels = ['zcash', 'filecoin-advisor', 'filecoin-main', 'tezos', 'blockstack-10', 'blockstack-20']
+    const currencyLabels = [
+      'zcash',
+      'filecoin-advisor',
+      'filecoin-main',
+      'blockstack-10',
+      'blockstack-20',
+      'tezos-staking',
+      'tezos-nostaking',
+    ]
 
     let endSupplies = {}
     currencyLabels.forEach(currencyLabel => {
       const currencyName = currencyLabel.split('-')[0]
-      const endSupply = getSupply(currencyName, years).total
-      endSupplies[currencyName] = endSupply
+      let endSupply = getSupply(currencyName, years).total
+      endSupplies[currencyLabel] = endSupply
     })
+    endSupplies['tezos-staking'] = getSupply('tezos', years).initial
 
-    let pricePerBilionths = {}
+    let basisPointPrice = {}
     currencyLabels.forEach(currencyLabel => {
       const currencyName = currencyLabel.split('-')[0]
-      const marketCap = endSupplies[currencyName] * prices[currencyLabel]
-      pricePerBilionths[currencyLabel] = marketCap / Math.pow(10, 4)
+      const marketCap = endSupplies[currencyLabel] * prices[currencyLabel]
+      basisPointPrice[currencyLabel] = marketCap / Math.pow(10, 4)
     })
 
     let data = [
       ['Currency', 'Basis Point Price', { role: 'style' }],
-      ['Zcash (Current Price)', pricePerBilionths['zcash'], '#807088'],
-      ['Filecoin (First Hour)', pricePerBilionths['filecoin-main'], '#564061'],
-      ['Filecoin (Advisor Sale)', pricePerBilionths['filecoin-advisor'], '#564061'],
-      ['Blockstack @ $0.10', pricePerBilionths['blockstack-10'], '#270F34'],
-      ['Tezos (Sale Price)', pricePerBilionths['tezos'], '#1E0B28'],
+      ['Zcash (current price)', basisPointPrice['zcash'], '#FFD33D'],
+      ['Filecoin (first hour)', basisPointPrice['filecoin-main'], '#004B7A'],
+      ['Filecoin (advisor sale)', basisPointPrice['filecoin-advisor'], '#004B7A'],
+      ['Tezos (no staking)', basisPointPrice['tezos-nostaking'], '#989898'],
+      ['Blockstack (@ $0.10)', basisPointPrice['blockstack-10'], '#270F34'],
+      ['Tezos (staking)', basisPointPrice['tezos-staking'], '#989898'],
     ]
-    //      ['Blockstack @ $0.20', pricePerBilionths['blockstack-20'], '#270F34'],
 
     let options = this.state.options
     options.title = `Price per basis point at ${years}-year supply`
