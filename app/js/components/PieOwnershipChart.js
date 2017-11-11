@@ -19,7 +19,7 @@ class PieOwnershipChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Stakeholder Ownership',
+        title: '',
         hAxis: {
           title: 'Years',
           minValue: 1,
@@ -28,7 +28,6 @@ class PieOwnershipChart extends Component {
         vAxis: {
           title: '% of distribution'
         },
-        seriesType: 'area',
         legend: {
           position: 'top',
           maxLines: 2,
@@ -39,10 +38,13 @@ class PieOwnershipChart extends Component {
           top: '15%',
           width:'75%',
           height:'75%'
-        }
+        },
+        colors: ['#F44336', '#673AB7', '#4CAF50', '#03A9F4', '#FFC107', '#3F51B5'],
       },
       data: null
     }
+    //        colors: ['#009688', '#4CAF50', '#03A9F4', '#00BCD4', '#673AB7', '#3F51B5'],
+    //        colors: ['#8D7DD5', '#AB76D2', '#01CF98', '#2C96FF', '#96CAFF', '#F53E99']
     this.rebuildChartData = this.rebuildChartData.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
   }
@@ -63,21 +65,21 @@ class PieOwnershipChart extends Component {
   }
 
   rebuildChartData() {
-    const supplyObject = getSupply('blockstack', 2)
-    const totalAmount = supplyObject.total
+    const supplyObject = getSupply('blockstack', this.props.years)
 
     let data = [
-      ['Group', 'Amount'],
-      ['Miners', supplyObject.miners],
-      ['Apps', supplyObject.apps],
-      ['User Sale', supplyObject.userSale],
-      ['User Rewards', supplyObject.userMining],
-      ['Accredited Sale', supplyObject.sale],
-      ['Creators', supplyObject.creators],
+      ['Group', 'Amount', {role:'style'}],
+      ['Miners', supplyObject.miners, '#270F34'],
+      ['Apps', supplyObject.apps, '#FE7F2D'],
+      ['User Rewards', supplyObject.userMining, '#FE7F2D'],
+      ['User Sale', supplyObject.userSale, '#FE7F2D'],
+      ['Accredited Sale', supplyObject.sale, '#FE7F2D'],
+      ['Creators', supplyObject.creators, '#FE7F2D'],
     ]
 
     let options = this.state.options
     options.hAxis.maxValue = this.props.years
+    options.title = `Blockstack stakeholder ownership after ${this.props.years} years`,
     this.setState({
       loaded: true,
       data: data,

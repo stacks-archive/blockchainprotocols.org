@@ -20,7 +20,7 @@ class SupplyGrowthChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Annual Supply Growth',
+        title: 'Annual supply growth by percentage',
         hAxis: {
           title: 'Years',
           minValue: 0,
@@ -37,13 +37,17 @@ class SupplyGrowthChart extends Component {
           }
         },
         seriesType: 'line',
-        legend: 'top',
+        legend: {
+          position: 'top',
+          maxLines: 2,
+        },
         chartArea: {
           left: '15%',
           top: '15%',
           width:'75%',
           height:'75%'
-        }
+        },
+        colors: ['#F44336', '#4CAF50', '#03A9F4',  '#673AB7', '#FFC107', '#3F51B5'],
       },
       data: null,
     }

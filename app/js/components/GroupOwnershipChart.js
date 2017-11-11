@@ -22,7 +22,7 @@ class FoundingShareChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Ownership Over Time',
+        title: 'Ownership over time',
         hAxis: {
           title: 'Years',
           minValue: 0,
@@ -91,14 +91,14 @@ class FoundingShareChart extends Component {
 
         switch (this.props.group) {
           case 'creators':
-            options.title = 'Creator Ownership Over Time'
+            options.title = 'Creator ownership over time'
             options.vAxis.title = '% owned by creators + foundation'
             const creatorAmount = getSupply(currency, i).creators
             const creatorPercentage = creatorAmount / totalAmount
             row.push(creatorPercentage)
             break
           case 'sale':
-            options.title = 'Buyer Ownership Over Time'
+            options.title = 'Buyer ownership over time'
             options.vAxis.title = '% owned by sale participants'
             const saleAmount = getSupply(currency, i).sale
             const salePercentage = saleAmount / totalAmount

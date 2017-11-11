@@ -5,12 +5,11 @@ import PropTypes from 'prop-types'
 import {Chart} from 'react-google-charts'
 import {getSupply} from '../utils/supply'
 
-class SupplyNumberChart extends Component {
+class ValueBreakdownChart extends Component {
   static propTypes: {
-    id: PropTypes.string.isRequired,
     years: PropTypes.number.isRequired,
     chartHeight: PropTypes.number.isRequired,
-    isStacked: PropTypes.bool.isRequired
+    blockstackPrice: PropTypes.number.isRequired,
   }
 
   constructor(props) {
@@ -21,29 +20,22 @@ class SupplyNumberChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Blockstack supply over time',
-        hAxis: {
-          title: 'Years',
-          minValue: 0,
-          maxValue: this.props.years
-        },
+        title: '',
         vAxis: {
-          title: '# of tokens',
-          format: '#,###M'
+          title: 'price',
+          minValue: 0,
+          format: '$#,###M',
         },
-        seriesType: 'area',
+        seriesType: 'bars',
         legend: {
-          position: 'top',
-          maxLines: 2,
+          position: 'none',
         },
-        isStacked: this.props.isStacked,
         chartArea: {
           left: '15%',
-          top: '15%',
+          top: '10%',
           width:'75%',
           height:'75%'
-        },
-        colors: ['#F44336', '#673AB7', '#4CAF50', '#03A9F4', '#FFC107', '#3F51B5'],
+        }
       },
       data: null,
     }
@@ -57,7 +49,8 @@ class SupplyNumberChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years) {
+    if (prevProps.years !== this.props.years ||
+        prevProps.blockstackPrice !== this.props.blockstackPrice) {
       this.rebuildChartData()
     }
   }
@@ -68,26 +61,29 @@ class SupplyNumberChart extends Component {
 
   rebuildChartData() {
     const years = this.props.years
+    const price = this.props.blockstackPrice
+    const supplyObject = getSupply('blockstack', years)
+    const allMinerSupply = supplyObject.miners + supplyObject.apps + supplyObject.userMining
+
+    const totalValue = {
+      accreditedSale: price * supplyObject.sale / Math.pow(10, 6),
+      creators: price * supplyObject.creators / Math.pow(10, 6),
+      userSale: price * supplyObject.userSale / Math.pow(10, 6),
+      allMiners: price * allMinerSupply / Math.pow(10, 6),
+      total: price * supplyObject.total / Math.pow(10, 6),
+    }
 
     let data = [
-      ['Years', 'Miners', 'Apps', 'User Rewards', 'User Sale', 'Accredited Sale', 'Creators',],
+      ['Group', 'Total Value'],
+      ['Accredited sale', totalValue['accreditedSale']],
+      ['Creators', totalValue['creators']],
+      ['User sale', totalValue['userSale']],
+      ['All miners', totalValue['allMiners']],
+      ['All stakeholders', totalValue['total']],
     ]
 
-    for (let i = 0; i <= years; i++) {
-      const supplyObject = getSupply('blockstack', i)
-      const row = [
-        i,
-        supplyObject.miners/Math.pow(10, 6),
-        supplyObject.apps/Math.pow(10, 6),
-        supplyObject.userMining/Math.pow(10, 6),
-        supplyObject.userSale/Math.pow(10, 6),
-        supplyObject.creators/Math.pow(10, 6),
-        supplyObject.sale/Math.pow(10, 6),
-      ]
-      data.push(row)
-    }
     let options = this.state.options
-    options.hAxis.maxValue = years
+    options.title = `Value of ${years}-year token holdings assuming a $${price} price`
     this.setState({
       loaded: true,
       data: data,
@@ -97,20 +93,20 @@ class SupplyNumberChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $(`#${this.props.id}`).width(), 
-      height: $(`#${this.props.id}`).height(),
+      width: $('#value-breakdown-chart-panel').width(), 
+      height: $('#value-breakdown-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id={this.props.id} className="chart-panel">
+      <div id="value-breakdown-chart-panel" className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id={this.props.id}
+          graph_id="value-breakdown-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle
@@ -122,5 +118,4 @@ class SupplyNumberChart extends Component {
 
 }
 
-export default SupplyNumberChart
-
+export default ValueBreakdownChart

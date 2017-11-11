@@ -13,7 +13,7 @@ class Header extends Component {
     return (
       <div style={{ paddingTop: '40px' }}>
         <h2 style={{ textAlign: 'center' }}>
-          The Blockchain Internet
+          Blockstack Charts
         </h2>
       </div>
     )

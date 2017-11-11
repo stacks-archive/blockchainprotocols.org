@@ -40,7 +40,8 @@ class MarketCapChart extends Component {
           top: '15%',
           width:'75%',
           height:'75%'
-        }
+        },
+        colors: ['#F44336', '#4CAF50', '#03A9F4', '#673AB7', '#FFC107', '#3F51B5'],
       },
       data: null,
     }
@@ -67,9 +68,9 @@ class MarketCapChart extends Component {
     const years = this.props.years
 
     let data = [
-      ['Years', 'Zcash', 'Filecoin Advisor', 'Filecoin Main', 'Tezos', 'Blockstack'],
+      ['Years', 'Filecoin Advisor', 'Filecoin Main', 'Tezos', 'Blockstack'],
     ]
-    const currencies = ['zcash', 'filecoin-advisor', 'filecoin-main', 'tezos', 'blockstack']
+    const currencies = ['filecoin-advisor', 'filecoin-main', 'tezos', 'blockstack']
 
     let endSupplies = {}
     currencies.forEach((currency) => {
@@ -79,7 +80,6 @@ class MarketCapChart extends Component {
     })
 
     const prices = {
-      zcash: 250,
       'filecoin-advisor': 0.6375,
       'filecoin-main': 2.2525,
       blockstack: 0.10,
@@ -99,7 +99,7 @@ class MarketCapChart extends Component {
     }
     
     let options = this.state.options
-    options.title = `Market Cap Over Time`
+    options.title = 'Fully-diluted market cap (sale price * tokens existing in a given year)'
     options.hAxis.maxValue = years
     this.setState({
       loaded: true,

@@ -19,7 +19,7 @@ class TimeDistributionChart extends Component {
       height: 0,
       loaded: false,
       options: {
-        title: 'Stakeholder Distribution Over Time',
+        title: 'Blockstack stakeholder distribution over time',
         hAxis: {
           title: 'Years',
           minValue: 1,
@@ -41,6 +41,7 @@ class TimeDistributionChart extends Component {
           height:'75%'
         }
       },
+      colors: ['#009688', '#4CAF50', '#03A9F4', '#00BCD4', '#673AB7', '#3F51B5'],
       data: null
     }
     this.rebuildChartData = this.rebuildChartData.bind(this)
@@ -64,7 +65,7 @@ class TimeDistributionChart extends Component {
 
   rebuildChartData() {
     let data = [
-      ['Years', 'Miners', 'Apps', 'User Sale', 'User Rewards', 'Accredited Sale', 'Creators'],
+      ['Years', 'Miners', 'Apps', 'User Rewards', 'User Sale', 'Accredited Sale', 'Creators'],
     ]
 
     for (let i = 1; i <= this.props.years; i++) {
@@ -81,8 +82,8 @@ class TimeDistributionChart extends Component {
         i,
         minerShare,
         appShare,
-        userSaleShare,
         userMiningShare,
+        userSaleShare,
         saleShare,
         creatorShare,
       ]

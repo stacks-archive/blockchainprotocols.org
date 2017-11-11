@@ -8,7 +8,8 @@ import {getSupply} from '../utils/supply'
 class MarketCapChart extends Component {
   static propTypes: {
     years: PropTypes.number.isRequired,
-    chartHeight: PropTypes.number.isRequired
+    chartHeight: PropTypes.number.isRequired,
+    blockstackPrice: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -24,7 +25,17 @@ class MarketCapChart extends Component {
           title: 'price',
           minValue: 0,
           format: '$#,###',
-          ticks: [50*1000, 100*1000, 150*1000, 200*1000, 250*1000, 300*1000, 350*1000, 400*1000, 450*1000]
+          ticks: [
+             50*1000,
+            100*1000,
+            150*1000,
+            200*1000,
+            250*1000,
+            300*1000,
+            350*1000,
+            400*1000,
+            450*1000,
+          ]
         },
         seriesType: 'bars',
         legend: {
@@ -32,7 +43,7 @@ class MarketCapChart extends Component {
         },
         chartArea: {
           left: '15%',
-          top: '15%',
+          top: '10%',
           width:'75%',
           height:'75%'
         }
@@ -49,7 +60,8 @@ class MarketCapChart extends Component {
   }
 
   componentDidUpdate(prevProps, /*prevState*/) {
-    if (prevProps.years !== this.props.years) {
+    if (prevProps.years !== this.props.years ||
+        prevProps.blockstackPrice !== this.props.blockstackPrice) {
       this.rebuildChartData()
     }
   }
@@ -65,8 +77,7 @@ class MarketCapChart extends Component {
       'zcash': 250,
       'filecoin-advisor': 0.6375,
       'filecoin-main': 2.2525,
-      'blockstack-10': 0.10,
-      'blockstack-20': 0.20,
+      'blockstack': this.props.blockstackPrice,
       'tezos-staking': 0.4116,
       'tezos-nostaking': 0.4116,
     }
@@ -75,8 +86,7 @@ class MarketCapChart extends Component {
       'zcash',
       'filecoin-advisor',
       'filecoin-main',
-      'blockstack-10',
-      'blockstack-20',
+      'blockstack',
       'tezos-staking',
       'tezos-nostaking',
     ]
@@ -91,7 +101,6 @@ class MarketCapChart extends Component {
 
     let basisPointPrice = {}
     currencyLabels.forEach(currencyLabel => {
-      const currencyName = currencyLabel.split('-')[0]
       const marketCap = endSupplies[currencyLabel] * prices[currencyLabel]
       basisPointPrice[currencyLabel] = marketCap / Math.pow(10, 4)
     })
@@ -102,7 +111,7 @@ class MarketCapChart extends Component {
       ['Filecoin (first hour)', basisPointPrice['filecoin-main'], '#004B7A'],
       ['Filecoin (advisor sale)', basisPointPrice['filecoin-advisor'], '#004B7A'],
       ['Tezos (no staking)', basisPointPrice['tezos-nostaking'], '#989898'],
-      ['Blockstack (@ $0.10)', basisPointPrice['blockstack-10'], '#270F34'],
+      [`Blockstack (@ $${this.props.blockstackPrice})`, basisPointPrice['blockstack'], '#270F34'],
       ['Tezos (staking)', basisPointPrice['tezos-staking'], '#989898'],
     ]
 
@@ -117,20 +126,20 @@ class MarketCapChart extends Component {
 
   updateDimensions() {
     this.setState({
-      width: $('#market-cap-chart-panel').width(), 
-      height: $('#market-cap-chart-panel').height(),
+      width: $('#market-cap-bar-chart-panel').width(), 
+      height: $('#market-cap-bar-chart-panel').height(),
     })
   }
 
   render() {
     return (
-      <div id="market-cap-chart-panel" className="chart-panel">
+      <div id="market-cap-bar-chart-panel" className="chart-panel">
         {this.state.data ?
         <Chart
           chartType="ComboChart"
           data={this.state.data}
           options={this.state.options}
-          graph_id="market-cap-chart"
+          graph_id="market-cap-bar-chart"
           width={'100%'}
           height={this.props.chartHeight}
           legend_toggle

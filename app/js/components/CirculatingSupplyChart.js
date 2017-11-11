@@ -41,7 +41,8 @@ class SupplyChart extends Component {
           top: '15%',
           width:'75%',
           height:'75%'
-        }
+        },
+        colors: ['#F44336', '#673AB7', '#4CAF50', '#03A9F4', '#FFC107', '#009688'],
       },
       data: null,
     }
@@ -89,7 +90,7 @@ class SupplyChart extends Component {
     }
     
     let options = this.state.options
-    options.title = `Current Supply vs. Supply After ${years} Years`
+    options.title = `Current supply vs supply after ${years} years`
     options.hAxis.maxValue = years
     this.setState({
       loaded: true,
