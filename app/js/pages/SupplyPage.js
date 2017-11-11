@@ -28,7 +28,6 @@ class SupplyPage extends Component {
       years: 10,
       chartHeight: '600px',
       defaultPrice: 0.10,
-      maxPrice: 0.20,
     }
   }
 
@@ -46,7 +45,6 @@ class SupplyPage extends Component {
                     </h5>
                     <PriceSlider
                       default={this.state.defaultPrice}
-                      maxValue={this.state.maxPrice}
                       onChange={value => this.setState({
                         defaultPrice: value
                       })} />

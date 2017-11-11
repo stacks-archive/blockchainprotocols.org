@@ -26,7 +26,7 @@ class MarketCapChart extends Component {
           maxValue: this.props.years
         },
         vAxis: {
-          title: 'market cap',
+          title: 'fully-diluted market cap',
           minValue: 0,
           format: '$#,###M'
         },

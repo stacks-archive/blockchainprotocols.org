@@ -22,7 +22,7 @@ class ValueBreakdownChart extends Component {
       options: {
         title: '',
         vAxis: {
-          title: 'price',
+          title: 'present value',
           minValue: 0,
           format: '$#,###M',
         },
@@ -83,7 +83,7 @@ class ValueBreakdownChart extends Component {
     ]
 
     let options = this.state.options
-    options.title = `Value of ${years}-year token holdings assuming a $${price} price`
+    options.title = `Present value of all tokens available after ${years} years, assuming a $${price} price`
     this.setState({
       loaded: true,
       data: data,

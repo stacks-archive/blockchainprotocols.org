@@ -22,7 +22,7 @@ class MarketCapChart extends Component {
       options: {
         title: '',
         vAxis: {
-          title: 'price',
+          title: 'price per basis point',
           minValue: 0,
           format: '$#,###',
           ticks: [

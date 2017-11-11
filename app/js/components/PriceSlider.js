@@ -7,7 +7,6 @@ import InputRange from 'react-input-range'
 class PriceSlider extends Component {
   static propTypes: {
     default: PropTypes.number.isRequired,
-    maxValue: PropTypes.number.isRequired,
     onChange: PropTypes.func
   }
 
@@ -19,8 +18,8 @@ class PriceSlider extends Component {
     return (
       <div>
         <InputRange
-          minValue={0}
-          maxValue={this.props.maxValue}
+          minValue={0.10}
+          maxValue={0.20}
           value={this.props.default}
           step={0.01}
           onChange={this.props.onChange}
