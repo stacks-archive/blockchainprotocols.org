@@ -1,6 +1,7 @@
 {
   "projects": {
     "production": "blockchaininternet",
-    "protocols": "blockchain-protocols"
+    "protocols": "blockchain-protocols",
+    "charts": "blockstackcharts"
   }
 }
