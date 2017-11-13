@@ -55,7 +55,7 @@ class SupplyPage extends Component {
                     </h5>
                     <YearSlider
                       years={this.state.years}
-                      maxYears={50}
+                      maxYears={20}
                       onChange={value => this.setState({
                         years: value
                       })} />
@@ -103,11 +103,6 @@ class SupplyPage extends Component {
                       group={'creators'}
                       chartHeight={this.state.chartHeight} />
                   </div>
-                  <div className="col-md-4">
-                    <MarketCapChart
-                      years={this.state.years}
-                      chartHeight={this.state.chartHeight} />
-                  </div>
                 </div>
               </div>
             </div>
@@ -123,6 +118,11 @@ class SupplyPage extends Component {
 export default SupplyPage
 
 /*
+                  <div className="col-md-4">
+                    <MarketCapChart
+                      years={this.state.years}
+                      chartHeight={this.state.chartHeight} />
+                  </div>
                     <CirculatingSupplyChart
                       years={this.state.years}
                       chartHeight={this.state.chartHeight} />
